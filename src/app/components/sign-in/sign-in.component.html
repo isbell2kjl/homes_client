@@ -1,0 +1,17 @@
+<div class="form-wrapper">
+    <form (ngSubmit)="signIn()">
+        <h1 class="input-wrapper">Sign In</h1>
+        <label>UserName </label>
+        <input placeholder="Enter UserName" type="text" name="email" [(ngModel)]="userName">
+        <br><br>
+        <label>Password </label>
+        <input placeholder="Enter Password" type="password" name="password" [(ngModel)]="password">
+        <br><br>
+
+        <!-- <div>
+           {{currentName}}, {{currentID}}, {{loggedIn}}
+        </div> -->
+
+        <button class="input-wrapper" mat-flat-button color="primary">Sign In</button>
+    </form>
+</div>

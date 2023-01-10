@@ -1,0 +1,52 @@
+.header-wrapper {
+    margin: 30px;
+}
+
+.post-wrapper {
+    margin: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 50%;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+.list-wrapper {
+    margin: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-color:darkblue;
+    border-style: solid;
+    width: 50%;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+textarea {
+    width: 80%;
+    display: inline-block;
+    vertical-align: top;
+    padding: 5px;
+}
+
+button {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.content-wrapper {
+    text-align: left;
+    padding-left: 5%
+}
+.posted-wrapper {
+    text-align: right;
+    padding-right: 5%
+}
+
+input {
+    width: 50%;
+}
+
+label {
+    margin-left: 5px;
+}

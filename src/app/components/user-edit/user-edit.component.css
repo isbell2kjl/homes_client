@@ -1,0 +1,18 @@
+.input-wrapper {
+    margin-left: 130px;
+
+}
+
+form {
+    margin: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;
+    font-size: medium;
+}
+
+label {
+    margin-right: 10px;
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+}

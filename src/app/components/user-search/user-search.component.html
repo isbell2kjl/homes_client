@@ -1,0 +1,13 @@
+<h1>Search Users</h1>
+
+<div class="searchWrapper">
+    <!-- <label>Search: </label>
+    <input type="text" name="searchText" [(ngModel)]="searchText" (keyup.enter)="onSearch()"> -->
+    <!-- <button class="search" type="submit" mat-flat-button color="accent" (click)="onSearch()">Search</button> -->
+</div>
+
+<div class="list-wrapper" *ngFor="let u of userList">
+    <p><strong>{{u.userName}}</strong></p>
+    <p>{{u.firstName}} {{u.lastName}}</p>
+    <a [routerLink]="['/profile', u.userId]">View Profile</a>
+</div>

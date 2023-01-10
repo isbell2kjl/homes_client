@@ -1,0 +1,28 @@
+.form-wrapper {
+    margin: 30px;
+    border-color:darkblue;
+    border-style: solid;
+    width:fit-content;
+    padding: 20px;
+}
+
+.input-wrapper {
+    margin-left: 130px;
+
+}
+
+form {
+    margin-right: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;
+    font-size: medium;
+}
+
+label {
+    margin-right: 10px;
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+}
+
+

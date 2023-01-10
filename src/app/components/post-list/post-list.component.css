@@ -1,0 +1,13 @@
+h1 {
+    margin: 30px;
+}
+
+.list-wrapper {
+    margin: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-color:darkblue;
+    border-style: solid;
+    width: 50%;
+    padding: 20px;
+    justify-content: space-between;
+}
