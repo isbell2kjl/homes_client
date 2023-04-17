@@ -8,6 +8,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.css']
 })
+
 export class UserSearchComponent {
 
   userList: User[] = [];
@@ -17,20 +18,27 @@ export class UserSearchComponent {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.getAllUsers();
+  }
+
+  
+
+  public getAllUsers() {
     this.userService.getAllUsers().subscribe(data => {
       if (data) {
-      this.userList = data;
-    }
+        this.userList = data;
+      }
     });
   }
 
-  // onSearch(): void {
-  //   this.userService.getAllUsers().subscribe(data => {
-  //     if (data) {
-  //     this.userList = this.filterPipe.transform(data,this.searchText);
-  //     // this.myFilter = this.filterPipe.transform(this.userList,this.searchText);
-  //   }
-  //   });
-  // }
+  searchByKeyword(searchkeyword: any) {
+    this.userService.getUsersBySearch(searchkeyword).subscribe(foundUsers => {
+      console.log(foundUsers);
+      this.userList = foundUsers;
+    },
+    (error) => {
+      console.log('Search string not found: ', error);
+    })
+  }
 
 }

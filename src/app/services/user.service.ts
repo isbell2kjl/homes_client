@@ -79,6 +79,11 @@ export class UserService {
 
   }
 
+  getUsersBySearch(searchKeyword: string): Observable<User[]> {
+    return this.http.get<User[]>(this.userBaseURL + "/search?name=" + searchKeyword);
+
+  }
+
   getUserByID(userId: string): Observable<User> {
     return this.http.get<User>(this.userBaseURL + "/" + userId);
   }

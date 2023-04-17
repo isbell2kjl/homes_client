@@ -18,9 +18,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UserSearchComponent } from './components/user-search/user-search.component';
-import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,6 @@ import { FilterPipe } from './pipes/filter.pipe';
     NavigationPageComponent,
     UserEditComponent,
     UserSearchComponent,
-    FilterPipe
   ],
   imports: [
 
@@ -47,7 +47,9 @@ import { FilterPipe } from './pipes/filter.pipe';
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
