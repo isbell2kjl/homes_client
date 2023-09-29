@@ -9,7 +9,7 @@
     <button mat-flat-button color="primary">Post!</button>
 </form>
 
-<div class="list-wrapper" *ngFor="let p of postList.reverse(); let i=index;">
+<div class="list-wrapper" *ngFor="let p of postList.reverse() | slice:0:10; let i=index;">
     <div class="content-wrapper">{{p.content}}</div>
     <div class="posted-wrapper"> <a [routerLink]="['/profile', p.userId_fk]">{{p.userName}}</a> , {{p.posted | date:"MM/dd/yy, HH:mm"}}</div>
 </div>

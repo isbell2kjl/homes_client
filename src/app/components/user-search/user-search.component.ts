@@ -14,14 +14,16 @@ export class UserSearchComponent {
   userList: User[] = [];
   searchText: string = "";
 
+  currentUser?: string = "";
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.getAllUsers();
+    this.CheckCurrentUser;
   }
 
-  
+
 
   public getAllUsers() {
     this.userService.getAllUsers().subscribe(data => {
@@ -31,14 +33,30 @@ export class UserSearchComponent {
     });
   }
 
-  searchByKeyword(searchkeyword: any) {
-    this.userService.getUsersBySearch(searchkeyword).subscribe(foundUsers => {
-      console.log(foundUsers);
-      this.userList = foundUsers;
-    },
-    (error) => {
-      console.log('Search string not found: ', error);
-    })
+  CheckCurrentUser() {
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
+      this.currentUser = this.userService.currentUserValue.userName
+    }
   }
 
+  //if user types a search string in lower case, capitalize the first letter
+  //to avoid the 'search string not found' error.
+  capitalizeFirstLetter(str: string): string {
+    return str.replace(/^\w/, (c) => c.toUpperCase());
+  }
+
+  searchByKeyword(searchkeyword: any) {
+    if (searchkeyword) {
+      this.userService.getUsersBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundUsers => {
+        console.log(foundUsers);
+        this.userList = foundUsers;
+      },
+        (error) => {
+          console.log('Search string not found: ', error);
+        })
+    }
+    //if search field is empty, show all users.
+    else (this.getAllUsers())
+  }
 }

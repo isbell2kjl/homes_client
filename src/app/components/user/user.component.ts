@@ -36,10 +36,12 @@ export class UserComponent implements OnInit {
     });
 
     // get the current user ID from local storage
-    this.userService.getCurrentId()
-    this.currentUserId = this.userService.currentId;
-    console.log("current UserID " + this.currentUserId);
-  }
+      this.userService.getCurrentId()
+      console.log(this.userService.currentId)
+      this.currentUserId = this.userService.currentId;
+      console.log("current UserID " + this.currentUserId);
+    }
+
 
   onDelete(post_Id: string) {
     if (confirm("Are you sure you want to delete this item?")) {

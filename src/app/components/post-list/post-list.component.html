@@ -1,6 +1,6 @@
 <h1>Tweet Feed</h1>
 
-<div class="list-wrapper" *ngFor="let p of postList.reverse(); let i=index;">
+<div class="list-wrapper" *ngFor="let p of postList.reverse() | slice:0:10; let i=index;">
     <div class="content-wrapper">{{p.content}}</div>
     <div class="posted-wrapper"><strong>{{p.userName}}</strong> , {{p.posted | date:"MM/dd/yy, HH:mm"}}</div>
 </div>

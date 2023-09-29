@@ -2,17 +2,16 @@
 
 <mat-form-field appearance="outline" class="searchWrapper">
     <mat-label>Search for user</mat-label>
-    <input matInput
-    #searchkeyword
-    (keyup)="searchByKeyword(searchkeyword.value)"
-    name="searchKey"
-    id="searchKey"
-    placeholder="Search any user">
+    <input matInput #searchkeyword (keyup)="searchByKeyword(searchkeyword.value)" name="searchKey" id="searchKey"
+        placeholder="Search any user">
     <mat-hint>Search any user by first or last name</mat-hint>
 </mat-form-field>
 
 <div class="list-wrapper" *ngFor="let u of userList">
     <p><strong>{{u.userName}}</strong></p>
     <p>{{u.firstName}} {{u.lastName}}</p>
-    <a [routerLink]="['/profile', u.userId]">View Profile</a>
+    <p>{{u.city}}, {{u.state}}</p>
+    <div *ngIf="this.currentUser">
+        <a [routerLink]="['/profile', u.userId]">View Profile</a>
+    </div>
 </div>
