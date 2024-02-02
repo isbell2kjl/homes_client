@@ -48,7 +48,7 @@ export class PostNewComponent implements OnInit {
       this.currentUserId = this.userService.currentId;
       console.log(this.currentUser);
       console.log(this.currentUserId);
-    } else (window.alert("In order to create tweets, you must log in."),
+    } else (window.alert("In order to create content, you must log in."),
       this.router.navigate(['auth/signin']))
   }
   addPost() {

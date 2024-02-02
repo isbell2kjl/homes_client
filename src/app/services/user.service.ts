@@ -19,8 +19,10 @@ export class UserService {
   public currentName: string = "";
 
 
-  authBaseURL: string = "https://localhost:7279/api/auth";
-  userBaseURL: string = "https://localhost:7279/api/user";
+  // authBaseURL: string = "https://localhost:7279/api/auth";
+  authBaseURL: string = "https://blogsitedemo.ddns.net/api/auth";
+  // userBaseURL: string = "https://localhost:7279/api/user";
+  userBaseURL: string = "https://blogsitedemo.ddns.net/api/user";
 
   //currently logged in user ideas from:
   //https://jasonwatmore.com/post/2021/12/14/net-6-jwt-authentication-tutorial-with-example-api
