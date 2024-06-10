@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user.service'; 
 
 @Component({
   selector: 'app-post-new',
@@ -42,6 +42,7 @@ export class PostNewComponent implements OnInit {
     if (this.userService.currentUserValue) {
       this.postService.getAllPosts().subscribe(foundposts => {
         this.postList = foundposts;
+        
       });
       this.currentUser = this.userService.currentUserValue.userName;
       this.userService.getCurrentId();

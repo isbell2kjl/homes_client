@@ -9,8 +9,9 @@ import { UserService } from './user.service';
 })
 export class PostService {
 
-  // baseURL: string = "https://localhost:7279/api/post"
-  baseURL: string = "https://blogsitedemo.ddns.net/api/post"
+  baseURL: string = "https://localhost:7279/api/post"
+  //baseURL: string = "https://blogsitedemo.ddns.net/api/post"
+  // baseURL: string = "https://raspberrypi4.wlan/api/post"
 
 
 
@@ -33,6 +34,7 @@ export class PostService {
     }
     console.log(reqHeaders);
     return this.http.post(this.baseURL, newPost, { headers: reqHeaders });
+  
   }
 
   getPostByID(postId: string): Observable<Post> {

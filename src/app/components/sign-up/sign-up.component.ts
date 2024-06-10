@@ -15,7 +15,9 @@ export class SignUpComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    this.newUser.country = "USA";
+    window.alert("To sign up for an account, send me a message.");
+    this.router.navigate(['/auth/signin']);
+    // this.newUser.country = "USA";
   }
 
   signUp() {

@@ -1,0 +1,26 @@
+
+<div class= "header-wrapper">
+    <h2>{{currentContent}}</h2>
+    <h3>{{currentPostDate| date:"MM/dd/yy, HH:mm"}}</h3>
+    <h3>{{postUser}}</h3>
+    <img width="300" src="{{currentPhoto}}" alt="">
+</div>
+
+
+<div>
+    <form class="post-wrapper" (ngSubmit)="addComment()">
+        <textarea #myinput placeholder="Post new Comment" type="text" name="text" [(ngModel)]="newComment.text"></textarea>
+        <br><br>
+        <button mat-flat-button color="primary">Add Comment</button>
+    </form>
+    
+    <div class="list-wrapper" *ngFor="let c of commentList.slice(0,100).reverse(); let i=index;">
+        <div class="content-wrapper">{{c.text}}</div>
+        <div class="posted-wrapper"> <a [routerLink]="['/profile', c.usrId_fk]">{{c.comDate | date:"MM/dd/yy, HH:mm"}}, <strong>{{c.userName}}</strong> 
+            <div [hidden]="true">{{i}}</div></a> </div>
+        <div *ngIf="this.currentUserId > 0 && this.currentUserId == c.usrId_fk || this.currentUserId == this.postUsrId">
+            <!-- <button mat-button color="primary" [routerLink]="['/edit', p.postId]">Edit</button> -->
+            <button mat-button color="warn" (click)="onDelete(c.comId!)">Delete</button>
+        </div>
+    </div>
+</div>

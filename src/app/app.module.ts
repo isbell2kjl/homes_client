@@ -22,6 +22,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UserSearchComponent } from './components/user-search/user-search.component';
+import { CommentNewComponent } from './components/comment-new/comment-new.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { UserSearchComponent } from './components/user-search/user-search.compon
     NavigationPageComponent,
     UserEditComponent,
     UserSearchComponent,
+    CommentNewComponent,
   ],
   imports: [
 

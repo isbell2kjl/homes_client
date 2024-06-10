@@ -1,5 +1,7 @@
 .header-wrapper {
     margin: 30px;
+    width: 50%;
+    padding: 20px;
 }
 
 .post-wrapper {
@@ -36,10 +38,8 @@ button {
 
 .content-wrapper {
     text-align: left;
-    padding-left: 5%;
-    margin-bottom: 10px
+    padding-left: 5%
 }
-
 .posted-wrapper {
     text-align: right;
     padding-right: 5%

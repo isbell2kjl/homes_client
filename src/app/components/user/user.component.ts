@@ -15,6 +15,7 @@ export class UserComponent implements OnInit {
   id: string = "";
   fkeyId: number = 0;
   currentUserId: number = 0;
+  currentPostId: string = "";
 
   selectedUser: User = new User();
   postList: Post[] = [];
@@ -42,7 +43,13 @@ export class UserComponent implements OnInit {
       console.log("current UserID " + this.currentUserId);
     }
 
-
+  // onComment(post_Id: string) {
+  //       this.postService.getPostByID(post_Id).subscribe(foundpost => {
+  //         console.log(foundpost);
+  //         this.currentPostId = foundpost.postId!;
+  //       });
+  //     }
+    
   onDelete(post_Id: string) {
     if (confirm("Are you sure you want to delete this item?")) {
       this.postService.deletePostByID(post_Id).subscribe(response => {

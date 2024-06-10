@@ -10,7 +10,10 @@
 <hr>
 <div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
     <p>{{p.content}}</p>
+    <p>{{p.photoURL}}</p>
     <p>Posted: {{p.posted | date:"MM/dd/yy, HH:mm"}}</p>
+    <button mat-button color="primary" [routerLink]="['/post', p.postId]">Comment</button>
+    <!-- <app-comment-new>[parentPostId]="currentPostId"</app-comment-new> -->
     <div *ngIf="this.currentUserId > 0 && this.currentUserId == this.fkeyId">
         <button mat-button color="primary" [routerLink]="['/edit', p.postId]">Edit</button>
         <button mat-button color="warn" (click)="onDelete(p.postId!)">Delete</button>

@@ -8,6 +8,7 @@ import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UserSearchComponent } from './components/user-search/user-search.component';
 import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { PostListComponent } from './components/post-list/post-list.component';
+import {CommentNewComponent} from './components/comment-new/comment-new.component';
 
 
 
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: "post", component: PostListComponent },
   { path: "add", component: PostNewComponent },
   { path: "edit/:id", component: PostEditComponent },
+  { path: "post/:id", component:CommentNewComponent},
   { path: "auth/signup", component: SignUpComponent },
   { path: "auth/signin", component: SignInComponent },
   { path: "profile/:id", component: UserComponent },

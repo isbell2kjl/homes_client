@@ -2,5 +2,6 @@
 
     <form class="post-wrapper" (ngSubmit)="onSubmit()">
         <textarea placeholder="Enter Content" type="text" name="Content" [(ngModel)]="currentPost.content"></textarea><br><br>
-        <button mat-flat-button color="primary">Update</button>
+        <textarea placeholder="Enter Photo URL" type="text" name="imageUrl" [(ngModel)]="currentPost.photoURL"></textarea><br><br>
+    <button mat-flat-button color="primary">Update</button>
     </form>

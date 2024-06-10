@@ -14,6 +14,7 @@ export class PostEditComponent implements OnInit {
   id: string = "";
   fkeyId: number = 0;
   currentUserId: number = 0;
+  
 
   currentPost: Post = new Post();
 
@@ -25,6 +26,8 @@ export class PostEditComponent implements OnInit {
 
     this.postService.getPostByID(this.id).subscribe(foundPost => {
       this.currentPost = foundPost;
+      console.log("Photo Url: " + this.currentPost.photoURL);
+      console.log("Content: " + this.currentPost.content);
     
 
     // get the current user ID from local storage if user logged in.

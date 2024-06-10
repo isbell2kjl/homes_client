@@ -11,11 +11,17 @@ export class PostListComponent implements OnInit {
 
   postList: Post[] = [];
 
+  currentPost: Post = new Post();
+
+  Comments?: [] = [];
+
+
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
     this.postService.getAllPosts().subscribe(post => {
       this.postList = post;
+      this.Comments = this.currentPost.comment
     });
   }
 
