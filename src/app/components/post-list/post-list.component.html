@@ -1,8 +1,12 @@
-<h1>Daily Feed</h1>
+<h1>Your Daily Quotes</h1>
+
+<div class="content-wrapper" *ngFor="let q of quote">
+    <h3>"{{ q.content }}"  <i>{{q.author}}</i></h3>    
+</div>
 
 <div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
     <div class="content-wrapper"><strong>{{p.content}}</strong></div>
-    <img class="content-wrapper" width="300" src="{{p.photoURL}}" alt="">
+    <img class="img" width="300" src="{{p.photoURL}}" alt="">
     <div class="content-wrapper">{{p.posted | date:"MM/dd/yy, HH:mm"}}, <strong>{{p.userName}}</strong>
         <div [hidden]="true">{{i}}</div></div>
         {{Comments}}

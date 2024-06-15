@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service'; 
+import { QuoteService } from 'src/app/services/quote.service';
 
 @Component({
   selector: 'app-post-new',
@@ -18,6 +19,8 @@ export class PostNewComponent implements OnInit {
 
   @ViewChild("myinput") myInputField!: ElementRef;
 
+  quote: any;
+
   postList: Post[] = [];
 
   newPost: Post = new Post();
@@ -26,10 +29,16 @@ export class PostNewComponent implements OnInit {
   currentUserId: number = 0;
 
 
-  constructor(private postService: PostService, private userService: UserService, private router: Router) { }
+  constructor(private postService: PostService, private userService: UserService, private quoteService: QuoteService, private router: Router) { }
 
 
   ngOnInit(): void {
+    
+    this.quoteService.getQuote().subscribe((data: any) => {
+      console.log(data)
+      this.quote = data;
+    });
+
     this.loadTasks();
   }
 
