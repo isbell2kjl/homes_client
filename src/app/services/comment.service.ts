@@ -6,13 +6,13 @@ import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class CommentService {
 
-  baseURL: string = "https://localhost:7279/api/comment"
-  //baseURL: string = "https://blogsitedemo.ddns.net/api/comment"
+  // baseURL: string = "https://localhost:7279/api/comment"
+  baseURL: string = "https://mydailyquotes.ddns.net/api/comment"
   // baseURL: string = "https://raspberrypi4.wlan/api/comment"
-
+ 
   constructor(private http: HttpClient, private userService: UserService) { }
 
   getAllComments(): Observable<Comment[]> {
