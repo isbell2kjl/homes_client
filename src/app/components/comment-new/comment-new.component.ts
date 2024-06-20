@@ -31,6 +31,7 @@ export class CommentNewComponent implements OnInit {
   currentContent?: string = "";
   currentPostDate?: string = "";
   currentPhoto?: string = "";
+  currentAddress?: string = "";
   postUser?: string = "";
   postUsrId?: number = 0;
   
@@ -67,6 +68,7 @@ export class CommentNewComponent implements OnInit {
       this.currentContent = this.currentPost.content
       this.currentPostDate = this.currentPost.posted
       this.currentPhoto = this.currentPost.photoURL
+      this.currentAddress = this.currentPost.title
       this.postUser = this.currentPost.userName
       this.postUsrId = this.currentPost.userId_fk
 

@@ -2,6 +2,12 @@
     margin: 30px;
 }
 
+.searchWrapper {
+    display: inline-block;
+    margin: 5px;
+    padding: 20px;
+}
+
 .post-wrapper {
     margin: 30px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -36,6 +42,7 @@ button {
 
 .content-wrapper {
     text-align: left;
+    width: 50%;
     padding-left: 5%;
     margin-bottom: 10px
 }
@@ -54,6 +61,14 @@ label {
 }
 
 .img {
+    padding-left: 5%;
     max-width: 100%;
     max-height: 100%;
+}
+
+.number {
+    text-align: left;
+    width: 10px;
+    padding-left: 5%;
+    margin-bottom: 10px
 }

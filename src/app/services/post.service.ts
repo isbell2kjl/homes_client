@@ -9,8 +9,8 @@ import { UserService } from './user.service';
 })
 export class PostService {
 
-  // baseURL: string = "https://localhost:7279/api/post"
-baseURL: string = "https://mydailyquotes.ddns.net/api/post"
+  baseURL: string = "https://localhost:7279/api/post"
+// baseURL: string = "https://mydailyquotes.ddns.net/api/post"
   // baseURL: string = "https://raspberrypi4.wlan/api/post"
 
 
@@ -19,6 +19,11 @@ baseURL: string = "https://mydailyquotes.ddns.net/api/post"
 
   getAllPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.baseURL);
+
+  }
+
+  getPostsBySearch(searchKeyword: string): Observable<Post[]> {
+    return this.http.get<Post[]>(this.baseURL + "/search?name=" + searchKeyword);
 
   }
 

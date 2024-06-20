@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UserSearchComponent } from './components/user-search/user-search.component';
 import { CommentNewComponent } from './components/comment-new/comment-new.component';
@@ -51,7 +52,8 @@ import { CommentNewComponent } from './components/comment-new/comment-new.compon
     MatIconModule,
     MatListModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

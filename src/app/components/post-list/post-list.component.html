@@ -5,10 +5,12 @@
     <h3>"{{ q.content }}"  <i>{{q.author}}</i></h3>    
 </div>
 
-<div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
+<div class="list-wrapper" [hidden]="p.visible == 0"  *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
     <div class="content-wrapper"><strong>{{p.content}}</strong></div>
     <img class="img" width="300" src="{{p.photoURL}}" alt="">
-    <div class="content-wrapper">{{p.posted | date:"MM/dd/yy, HH:mm"}}, <strong>{{p.userName}}</strong>
-        <div [hidden]="true">{{i}}</div></div>
-        {{Comments}}
+    <div class="content-wrapper">{{p.title}}</div>
+    <!-- <div class="content-wrapper">{{p.posted | date:"MM/dd/yy, HH:mm"}}, <strong>{{p.userName}}</strong>
+        
+    </div> -->
+    <div [hidden]="true">{{i}}</div>
 </div>

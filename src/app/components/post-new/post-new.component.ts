@@ -21,6 +21,8 @@ export class PostNewComponent implements OnInit {
 
   quote: any;
 
+  searchText: string = "";
+
   postList: Post[] = [];
 
   newPost: Post = new Post();
@@ -34,10 +36,10 @@ export class PostNewComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.quoteService.getQuote().subscribe((data: any) => {
-      console.log(data)
-      this.quote = data;
-    });
+    // this.quoteService.getQuote().subscribe((data: any) => {
+    //   console.log(data)
+    //   this.quote = data;
+    // });
 
     this.loadTasks();
   }
@@ -61,11 +63,31 @@ export class PostNewComponent implements OnInit {
     } else (window.alert("In order to create content, you must log in."),
       this.router.navigate(['auth/signin']))
   }
+
+  //if user types a search string in lower case, capitalize the first letter
+  //to avoid the 'search string not found' error.
+  capitalizeFirstLetter(str: string): string {
+    return str.replace(/^\w/, (c) => c.toUpperCase());
+  }
+  searchByKeyword(searchkeyword: any) {
+    if (searchkeyword) {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
+        console.log(foundSearch);
+        this.postList = foundSearch;
+      },
+        (error) => {
+          console.log('Search string not found: ', error);
+        })
+    }
+    //if search field is empty, show all users.
+    else (this.loadTasks())
+  }
   addPost() {
     this.newPost.userId_fk = this.currentUserId;
     this.postService.createPost(this.newPost).subscribe(() => {
       window.alert("Created Post Successfully");
       this.loadTasks();
+      this.newPost.title = "";
       this.newPost.content = "";
     }, error => {
       console.log('Error: ', error)

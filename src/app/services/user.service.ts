@@ -19,11 +19,11 @@ export class UserService {
   public currentName: string = "";
 
 
-  // authBaseURL: string = "https://localhost:7279/api/auth";
-  authBaseURL: string = "https://mydailyquotes.ddns.net/api/auth"
+  authBaseURL: string = "https://localhost:7279/api/auth";
+  // authBaseURL: string = "https://mydailyquotes.ddns.net/api/auth"
   // authBaseURL: string = "https://raspberrypi4.wlan/api/auth";
-  // userBaseURL: string = "https://localhost:7279/api/user";
-  userBaseURL: string = "https://mydailyquotes.ddns.net/api/user"
+  userBaseURL: string = "https://localhost:7279/api/user";
+  // userBaseURL: string = "https://mydailyquotes.ddns.net/api/user"
   // userBaseURL: string = "https://raspberrypi4.wlan/api/user";
 
   //currently logged in user ideas from:
