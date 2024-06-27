@@ -19,13 +19,16 @@ export class PostNewComponent implements OnInit {
 
   @ViewChild("myinput") myInputField!: ElementRef;
 
-  quote: any;
-
-  searchText: string = "";
+  newPost: Post = new Post();
 
   postList: Post[] = [];
 
-  newPost: Post = new Post();
+  quote: any;
+  searchText: string = "";
+  postLength: number = 0;
+  // contentTemplate: string = "own: ,tel: ,cond: ugly ,dlnq: y/n ,zil: $ ,ofr: $ ,bed: ,bath: ,sqft: / ";
+
+ 
 
   currentUser?: string = "";
   currentUserId: number = 0;
@@ -40,7 +43,7 @@ export class PostNewComponent implements OnInit {
     //   console.log(data)
     //   this.quote = data;
     // });
-
+    // this.newPost.content = this.contentTemplate;
     this.loadTasks();
   }
 
@@ -53,6 +56,7 @@ export class PostNewComponent implements OnInit {
     if (this.userService.currentUserValue) {
       this.postService.getAllPosts().subscribe(foundposts => {
         this.postList = foundposts;
+        this.postLength = foundposts.length;
         
       });
       this.currentUser = this.userService.currentUserValue.userName;
@@ -74,6 +78,8 @@ export class PostNewComponent implements OnInit {
       this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
         console.log(foundSearch);
         this.postList = foundSearch;
+        //Assuming sample property is NOT part of filter, DO NOT subtract 1.
+        this.postLength = foundSearch.length;
       },
         (error) => {
           console.log('Search string not found: ', error);
@@ -91,10 +97,27 @@ export class PostNewComponent implements OnInit {
       this.newPost.content = "";
     }, error => {
       console.log('Error: ', error)
+      window.alert("Both address and description are required.")
       if (error.status === 401 || error.status === 403) {
         this.router.navigate(['auth/signin']);
       }
     });
+  }
+
+  onDelete(post_Id: string) {
+    if (confirm("Are you sure you want to delete this item, including all action details?")) {
+      this.postService.deletePostByID(post_Id).subscribe(response => {
+        console.log(response);
+        this.loadTasks();
+        // window.alert("Deleted Post Successfully");
+        // this.router.navigate(['add']);
+      }, error => {
+        console.log('Error: ', error)
+        if (error.status === 401 || error.status === 403) {
+          // this.router.navigate(['signin']);
+        }
+      });
+    }
   }
 
 }

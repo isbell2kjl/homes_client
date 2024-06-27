@@ -1,36 +1,46 @@
-<div class="header-wrapper"> 
+<div class="header-wrapper">
     <h1>Welcome {{currentUser}}</h1>
     <!-- <button mat-flat-button color="primary" (click)="logout()">Logout</button> -->
 </div>
-
-
 
 <!-- <div class="content-wrapper" *ngFor="let q of quote">
     <h3>"{{ q.content }}"  <i>{{q.author}}</i></h3>    
 </div> -->
 
 <form class="post-wrapper" (ngSubmit)="addPost()">
-    <textarea class="content-wrapper" #myinput placeholder="Post new Address" type="text" name="title" [(ngModel)]="newPost.title"></textarea>
-    <textarea class="content-wrapper" #myinput placeholder="Post Description" type="text" name="content" [(ngModel)]="newPost.content"></textarea><br>
-    <mat-checkbox
-        [checked]="newPost.visible === 1" 
-        (change)="newPost.visible = $event.checked ? 1 : 0">Visible
-    </mat-checkbox>
-    <button mat-flat-button color="primary">Post!</button>
+    <textarea class="content-wrapper" #myinput placeholder="Post new Address" type="text" name="title"
+        [(ngModel)]="newPost.title"></textarea>
+    <p class ="content-wrapper"><strong>Suggested description: Owner ,telephone ,condition ,delinquent (as x) ,Zestimate ,beds (ex. 3b) , bath (ex 2ba) ,sqft ,notes ,etc.</strong></p>
+    <textarea class="content-wrapper" #myinput placeholder="Post new Description" type="text" name="content"
+        [(ngModel)]="newPost.content"></textarea><br>
+    <mat-checkbox [checked]="newPost.visible === 1" (change)="newPost.visible = $event.checked ? 1 : 0">
+        Visible to public    </mat-checkbox>
+    <button mat-flat-button color="primary">Post!</button><br>
 </form>
-<mat-form-field appearance="outline" class="searchWrapper">
-    <mat-label>Search address</mat-label>
-    <input matInput #searchkeyword (keyup)="searchByKeyword(searchkeyword.value)" name="searchKey" id="searchKey"
-        placeholder="Search address">
-    <mat-hint>Search any part of address</mat-hint>
-</mat-form-field>
+
+<div class="searchWrapper">
+    <mat-form-field appearance="outline">
+        <mat-label>Filter content</mat-label>
+        <input matInput #searchkeyword (keyup)="searchByKeyword(searchkeyword.value)" name="searchKey" id="searchKey"
+            placeholder="Filter content">
+        <mat-hint>Enter any content to filter posts</mat-hint>
+    </mat-form-field><br>
+    <p>Total Properties Displayed: <strong>{{postLength}}</strong></p>
+</div>
+
+
 
 <div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
     <div class="content-wrapper"><strong>{{p.content}}</strong></div>
     <img class="img" width="300" src="{{p.photoURL}}" alt="">
     <div class="content-wrapper">{{p.title}}</div>
-    <div class="posted-wrapper"> <a>{{p.posted | date:"MM/dd/yy, HH:mm"}}, <strong>{{p.userName}} </strong> 
-        <div [hidden]="true">{{i}}</div></a> </div>
-    <button mat-button color="primary" [routerLink]="['/post', p.postId]">See Comments</button>
-    <button mat-button color="primary" [routerLink]="['/edit', p.postId]">Edit</button>
+    <div class="posted-wrapper"> <a [routerLink]="['/profile', p.userId_fk]">{{p.posted | date:"MM/dd/yy, HH:mm"}},
+            <strong>{{p.userName}} </strong>
+            <div [hidden]="true">{{i}}</div>
+        </a> </div>
+    <!-- <div *ngIf="this.currentUserId > 0 && this.currentUserId == p.userId_fk"> -->
+    <button mat-button color="primary" [routerLink]="['/post', p.postId]">Actions</button>
+    <button mat-button color="accent" [routerLink]="['/edit', p.postId]">Edit</button>
+    <button mat-button color="warn" (click)="onDelete(p.postId!)">Delete</button>
+    <!-- </div>    -->
 </div>

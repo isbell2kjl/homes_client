@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { SignInRequest } from 'src/app/models/sign-in-request';
 import { UserService } from 'src/app/services/user.service';
@@ -10,6 +10,11 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SignInComponent implements OnInit {
 
+  //When page loads, set the focus to the input field.  See this solution:
+  //https://davidmcintosh.medium.com/auto-focusing-an-angular-input-the-easy-way-part-1-dcb1799e025f
+
+  @ViewChild("myinput") myInputField!: ElementRef;
+
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -18,6 +23,11 @@ export class SignInComponent implements OnInit {
   currentName?: string = "";
 
   ngOnInit(): void {
+  }
+
+  //When page loads, set the focus to the input field. (See Above)
+  ngAfterViewInit() {
+    this.myInputField.nativeElement.focus();
   }
 
   signIn() {

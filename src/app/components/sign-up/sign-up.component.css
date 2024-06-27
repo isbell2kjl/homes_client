@@ -8,12 +8,17 @@
 
 .input-wrapper {
     margin-left: 130px;
+    
+}
 
+input{
+    font-size: 16px;
 }
 
 form {
     margin-right: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
     text-align: left;
     font-size: medium;
 }

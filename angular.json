@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "blog_client": {
+    "homes_client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/blog_client",
+            "outputPath": "dist/homes_client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "blog_client:build:production"
+              "browserTarget": "homes_client:build:production"
             },
             "development": {
-              "browserTarget": "blog_client:build:development"
+              "browserTarget": "homes_client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "blog_client:build"
+            "browserTarget": "homes_client:build"
           }
         },
         "test": {
@@ -104,7 +104,7 @@
       }
     }
   },
-  "defaultProject": "blog_client",
+  "defaultProject": "homes_client",
   "cli": {
     "analytics": false
   }

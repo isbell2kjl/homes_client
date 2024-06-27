@@ -51,7 +51,7 @@ export class UserComponent implements OnInit {
   //     }
     
   onDelete(post_Id: string) {
-    if (confirm("Are you sure you want to delete this item?")) {
+    if (confirm("Are you sure you want to delete this item, including all action details?")) {
       this.postService.deletePostByID(post_Id).subscribe(response => {
         console.log(response);
         this.ngOnInit();

@@ -7,10 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class QuoteService {
 
-  apiUrl = 'https://api.quotable.io/quotes'
+  // apiUrl = 'https://api.quotable.io/quotes'
+  apiUrl = 'https://beta.ourmanna.com/api/v1/get?format=json&order=daily'
   constructor(private http: HttpClient) {}
 
   getQuote(): Observable<any> {
-    return this.http.get(this.apiUrl + '/random');
+    // return this.http.get(this.apiUrl + '/random');
+    return this.http.get(this.apiUrl);
   }
 }

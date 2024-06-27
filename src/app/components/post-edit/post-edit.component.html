@@ -1,16 +1,17 @@
-
-
-    <form class="post-wrapper" (ngSubmit)="onSubmit()">
-        <textarea placeholder="Enter Content" type="text" name="Content" [(ngModel)]="currentPost.content"></textarea><br><br>
+<form class="post-wrapper" (ngSubmit)="onSubmit()">
+    
+    <div class="content wrapper">
+        <textarea placeholder="Enter Content" type="text" name="Content"
+            [(ngModel)]="currentPost.content"></textarea><br><br>
         <textarea placeholder="Enter Address" type="text" name="Title" [(ngModel)]="currentPost.title"></textarea><br><br>
-        <textarea placeholder="Enter Photo URL" type="text" name="imageUrl" [(ngModel)]="currentPost.photoURL"></textarea><br><br>
+        <textarea placeholder="Enter Photo URL" type="text" name="imageUrl"
+            [(ngModel)]="currentPost.photoURL"></textarea><br><br>
         <!-- <label>Visible </label> -->
-        <mat-checkbox
-        [checked]="currentPost.visible === 1" 
-        (change)="currentPost.visible = $event.checked ? 1 : 0">Visible
+        <mat-checkbox [checked]="currentPost.visible === 1" (change)="currentPost.visible = $event.checked ? 1 : 0">Visible
         </mat-checkbox><br><br>
         <!-- <input type="number" name="visible" [(ngModel)]="currentPost.visible"/><br><br> -->
+    </div>
 
 
     <button mat-flat-button color="primary">Update</button>
-    </form>
+</form>

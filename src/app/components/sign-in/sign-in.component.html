@@ -2,7 +2,7 @@
     <form (ngSubmit)="signIn()">
         <h1 class="input-wrapper">Sign In</h1>
         <label>UserName </label>
-        <input placeholder="Enter UserName" type="text" name="email" [(ngModel)]="userName">
+        <input #myinput placeholder="Enter UserName" type="text" name="email" [(ngModel)]="userName">
         <br><br>
         <label>Password </label>
         <input placeholder="Enter Password" type="password" name="password" [(ngModel)]="password">

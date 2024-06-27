@@ -1,16 +1,28 @@
 .post-wrapper {
     margin: 30px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
     /* border-color:darkblue;
     border-style: solid; */
-    width: 50%;
+    width: 100%;
     padding: 20px;
     justify-content: space-between;
 }
 
+.content-wrapper {
+    text-align: left;
+    width: 50%;
+    padding-left: 2px;
+    margin-bottom: 10px
+}
+
+
 textarea {
-    width: 80%;
+    width: 70%;
+    height: 6em;
+    font-size: 16px;
     display: inline-block;
     vertical-align: top;
     padding: 5px;
+    word-wrap: break-word;
 }

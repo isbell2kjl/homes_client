@@ -9,8 +9,8 @@ import { UserService } from './user.service';
 })
 export class PostService {
 
-  baseURL: string = "https://localhost:7279/api/post"
-// baseURL: string = "https://mydailyquotes.ddns.net/api/post"
+  // baseURL: string = "https://localhost:7279/api/post"
+baseURL: string = "https://myproperties.ddns.net/api/post"
   // baseURL: string = "https://raspberrypi4.wlan/api/post"
 
 

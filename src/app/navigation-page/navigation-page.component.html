@@ -6,14 +6,14 @@
     <mat-nav-list>
       <ng-template [ngIf]="isActive | async" [ngIfElse]="signedOut">
         <h3 class="site-menu">Welcome {{currentName}}</h3>
-        <a mat-list-item (click)="logout()">Sign Out</a>
-        <a mat-list-item routerLink="/add">Properties</a>
-        <a mat-list-item routerLink="/search">All Users</a>
+        <a mat-list-item (click)="logout()" (click)="drawer.toggle()">Sign Out</a>
+        <a mat-list-item routerLink="/add" routerLinkActive="router-link-active" (click)="drawer.toggle()">Properties</a>
+        <a mat-list-item routerLink="/search" (click)="drawer.toggle()">All Users</a>
       </ng-template>
       <ng-template #signedOut>
         <!-- <a mat-list-item routerLink="auth/signup">Sign Up</a> -->
-        <a mat-list-item routerLink="auth/signin">Sign In</a>
-        <a mat-list-item routerLink="/post">Properties</a>
+        <a mat-list-item routerLink="auth/signin" (click)="drawer.toggle()">Sign In</a>
+        <a mat-list-item routerLink="/post" (click)="drawer.toggle()">Properties</a>
         <!-- <a mat-list-item routerLink="/search">All Users</a> -->
       </ng-template>
     </mat-nav-list>
@@ -33,7 +33,7 @@
     <router-outlet></router-outlet>
     <mat-toolbar class="footer">
       <span id="copyright">© 2024 My Advantage Properties, Inc.</span>
-      <span id="creator">Created by Keith</span>
+      <span id="creator">Created by Keith Isbell</span>
     </mat-toolbar>
     <!-- </body> -->
 

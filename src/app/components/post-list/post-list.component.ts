@@ -27,10 +27,10 @@ export class PostListComponent implements OnInit {
       this.postList = post;
       this.Comments = this.currentPost.comment
     });
-    this.quoteService.getQuote().subscribe((data: any) => {
-      console.log(data)
-      this.quote = data;
-    });
+    // this.quoteService.getQuote().subscribe((data: any) => {
+    //   console.log(data)
+    //   this.quote = data;
+    // });
   }
 
 }
