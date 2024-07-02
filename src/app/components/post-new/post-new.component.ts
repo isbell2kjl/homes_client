@@ -26,7 +26,8 @@ export class PostNewComponent implements OnInit {
   quote: any;
   searchText: string = "";
   postLength: number = 0;
-  // contentTemplate: string = "own: ,tel: ,cond: ugly ,dlnq: y/n ,zil: $ ,ofr: $ ,bed: ,bath: ,sqft: / ";
+
+  contentTemplate: string = "own: ,tel: ,cond: ugly ,dlnq: n  ,zest: $  , bd: , ba: , / sqft ,ofr: $ ,call-0 ";
 
  
 
@@ -43,7 +44,7 @@ export class PostNewComponent implements OnInit {
     //   console.log(data)
     //   this.quote = data;
     // });
-    // this.newPost.content = this.contentTemplate;
+    this.newPost.content = this.contentTemplate;
     this.loadTasks();
   }
 
@@ -55,8 +56,12 @@ export class PostNewComponent implements OnInit {
   loadTasks() {
     if (this.userService.currentUserValue) {
       this.postService.getAllPosts().subscribe(foundposts => {
-        this.postList = foundposts;
-        this.postLength = foundposts.length;
+        // this.postList = foundposts;
+      this.postList = foundposts.filter(function(active, index) {
+          return active.archive == 0
+        });
+      this.postLength = this.postList.length;
+
         
       });
       this.currentUser = this.userService.currentUserValue.userName;
@@ -77,9 +82,10 @@ export class PostNewComponent implements OnInit {
     if (searchkeyword) {
       this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
         console.log(foundSearch);
-        this.postList = foundSearch;
-        //Assuming sample property is NOT part of filter, DO NOT subtract 1.
-        this.postLength = foundSearch.length;
+        this.postList = foundSearch.filter(function(active, index) {
+          return active.archive == 0
+        });
+        this.postLength = this.postList.length;
       },
         (error) => {
           console.log('Search string not found: ', error);

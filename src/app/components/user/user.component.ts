@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { User } from 'src/app/models/user';
@@ -17,6 +17,9 @@ export class UserComponent implements OnInit {
   currentUserId: number = 0;
   currentPostId: string = "";
 
+  searchText: string = "";
+  postLength: number = 0;
+
   selectedUser: User = new User();
   postList: Post[] = [];
 
@@ -33,7 +36,10 @@ export class UserComponent implements OnInit {
 
     this.postService.getUserPosts(this.fkeyId).subscribe(foundposts => {
       console.log(foundposts);
-      this.postList = foundposts;
+      this.postList = foundposts.filter(function(active, index) {
+        return active.archive == 1
+      });
+      this.postLength = this.postList.length
     });
 
     // get the current user ID from local storage
@@ -49,6 +55,34 @@ export class UserComponent implements OnInit {
   //         this.currentPostId = foundpost.postId!;
   //       });
   //     }
+
+  //if user types a search string in lower case, capitalize the first letter
+  //to avoid the 'search string not found' error.
+  capitalizeFirstLetter(str: string): string {
+    return str.replace(/^\w/, (c) => c.toUpperCase());
+  }
+  searchByKeyword(searchkeyword: any) {
+    if (searchkeyword) {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
+        console.log(foundSearch);
+        this.postList = foundSearch.filter(function(active, index) {
+          return active.archive == 1
+        });
+        this.postLength = this.postList.length;
+      },
+        (error) => {
+          console.log('Search string not found: ', error);
+        })
+    }
+    //if search field is empty, show all posts.
+    else 
+      (this.postService.getUserPosts(this.fkeyId).subscribe(foundposts => {
+      console.log(foundposts);
+      this.postList = foundposts.filter(function(active, index) {
+        return active.archive == 1
+      });
+    }));
+  }
     
   onDelete(post_Id: string) {
     if (confirm("Are you sure you want to delete this item, including all action details?")) {

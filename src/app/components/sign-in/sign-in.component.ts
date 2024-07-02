@@ -32,7 +32,7 @@ export class SignInComponent implements OnInit {
 
   signIn() {
     this.userService.signIn(this.userName, this.password).subscribe((response: any) => {
-      window.alert("User logged in Successfully");
+      // window.alert("User logged in Successfully");
       this.router.navigate(['add']);
       //Look up the current user after login.
       this.currentName = this.userService.currentUserValue.userName;

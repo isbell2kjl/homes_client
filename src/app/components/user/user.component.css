@@ -2,6 +2,12 @@
     margin: 30px;
 }
 
+.searchWrapper {
+    display: inline-block;
+    margin: 5px;
+    padding: 20px;
+}
+
 .list-wrapper {
     margin: 30px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

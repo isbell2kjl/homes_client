@@ -24,7 +24,9 @@ export class PostListComponent implements OnInit {
 
   ngOnInit(): void {
     this.postService.getAllPosts().subscribe(post => {
-      this.postList = post;
+      this.postList = post.filter(function(active, index) {
+        return active.visible == 1
+      });
       this.Comments = this.currentPost.comment
     });
     // this.quoteService.getQuote().subscribe((data: any) => {
