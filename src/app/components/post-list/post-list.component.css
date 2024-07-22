@@ -1,11 +1,14 @@
 .header-wrapper {
-    margin: 30px;
+    margin: 2em;
+    width: 50%;
+    padding: 0.5em;
 }
 
 .content-wrapper {
     text-align: left;
-    padding-left: 5%;
-    margin-bottom: 10px
+    width: 80%;
+    padding-left: 1em;
+    margin-bottom: 1em;
 }
 
 .img {
@@ -14,11 +17,12 @@
 }
 
 .list-wrapper {
-    margin: 30px;
+    margin: 2em;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-color:darkblue;
     border-style: solid;
-    width: 50%;
-    padding: 20px;
+    /* width: 80%; */
+    width: fit-content;
+    padding: 1em;
     justify-content: space-between;
 }

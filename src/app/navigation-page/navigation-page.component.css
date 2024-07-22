@@ -1,9 +1,10 @@
 .sidenav-container {
   height: 100%;
+  max-width: 100%;
 }
 
 .sidenav {
-  width: 200px;
+  width: 150px;
 }
 
 .sidenav .mat-toolbar {
@@ -18,36 +19,48 @@
 
 /* user defined */
 
+/* body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+} */
+
+/* main {
+  flex: 1;
+} */
+
 .site-menu {
   margin-left: 15px;
 }
+
 .site-title {
   margin-left: 10px;
 }
 
-.footer  {
-  background-color: rgb(63,81,181);
-  margin-top: 100px;
-  justify-content: space-between;
-  position: relative;
+.footer {
+  background-color: rgb(63, 81, 181);
   color: white;
-  }
+  justify-content: space-between;
+  height: 50px;
+  /* position: fixed;
+  bottom: 0; */
+}
+
+.footer #copyright {
+  font-size: small;
+  padding-left: 1%;
+}
+
+.footer #creator {
+  font-size: small;
+  /* padding-right: 4%; */
+}
+
+
+@media only screen and (max-width: 100%) {
 
   .footer #copyright {
-    font-size: small;
-    padding-left: 3%;
+    margin-right: 10px;
   }
 
-  .footer #creator {
-    font-size: small;
-    padding-right: 3%;
-  }
-
-
-  @media only screen and (max-width: 700px) {
-
-    .footer #copyright {
-     margin-right: 10px;
-    }
-
-  }
+}

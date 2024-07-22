@@ -28,10 +28,10 @@
             placeholder="Filter content">
         <mat-hint>Enter any content to filter posts</mat-hint>
     </mat-form-field><br>
-    <div>
-        <p>Active Properties: <strong>{{postLength}}</strong></p><br>
-        <button mat-button color="primary" [routerLink]="['/profile', currentUserId]">See Archived
-            List</button>
+    <div class="active-wrapper">
+        <span class="active1">Active Properties: <strong>{{postLength}}</strong></span>
+        <a class="active2" [routerLink]="['/profile', currentUserId]"><span>See Archived
+            List</span></a>
     </div>
 </div>
 

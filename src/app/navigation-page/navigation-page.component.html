@@ -6,19 +6,30 @@
     <mat-nav-list>
       <ng-template [ngIf]="isActive | async" [ngIfElse]="signedOut">
         <h3 class="site-menu">Welcome {{currentName}}</h3>
-        <a mat-list-item (click)="logout()" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Sign Out</a>
+        <a mat-list-item (click)="logout()" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Sign
+          Out</a>
         <a mat-list-item (click)="logout()" *ngIf="(isHandset$ | async) === false">Sign Out</a>
-        <a mat-list-item routerLink="/add" *ngIf="(isHandset$ | async) === true"  (click)="drawer.toggle()">Properties</a>
+        <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true"
+          (click)="drawer.toggle()">Home</a>
+        <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === false">Home</a>
+        <a mat-list-item routerLink="/add" *ngIf="(isHandset$ | async) === true"
+          (click)="drawer.toggle()">Properties</a>
         <a mat-list-item routerLink="/add" *ngIf="(isHandset$ | async) === false">Properties</a>
         <!-- routerLinkActive="router-link-active" -->
-        <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === true"  (click)="drawer.toggle()" >All Users</a>
+        <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">All
+          Users</a>
         <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === false">All Users</a>
       </ng-template>
       <ng-template #signedOut>
         <!-- <a mat-list-item routerLink="auth/signup">Sign Up</a> -->
-        <a mat-list-item routerLink="auth/signin" *ngIf="(isHandset$ | async) === true"  (click)="drawer.toggle()">Sign In</a>
+        <a mat-list-item routerLink="auth/signin" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Sign
+          In</a>
         <a mat-list-item routerLink="auth/signin" *ngIf="(isHandset$ | async) === false">Sign In</a>
-        <a mat-list-item routerLink="/post" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Properties</a>
+        <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true"
+        (click)="drawer.toggle()">Home</a>
+      <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === false">Home</a>
+        <a mat-list-item routerLink="/post" *ngIf="(isHandset$ | async) === true"
+          (click)="drawer.toggle()">Properties</a>
         <a mat-list-item routerLink="/post" *ngIf="(isHandset$ | async) === false">Properties</a>
         <!-- <a mat-list-item routerLink="/search">All Users</a> -->
       </ng-template>
@@ -27,21 +38,20 @@
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-      *ngIf="isHandset$ | async">
+        *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <img src="assets/photos/house_outline.png" alt="" width="40">
       <span class="site-title">My Advantage Properties</span>
     </mat-toolbar>
-    <!-- Add Content Here -->
 
-    <!-- <body> -->
-    <router-outlet></router-outlet>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+
     <mat-toolbar class="footer">
-      <span id="copyright">© 2024 My Advantage Properties, Inc.</span>
+      <span id="copyright">© 2024 My Test Website</span>
       <span id="creator">Created by Keith Isbell</span>
     </mat-toolbar>
-    <!-- </body> -->
-
   </mat-sidenav-content>
 </mat-sidenav-container>

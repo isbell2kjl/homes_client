@@ -1,16 +1,14 @@
 .form-wrapper {
-    margin: 30px;
+    margin: 5em 5em;
     border-color:darkblue;
     border-style: solid;
     width:fit-content;
-    padding: 20px;
-    height: 435px;
+    padding: 1em;
+    height: 370px;
 }
 
 .input-wrapper {
-    margin-left: 130px;
-    
-    /*  */
+    align-items: center;
 }
 
 input{
@@ -18,18 +16,10 @@ input{
 }
 
 form {
-    margin-right: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
-    text-align: left;
+    justify-content: center;
+    text-align: center;
     font-size: medium;
-}
-
-label {
-    margin-right: 10px;
-    display: inline-block;
-    width: 150px;
-    text-align: right;
 }
 
 button {

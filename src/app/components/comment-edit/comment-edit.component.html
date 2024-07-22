@@ -1,0 +1,11 @@
+<form class="post-wrapper" (ngSubmit)="onSubmit()">
+
+    <div>
+        <textarea placeholder="Enter Action" type="text" name="Text"
+            [(ngModel)]="currentComment.text"></textarea><br><br>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <button mat-flat-button color="primary">Update</button>
+    </div>
+</form>

@@ -23,6 +23,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UserSearchComponent } from './components/user-search/user-search.component';
 import { CommentNewComponent } from './components/comment-new/comment-new.component';
+import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { CommentNewComponent } from './components/comment-new/comment-new.compon
     UserEditComponent,
     UserSearchComponent,
     CommentNewComponent,
+    CommentEditComponent,
+    HomeComponent,
   ],
   imports: [
 
