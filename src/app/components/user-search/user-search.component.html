@@ -1,3 +1,5 @@
+<body>
+
 <h1>Search Users</h1>
 
 <mat-form-field appearance="outline" class="searchWrapper">
@@ -11,7 +13,9 @@
     <p><strong>{{u.userName}}</strong></p>
     <p>{{u.firstName}} {{u.lastName}}</p>
     <p>{{u.city}}, {{u.state}}</p>
-    <div *ngIf="this.currentUser">
+    <div *ngIf="this.currentUserId > 0">
         <a [routerLink]="['/profile', u.userId]">View Profile</a>
     </div>
 </div>
+
+</body>

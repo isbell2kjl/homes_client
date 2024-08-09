@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
-import { UserService } from 'src/app/services/user.service'; 
-import { QuoteService } from 'src/app/services/quote.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-post-new',
@@ -17,53 +16,49 @@ export class PostNewComponent implements OnInit {
   //When page loads, set the focus to the input field.  See this solution:
   //https://davidmcintosh.medium.com/auto-focusing-an-angular-input-the-easy-way-part-1-dcb1799e025f
 
-  @ViewChild("myinput") myInputField!: ElementRef;
+  // @ViewChild("myinput") myInputField!: ElementRef;
 
   newPost: Post = new Post();
 
-  postList: Post[] = [];
+  column1: string = '';
+  column2: string = '';
+  column3: string = '';
+  column4: string = '';
+  column5: string = '';
+  column6: string = '';
+  column7: string = '';
+  column8: string = '';
+  column9: string = '';
+  column10: string = '';
+  notes: string = '';
+  concatenatedString: string = '';
 
   quote: any;
   searchText: string = "";
-  postLength: number = 0;
 
-  contentTemplate: string = "own: ,tel: ,cond: ugly ,dlnq: n  ,zest: $  , bd: , ba: , / sqft ,ofr: $ ,call-0 ";
+  // contentTemplate: string = "own: ,tel: ,cond: ugly ,dlnq: n  ,zest: $  , bd: , ba: , / sqft ,ofr: $ ,call-0 ";
 
- 
+
 
   currentUser?: string = "";
   currentUserId: number = 0;
 
 
-  constructor(private postService: PostService, private userService: UserService, private quoteService: QuoteService, private router: Router) { }
+  constructor(private postService: PostService, private userService: UserService, private router: Router) { }
 
 
   ngOnInit(): void {
-    
-    // this.quoteService.getQuote().subscribe((data: any) => {
-    //   console.log(data)
-    //   this.quote = data;
-    // });
-    this.newPost.content = this.contentTemplate;
+
     this.loadTasks();
   }
 
   //When page loads, set the focus to the input field. (See Above)
-  ngAfterViewInit() {
-    this.myInputField.nativeElement.focus();
-  }
+  // ngAfterViewInit() {
+  //   this.myInputField.nativeElement.focus();
+  // }
 
   loadTasks() {
     if (this.userService.currentUserValue) {
-      this.postService.getAllPosts().subscribe(foundposts => {
-        // this.postList = foundposts;
-      this.postList = foundposts.filter(function(active, index) {
-          return active.archive == 0
-        });
-      this.postLength = this.postList.length;
-
-        
-      });
       this.currentUser = this.userService.currentUserValue.userName;
       this.userService.getCurrentId();
       this.currentUserId = this.userService.currentId;
@@ -73,34 +68,48 @@ export class PostNewComponent implements OnInit {
       this.router.navigate(['auth/signin']))
   }
 
-  //if user types a search string in lower case, capitalize the first letter
-  //to avoid the 'search string not found' error.
-  capitalizeFirstLetter(str: string): string {
-    return str.replace(/^\w/, (c) => c.toUpperCase());
+  updateConcatenatedString() {
+    this.concatenatedString = [
+      this.column1,
+      this.column2,
+      ('Call-' + this.column3),
+      this.column4,
+      ('delq-' + this.column5),
+      (this.column6 + 'bd'),
+      (this.column7 + 'ba'),
+      (this.column8 + 'sqft'),
+      ('$' + this.column9),
+      ('$' + this.column10),
+      this.notes
+    ].join('\t');
   }
-  searchByKeyword(searchkeyword: any) {
-    if (searchkeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
-        console.log(foundSearch);
-        this.postList = foundSearch.filter(function(active, index) {
-          return active.archive == 0
-        });
-        this.postLength = this.postList.length;
-      },
-        (error) => {
-          console.log('Search string not found: ', error);
-        })
-    }
-    //if search field is empty, show all users.
-    else (this.loadTasks())
-  }
+
   addPost() {
     this.newPost.userId_fk = this.currentUserId;
+
+    // Make sure address field has a value before performing functions.
+    if (this.newPost.title?.length! > 0) {
+      this.updateConcatenatedString();
+      this.newPost.content = this.concatenatedString;
+    }
+
     this.postService.createPost(this.newPost).subscribe(() => {
       window.alert("Created Post Successfully");
       this.loadTasks();
       this.newPost.title = "";
       this.newPost.content = "";
+      this.column1 = "";
+      this.column2 = "";
+      this.column3 = "";
+      this.column4 = "";
+      this.column5 = "";
+      this.column6 = "";
+      this.column7 = "";
+      this.column8 = "";
+      this.column9 = "";
+      this.column10 = "";
+      this.notes = "";
+      this.router.navigate(['active']);
     }, error => {
       console.log('Error: ', error)
       window.alert("Both address and description are required.")
@@ -108,22 +117,6 @@ export class PostNewComponent implements OnInit {
         this.router.navigate(['auth/signin']);
       }
     });
-  }
-
-  onDelete(post_Id: string) {
-    if (confirm("Are you sure you want to delete this item, including all action details?")) {
-      this.postService.deletePostByID(post_Id).subscribe(response => {
-        console.log(response);
-        this.loadTasks();
-        // window.alert("Deleted Post Successfully");
-        // this.router.navigate(['add']);
-      }, error => {
-        console.log('Error: ', error)
-        if (error.status === 401 || error.status === 403) {
-          // this.router.navigate(['signin']);
-        }
-      });
-    }
   }
 
 }

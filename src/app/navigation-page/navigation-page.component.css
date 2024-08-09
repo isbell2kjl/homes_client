@@ -19,16 +19,6 @@
 
 /* user defined */
 
-/* body, html {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-} */
-
-/* main {
-  flex: 1;
-} */
-
 .site-menu {
   margin-left: 15px;
 }
@@ -37,12 +27,25 @@
   margin-left: 10px;
 }
 
+/* push the footer to the bottom when content
+of the page is less than a full page. */
+
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
 .footer {
-  background-color: rgb(63, 81, 181);
   color: white;
   justify-content: space-between;
   height: 50px;
-  /* position: fixed;
+  flex-shrink: 0;
+  /* margin-top: auto;
   bottom: 0; */
 }
 

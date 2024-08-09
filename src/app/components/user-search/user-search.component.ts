@@ -14,13 +14,13 @@ export class UserSearchComponent {
   userList: User[] = [];
   searchText: string = "";
 
-  currentUser?: string = "";
+  currentUserId: number = 0;
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.getAllUsers();
-    this.CheckCurrentUser;
+    this.CheckCurrentUser();
   }
 
 
@@ -34,10 +34,10 @@ export class UserSearchComponent {
   }
 
   CheckCurrentUser() {
-    //Check if there is a user logged in.
-    if (this.userService.currentUserValue) {
-      this.currentUser = this.userService.currentUserValue.userName
-    }
+    // get the current user ID from local storage
+    this.userService.getCurrentId()
+    console.log("currentID" + this.userService.currentId)
+    this.currentUserId = this.userService.currentId;
   }
 
   //if user types a search string in lower case, capitalize the first letter

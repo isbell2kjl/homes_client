@@ -1,0 +1,40 @@
+<div class="searchWrapper">
+    <mat-form-field appearance="outline">
+        <mat-label>Filter content</mat-label>
+        <input *ngIf="archived === false" matInput #searchkeyword (keyup)="searchByKeyword(searchkeyword.value)"
+            name="searchKey" id="searchKey" placeholder="Filter content">
+        <input *ngIf="archived === true" matInput #searchkeyword (keyup)="searchByKeywordA(searchkeyword.value)"
+            name="searchKey" id="searchKey" placeholder="Filter content">
+        <mat-hint>Enter any content to filter posts</mat-hint>
+    </mat-form-field>
+    <div class="active-wrapper">
+        <span>Active Properties: <strong>{{postLength}}</strong></span>
+    </div>
+    <div class="d-flex justify-content-start">
+        <button class="active" mat-button color="primary" routerLink="/add">Add New</button>
+        <!-- <button mat-button color="primary" [routerLink]="['/profile', currentUserId]">Archived
+            List</button> -->
+        <mat-slide-toggle class="active" [(ngModel)]="archived" (change)="onArchive()">
+            Archived
+        </mat-slide-toggle>
+    </div>
+</div>
+
+<div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
+    <div class="content-wrapper"><strong>Owner, Tel, Call, Cond, Delq, Bed, Bath, Sqft, Zest, Offer, Notes </strong>
+    </div>
+    <div class="content-wrapper">{{p.content}}</div>
+    <img class="img" width="300" src="{{p.photoURL}}" alt="">
+    <div class="content-wrapper">{{p.title}}</div>
+    <div class="posted-wrapper"> <a [routerLink]="['/profile', p.userId_fk]">{{p.posted | date:"MM/dd/yy, HH:mm"}},
+            <strong>{{p.userName}} </strong>
+            <div [hidden]="true">{{i}}</div>
+        </a> </div>
+    <div class="d-flex justify-content-start">
+        <button mat-button color="primary" [routerLink]="['/post', p.postId]">Actions</button>
+        <!-- <div *ngIf="this.currentUserId > 0 && this.currentUserId == p.userId_fk"> -->
+        <button mat-button color="accent" [routerLink]="['/edit', p.postId]">Edit</button>
+        <button mat-button color="warn" (click)="onDelete(p.postId!)">Delete</button>
+        <!-- </div> -->
+    </div>
+</div>

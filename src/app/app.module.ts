@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { UserComponent } from './components/user/user.component';
@@ -17,14 +18,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatSelectModule} from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UserSearchComponent } from './components/user-search/user-search.component';
 import { CommentNewComponent } from './components/comment-new/comment-new.component';
 import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
 import { HomeComponent } from './components/home/home.component';
+import { PostActiveComponent } from './components/post-active/post-active.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { RecaptchaModule } from 'ng-recaptcha';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +52,10 @@ import { HomeComponent } from './components/home/home.component';
     CommentNewComponent,
     CommentEditComponent,
     HomeComponent,
+    PostActiveComponent,
+    ContactComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
 
@@ -55,8 +70,14 @@ import { HomeComponent } from './components/home/home.component';
     MatIconModule,
     MatListModule,
     MatFormFieldModule,
+    MatSelectModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    RecaptchaModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

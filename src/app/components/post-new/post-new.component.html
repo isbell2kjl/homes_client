@@ -1,52 +1,55 @@
-<div class="header-wrapper">
-    <h1>Welcome {{currentUser}}</h1>
-    <!-- <button mat-flat-button color="primary" (click)="logout()">Logout</button> -->
-</div>
-
-<!-- <div class="content-wrapper" *ngFor="let q of quote">
-    <h3>"{{ q.content }}"  <i>{{q.author}}</i></h3>    
-</div> -->
-
 <form class="post-wrapper" (ngSubmit)="addPost()">
-    <textarea class="content-wrapper" #myinput placeholder="Post new Address" type="text" name="title"
+    <textarea class="content-wrapper" placeholder="Post new Address" type="text" name="title"
         [(ngModel)]="newPost.title"></textarea>
-    <p class="content-wrapper"><strong>User defined notes: call code example (0-no answer,1-not interested,2-potential deal)</strong>
-    </p>
-    <textarea class="content-wrapper" #myinput placeholder="Post new Description" type="text" name="content"
-        [(ngModel)]="newPost.content"></textarea><br>
-    <div class="flex-container">
-        <mat-checkbox [checked]="newPost.visible === 1" (change)="newPost.visible = $event.checked ? 1 : 0">
-            Visible to public </mat-checkbox>
-        <button mat-flat-button color="primary">Post!</button><br>
+    <!-- <p class="content-wrapper"><strong>User defined notes: call code example (0-no answer,1-not interested,2-potential
+            deal)</strong>
+    </p> -->
+    <div class="responsive-table">
+        <div class="table-row">
+            <div>
+                <input placeholder="Owner" type="text" name="content" [(ngModel)]="column1">
+            </div>
+            <div>
+                <input placeholder="Telephone" type="text" name="content" [(ngModel)]="column2">
+            </div>
+            <div>
+                <input placeholder="Call 0,1,2" type="text" name="content" [(ngModel)]="column3">
+            </div>
+            <div>
+                <input placeholder="Condition" type="text" name="content" [(ngModel)]="column4 ">
+            </div>
+            <div>
+                <input placeholder="DELQ y/n" type="text" name="content" [(ngModel)]="column5">
+            </div>
+            <div>
+                <input placeholder="Bed" type="text" name="content" [(ngModel)]="column6">
+            </div>
+            <div>
+                <input placeholder="Bath" type="text" name="content" [(ngModel)]="column7">
+            </div>
+            <div>
+                <input placeholder="Sqft" type="text" name="content" [(ngModel)]="column8">
+            </div>
+            <div>
+                <input placeholder="Zestimate" type="text" name="content" [(ngModel)]="column9">
+            </div>
+            <div>
+                <input placeholder="Offer" type="text" name="content" [(ngModel)]="column10">
+            </div>
+
+        </div>
+    </div>
+
+    <textarea class="content-wrapper" placeholder="Post additional notes" type="text" name="content"
+        [(ngModel)]="notes">
+    </textarea>
+
+    <div class="action-wrapper">
+        <!-- <div class="d-flex justify-content-start"> -->
+        <div class="active-wrapper">
+            <mat-checkbox class="active" [checked]="newPost.visible === 1" (change)="newPost.visible = $event.checked ? 1 : 0">
+                Visible to public </mat-checkbox>
+            <button class="active" mat-flat-button color="primary">Add Post</button><br>
+        </div>
     </div>
 </form>
-
-<div class="searchWrapper">
-    <mat-form-field appearance="outline">
-        <mat-label>Filter content</mat-label>
-        <input matInput #searchkeyword (keyup)="searchByKeyword(searchkeyword.value)" name="searchKey" id="searchKey"
-            placeholder="Filter content">
-        <mat-hint>Enter any content to filter posts</mat-hint>
-    </mat-form-field><br>
-    <div class="active-wrapper">
-        <span class="active1">Active Properties: <strong>{{postLength}}</strong></span>
-        <a class="active2" [routerLink]="['/profile', currentUserId]"><span>See Archived
-            List</span></a>
-    </div>
-</div>
-
-<div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
-    <div class="content-wrapper"><strong>{{p.content}}</strong></div>
-    <img class="img" width="300" src="{{p.photoURL}}" alt="">
-    <div class="content-wrapper">{{p.title}}</div>
-    <div class="posted-wrapper"> <a [routerLink]="['/profile', p.userId_fk]">{{p.posted | date:"MM/dd/yy, HH:mm"}},
-            <strong>{{p.userName}} </strong>
-            <div [hidden]="true">{{i}}</div>
-        </a> </div>
-    <div class="d-flex justify-content-start">
-        <button mat-button color="primary" [routerLink]="['/post', p.postId]">Actions</button>
-        <!-- <div *ngIf="this.currentUserId > 0 && this.currentUserId == p.userId_fk"> -->
-        <button mat-button color="accent" [routerLink]="['/edit', p.postId]">Edit</button>
-        <button mat-button color="warn" (click)="onDelete(p.postId!)">Delete</button>
-        <!-- </div> -->
-    </div>

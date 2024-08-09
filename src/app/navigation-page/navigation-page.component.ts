@@ -6,10 +6,11 @@ import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-navigation-page',
   templateUrl: './navigation-page.component.html',
-  styleUrls: ['./navigation-page.component.css']
+  styleUrls: ['./navigation-page.component.css'],
 })
 export class NavigationPageComponent {
 

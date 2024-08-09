@@ -100,4 +100,16 @@ export class UserService {
     return this.http.put<User>(this.userBaseURL + "/" + userId, editedUser, { headers: reqHeaders });
   }
 
+  forgotPassword(email: string) {
+    return this.http.post(`${this.userBaseURL}/forgot-password`, { email });
+  }
+
+  validateResetToken(token: string) {
+    return this.http.post(`${this.userBaseURL}/validate-reset-token`, { token });
+}
+
+  resetPassword(token: string, password: string, confirmPassword: string) {
+    return this.http.post(`${this.userBaseURL}/reset-password`, { token, password, confirmPassword });
+  }
+
 }

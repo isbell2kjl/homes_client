@@ -1,25 +1,39 @@
 <div class="form-wrapper">
 
-    <form (ngSubmit)="signUp()">
+    <form [formGroup]="newUserForm" (ngSubmit)="signUp()">
 
-        <h1 class="input-wrapper">Sign Up</h1>
+        <!-- <h1 class="input-wrapper">Sign Up</h1> -->
 
-        <label>User Name </label>
-        <input placeholder="Enter UserName" type="text" name="userName" [(ngModel)]="newUser.userName"><br><br>
-        <label>Password </label>
-        <input placeholder="Enter Password" type="password" name="password" [(ngModel)]="newUser.password"><br><br>
-        <label>First Name </label>
-        <input placeholder="Enter First Name" type="text" name="firstName" [(ngModel)]="newUser.firstName"><br><br>
-        <label>Last Name </label>
-        <input placeholder="Enter Last Name" type="text" name="lastName" [(ngModel)]="newUser.lastName"><br><br>
-        <label>Email </label>
-        <input placeholder="Enter Email" type="text" name="email" [(ngModel)]="newUser.email"><br><br>
-        <label>City </label>
-        <input placeholder="Enter City" type="text" name="city" [(ngModel)]="newUser.city"><br><br>
-        <label>State </label>
-        <input placeholder="Enter State" type="text" name="state" [(ngModel)]="newUser.state"><br><br>
-        <label>Country</label>
-        <input placeholder="Enter Country" type="text" name="country" [(ngModel)]="newUser.country"><br><br>
+        <!-- <label>User Name </label> -->
+        <input placeholder="Enter User Name" type="text" formControlName="userName">
+        <div>
+            <span style="color: red" *ngIf="!newUserForm.get('userName')?.valid">
+                Must be at least 6 characters</span>
+        </div><br><br>
+        <!-- name="userName" [(ngModel)]="newUser.userName"><br><br> -->
+        <!-- <label>Password </label> -->
+        <input placeholder="Enter Password" type="password" formControlName="password">
+        <div>
+            <span style="color: red" *ngIf="!newUserForm.get('password')?.valid">
+                At least: 1 uppercase, 1 lowercase, 1digit, 1special character,
+                8 characters long.</span>
+        </div><br><br>
+        <!-- <label>First Name </label> -->
+        <input placeholder="Enter First Name" type="text" formControlName="firstName"><br><br>
+        <!-- <label>Last Name </label> -->
+        <input placeholder="Enter Last Name" type="text" formControlName="lastName"><br><br>
+        <!-- <label>Email </label> -->
+        <input placeholder="Enter Email" type="text" formControlName="email">
+        <div>
+            <span style="color: red" *ngIf="!newUserForm.get('email')?.valid">
+                The email format is incorrect</span>
+        </div><br><br>
+        <!-- <label>City </label> -->
+        <input placeholder="Enter City" type="text" formControlName="city"><br><br>
+        <!-- <label>State </label> -->
+        <input placeholder="Enter State" type="text" formControlName="state"><br><br>
+        <!-- <label>Country</label> -->
+        <input placeholder="Enter Country" type="text" formControlName="country"><br><br>
 
         <button class="input-wrapper" mat-flat-button color="primary">Sign Up</button>
     </form>

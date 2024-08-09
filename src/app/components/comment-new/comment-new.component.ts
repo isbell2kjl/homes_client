@@ -2,7 +2,6 @@ import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { Comment } from 'src/app/models/comment';
-import { User } from 'src/app/models/user';
 import { PostService } from 'src/app/services/post.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { UserService } from 'src/app/services/user.service';
@@ -39,8 +38,6 @@ export class CommentNewComponent implements OnInit {
   newComment: Comment = new Comment();
 
 
-  
-  @ViewChild("myinput") myInputField!: ElementRef;
 
   constructor(private postService: PostService, private commentService: CommentService, private userService: UserService, 
     private activatedRoute: ActivatedRoute, private router: Router) { }
@@ -51,10 +48,6 @@ export class CommentNewComponent implements OnInit {
 
   }
 
-  //When page loads, set the focus to the input field. (See Above)
-  ngAfterViewInit() {
-    this.myInputField.nativeElement.focus();
-  }
 
   loadTasks() {
 
