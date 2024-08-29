@@ -1,4 +1,4 @@
-<div class="searchWrapper">
+<div class="searchWrapper" id="AnchorId">
     <mat-form-field appearance="outline">
         <mat-label>Filter content</mat-label>
         <input *ngIf="archived === false" matInput #searchkeyword (keyup)="searchByKeyword(searchkeyword.value)"
@@ -26,15 +26,25 @@
     <div class="content-wrapper">{{p.content}}</div>
     <img class="img" width="300" src="{{p.photoURL}}" alt="">
     <div class="content-wrapper">{{p.title}}</div>
-    <div class="posted-wrapper"> <a [routerLink]="['/profile', p.userId_fk]">{{p.posted | date:"MM/dd/yy, HH:mm"}},
-            <strong>{{p.userName}} </strong>
+    <div class="posted-wrapper"> {{p.posted | date:"MM/dd/yy, HH:mm"}},
+            <a [routerLink]="['/profile', p.userId_fk]"><strong>{{p.userName}}  </strong></a>
             <div [hidden]="true">{{i}}</div>
-        </a> </div>
-    <div class="d-flex justify-content-start">
-        <button mat-button color="primary" [routerLink]="['/post', p.postId]">Actions</button>
+            
+    </div>
+        
+    <!-- <div class="d-flex justify-content-start"> -->
+    <div class="button-row">
+        <div class="left-buttons">
+        <button class="btn" mat-button color="primary" [routerLink]="['/post', p.postId]">Actions</button>
+        <button class="btn" mat-button color="primary" (click)="onClick('AnchorId')">To Top</button>
+        
         <!-- <div *ngIf="this.currentUserId > 0 && this.currentUserId == p.userId_fk"> -->
-        <button mat-button color="accent" [routerLink]="['/edit', p.postId]">Edit</button>
-        <button mat-button color="warn" (click)="onDelete(p.postId!)">Delete</button>
+        <!-- <button class="btn" mat-button color="accent" [routerLink]="['/edit', p.postId]">Edit</button>
+        <button class="btn" mat-button color="warn" (click)="onDelete(p.postId!)">Delete</button> -->
         <!-- </div> -->
+         <div class="right-button">
+            
+         </div>
+        </div>
     </div>
 </div>

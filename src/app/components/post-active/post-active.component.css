@@ -40,7 +40,7 @@ button {
 
 .posted-wrapper {
     text-align: right;
-    padding-right: 10%
+    padding-right: 5%
 }
 
 .img {
@@ -67,6 +67,36 @@ button {
     margin: 10px;
 }
 
-a {
+/* a {
     text-decoration: none;
+} */
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    padding: 10px;
 }
+
+.left-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* .right-button {
+    left empty as the default alignment is right
+    due to justify-content space-between;
+} */
+
+.btn {
+    padding: 10px 20px;
+    /* font-size: 16px; */
+}
+
+/* @media only screen and (max-width: 100%) {
+
+    .button-row #right{
+      margin-right: 10px;
+    }
+  
+  } */

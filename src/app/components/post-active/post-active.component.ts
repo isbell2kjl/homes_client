@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
@@ -25,7 +26,8 @@ export class PostActiveComponent implements OnInit {
   archived: boolean = false;
 
 
-  constructor(private postService: PostService, private userService: UserService, private router: Router) { }
+  constructor(private postService: PostService, private userService: UserService, 
+    private router: Router, private viewportScroller: ViewportScroller) { }
 
   ngOnInit(): void {
 
@@ -57,6 +59,10 @@ export class PostActiveComponent implements OnInit {
     } else (window.alert("In order to edit content, you must log in."),
       this.router.navigate(['auth/signin']))
   }
+
+  public onClick(elementId: string): void { 
+    this.viewportScroller.scrollToAnchor(elementId);
+}
 
   //if user types a search string in lower case, capitalize the first letter
   //to avoid the 'search string not found' error.

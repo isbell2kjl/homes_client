@@ -5,6 +5,7 @@ import { Comment } from 'src/app/models/comment';
 import { PostService } from 'src/app/services/post.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { UserService } from 'src/app/services/user.service';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-comment-new',
@@ -40,13 +41,14 @@ export class CommentNewComponent implements OnInit {
 
 
   constructor(private postService: PostService, private commentService: CommentService, private userService: UserService, 
-    private activatedRoute: ActivatedRoute, private router: Router) { }
+    private activatedRoute: ActivatedRoute, private router: Router, private viewportScroller: ViewportScroller) { }
 
   ngOnInit(): void {
 
   this.loadTasks();
 
   }
+
 
 
   loadTasks() {
@@ -75,9 +77,7 @@ export class CommentNewComponent implements OnInit {
 
     this.commentService.getPostComments(this.numId).subscribe(response => {
         this.commentList = response;
-      });
-
-     
+      }); 
       
   });
     if (this.userService.currentUserValue) {
@@ -95,6 +95,10 @@ export class CommentNewComponent implements OnInit {
     } else (window.alert("In order to create content, you must log in."),
       this.router.navigate(['auth/signin']))
   }
+
+  public onClick(elementId: string): void { 
+    this.viewportScroller.scrollToAnchor(elementId);
+}
 
   addComment() {
     this.newComment.usrId_fk = this.userFkeyId;
