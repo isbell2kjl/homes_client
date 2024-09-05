@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {Location } from '@angular/common';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -14,7 +15,8 @@ export class UserEditComponent {
   editUser: User = new User();
   currentUserId: number = 0;
 
-  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router) { }
+  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router,
+    private location: Location) { }
 
   ngOnInit(): void {
     console.log(this.activatedRoute.snapshot.params['id']);
@@ -32,6 +34,10 @@ export class UserEditComponent {
       this.currentUserId = this.userService.currentId;
       console.log("current UserID " + this.currentUserId);
     }
+  }
+
+  back(): void {
+    this.location.back()
   }
 
   onSubmit() {

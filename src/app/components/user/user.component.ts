@@ -1,5 +1,6 @@
 import { Component, OnInit, } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {Location } from '@angular/common';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -19,7 +20,7 @@ export class UserComponent implements OnInit {
   selectedUser: User = new User();
 
 
-  constructor(private userService: UserService, private activatedRoute: ActivatedRoute) { }
+  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private location: Location) { }
 
   ngOnInit(): void {
     console.log(this.activatedRoute.snapshot.params['id']);
@@ -29,12 +30,17 @@ export class UserComponent implements OnInit {
     this.userService.getUserByID(this.id).subscribe(foundUser => {
       this.selectedUser = foundUser;
     })
+    
 
     // get the current user ID from local storage
       this.userService.getCurrentId()
       console.log(this.userService.currentId)
       this.currentUserId = this.userService.currentId;
       console.log("current UserID " + this.currentUserId);
+    }
+
+    back(): void {
+      this.location.back()
     }
 
 }

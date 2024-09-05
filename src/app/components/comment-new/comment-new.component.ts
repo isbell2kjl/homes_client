@@ -5,7 +5,7 @@ import { Comment } from 'src/app/models/comment';
 import { PostService } from 'src/app/services/post.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { UserService } from 'src/app/services/user.service';
-import { ViewportScroller } from '@angular/common';
+import { ViewportScroller, Location } from '@angular/common';
 
 @Component({
   selector: 'app-comment-new',
@@ -41,7 +41,8 @@ export class CommentNewComponent implements OnInit {
 
 
   constructor(private postService: PostService, private commentService: CommentService, private userService: UserService, 
-    private activatedRoute: ActivatedRoute, private router: Router, private viewportScroller: ViewportScroller) { }
+    private activatedRoute: ActivatedRoute, private router: Router, private viewportScroller: ViewportScroller,
+    private location: Location) { }
 
   ngOnInit(): void {
 
@@ -98,6 +99,10 @@ export class CommentNewComponent implements OnInit {
 
   public onClick(elementId: string): void { 
     this.viewportScroller.scrollToAnchor(elementId);
+}
+
+back(): void {
+  this.location.back()
 }
 
   addComment() {

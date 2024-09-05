@@ -48,6 +48,10 @@ export class PostEditComponent implements OnInit {
     });
   }
 
+  back(): void {
+    this.location.back()
+  }
+  
   onSubmit() {
     if (this.currentUserId == this.fkeyId) {
       this.postService.editPostByID(this.id, this.currentPost).subscribe(response => {

@@ -21,8 +21,8 @@ textarea {
 button {
     display: inline-block;
     vertical-align: center;
-    margin-left: .3em;
-    margin-top: .3em;
+    margin-left: .5em;
+    margin-top: .5em;
 }
 
 .content-wrapper {

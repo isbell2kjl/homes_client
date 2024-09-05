@@ -10,8 +10,8 @@
 button {
     display: inline-block;
     vertical-align: top;
-    margin-left: 5px;
-    margin-top: 10px;
+    margin-left: .5em;
+    margin-top: .5em;
 }
 
 a {

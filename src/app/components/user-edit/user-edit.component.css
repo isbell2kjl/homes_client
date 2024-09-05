@@ -11,6 +11,11 @@ form {
     width: 80%;
   }
 
+button {
+    margin-left: .5em;
+    margin-top: .5em;
+}
+
 input {
     width: 60%;
     height: 1em;

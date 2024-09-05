@@ -6,6 +6,11 @@
     justify-content: space-between;
 }
 
+button {
+    margin-left: .5em;
+    margin-top: .5em;
+}
+
 form {
     margin: 0.5em;
     width: 80%;

@@ -6,6 +6,11 @@
     justify-content: space-between;
 }
 
+button {
+    margin-left: .5em;
+    margin-top: .5em;
+}
+
 .content-wrapper {
     text-align: left;
     width: 50%;

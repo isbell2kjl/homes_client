@@ -47,6 +47,10 @@ export class CommentEditComponent implements OnInit {
   });
   }
 
+  back(): void {
+    this.location.back()
+  }
+
   onSubmit() {
     if (this.currentUserId == this.fkeyId) {
       this.CommentService.editCommentByID(this.id, this.currentComment).subscribe(response => {

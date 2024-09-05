@@ -1,5 +1,8 @@
-<form class="post-wrapper" (ngSubmit)="onSubmit()">
+<div class="d-flex justify-content-left">
+    <button mat-button color="primary" (click)="back()">Back</button>
+</div>
 
+<form class="post-wrapper" (ngSubmit)="onSubmit()">
     <div>
         <textarea placeholder="Enter Action" type="text" name="Text"
             [(ngModel)]="currentComment.text"></textarea><br><br>
