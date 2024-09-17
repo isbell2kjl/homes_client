@@ -32,7 +32,8 @@ export class NavigationPageComponent {
   CheckCurrentUser() {
     //in case the page gets manually refreshed, this will maintain the current username in the menu.
     if (this.userService.currentUserValue) {
-      this.currentUser = this.userService.currentUserValue.userName
+      this.currentUser = this.userService.currentUserValue.userName;
+     
       if (this.currentUser) {
         // Public boolean observable used to modify dropdown menu.
         this.userService.active$ = this.userService.getUserActiveState(
@@ -41,7 +42,7 @@ export class NavigationPageComponent {
         );
         console.log('Current User (from App Component): ', this.currentUser);
       } else {
-        console.log('No active user signed in.');
+        window.alert('No active user signed in.')
       }
     }
   }
@@ -55,11 +56,10 @@ export class NavigationPageComponent {
   }
 
   logout() {
-    this.userService.logout();
-    //this removes the current username and resets the menu
-    this.userService.active$ = this.userService.getUserActiveState('', '');
-    this.router.navigate(['auth/signin'])
+      this.userService.Signout();
+      //this removes the current username and resets the menu
+      this.userService.active$ = this.userService.getUserActiveState('', '');
+      this.router.navigate(['auth/signin'])
+    // });
   }
-
 }
-

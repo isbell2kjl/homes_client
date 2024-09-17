@@ -9,8 +9,8 @@ import { UserService } from './user.service';
 })
 export class PostService {
 
-  // baseURL: string = "https://localhost:7279/api/post"
-baseURL: string = "https://myproperties.ddns.net/api/post"
+  baseURL: string = "https://localhost:7279/api/post"
+// baseURL: string = "https://myproperties.ddns.net/api/post"
   // baseURL: string = "https://raspberrypi4.wlan/api/post"
 
 
@@ -33,7 +33,7 @@ baseURL: string = "https://myproperties.ddns.net/api/post"
   }
 
   createPost(newPost: Post) {
-    let tokenKey: any = this.userService.currentUserValue.token
+    let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
@@ -47,7 +47,7 @@ baseURL: string = "https://myproperties.ddns.net/api/post"
   }
 
   editPostByID(postId: string, edittedPost: Post): Observable<Post> {
-    let tokenKey: any = this.userService.currentUserValue.token
+    let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
@@ -55,7 +55,7 @@ baseURL: string = "https://myproperties.ddns.net/api/post"
   }
 
   deletePostByID(postId: string): Observable<any>  {
-    let tokenKey: any = this.userService.currentUserValue.token
+    let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }

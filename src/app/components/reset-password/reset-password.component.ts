@@ -38,7 +38,7 @@ export class ResetPasswordComponent implements OnInit {
     //values in the database.
     this.userService.validateResetToken(this.token).subscribe(response => {
       console.log(response)
-      window.alert("Your token is valid, proceed to change your password.");
+      window.alert("Your token is valid, proceed to enter your password.");
     }, error => {
       console.log('Error: ', error)
       window.alert("Your token is NOT valid");

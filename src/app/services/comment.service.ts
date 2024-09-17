@@ -9,8 +9,8 @@ import { UserService } from './user.service';
 }) 
 export class CommentService {
 
-  // baseURL: string = "https://localhost:7279/api/comment"
-  baseURL: string = "https://myproperties.ddns.net/api/comment"
+  baseURL: string = "https://localhost:7279/api/comment"
+  // baseURL: string = "https://myproperties.ddns.net/api/comment"
   // baseURL: string = "https://raspberrypi4.wlan/api/comment"
  
   constructor(private http: HttpClient, private userService: UserService) { }
@@ -26,7 +26,7 @@ export class CommentService {
   }
 
   createComment(newComment: Comment) {
-    let tokenKey: any = this.userService.currentUserValue.token
+    let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
@@ -41,7 +41,7 @@ export class CommentService {
   }
 
   editCommentByID(comId: string, edittedComment: Comment): Observable<Comment> {
-    let tokenKey: any = this.userService.currentUserValue.token
+    let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
@@ -50,7 +50,7 @@ export class CommentService {
   }
 
   deleteCommentByID(comId: string): Observable<any>  {
-    let tokenKey: any = this.userService.currentUserValue.token
+    let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }

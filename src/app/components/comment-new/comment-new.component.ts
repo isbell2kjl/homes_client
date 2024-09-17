@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { Comment } from 'src/app/models/comment';
@@ -19,8 +19,8 @@ export class CommentNewComponent implements OnInit {
 
   id: string = "";
   numId: number = 0
-  userFkeyId: number = 0;
-  
+  userFkeyId?: number = 0;
+
   currentUser?: string = "";
   currentUserId: number = 0;
 
@@ -34,19 +34,19 @@ export class CommentNewComponent implements OnInit {
   currentAddress?: string = "";
   postUser?: string = "";
   postUsrId?: number = 0;
-  
-  
+
+
   newComment: Comment = new Comment();
 
 
 
-  constructor(private postService: PostService, private commentService: CommentService, private userService: UserService, 
+  constructor(private postService: PostService, private commentService: CommentService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private viewportScroller: ViewportScroller,
     private location: Location) { }
 
   ngOnInit(): void {
 
-  this.loadTasks();
+    this.loadTasks();
 
   }
 
@@ -70,45 +70,42 @@ export class CommentNewComponent implements OnInit {
 
       console.log("postUser: " + this.postUser)
 
-      //Couldn't get this to work.  Returns "undefined"
 
-      // this.userName = this.currentPost.userName!
-      // console.log("why can't I see this?", this.currentPost.userName)
-      
-
-    this.commentService.getPostComments(this.numId).subscribe(response => {
+      this.commentService.getPostComments(this.numId).subscribe(response => {
         this.commentList = response;
-      }); 
-      
-  });
+      });
+
+    });
+
+    this.getCurrentUser();
+
+  }
+
+  public onClick(elementId: string): void {
+    this.viewportScroller.scrollToAnchor(elementId);
+  }
+
+  getCurrentUser() {
     if (this.userService.currentUserValue) {
-      
-      // get the current user ID from local storage if user logged in.
-      this.userService.getCurrentId();
-      this.currentUserId = this.userService.currentId;
-      this.currentUser = this.userService.currentUserValue.userName;
-
-      console.log(this.currentUser);
-      console.log(this.currentUserId);
-
-      this.userFkeyId = this.currentUserId;
-
-    } else (window.alert("In order to create content, you must log in."),
+      this.userService.getCurrentUser().subscribe(response => {
+        this.currentUser = response.userName;
+        this.currentUserId = response.userId!;
+        this.userFkeyId = this.currentUserId;
+        console.log('Current User Id: ', this.currentUserId);
+      });
+    } else (window.alert("In order to edit content, you must log in."),
+      this.userService.active$ = this.userService.getUserActiveState('', ''),
       this.router.navigate(['auth/signin']))
   }
 
-  public onClick(elementId: string): void { 
-    this.viewportScroller.scrollToAnchor(elementId);
-}
-
-back(): void {
-  this.location.back()
-}
+  back(): void {
+    this.location.back()
+  }
 
   addComment() {
     this.newComment.usrId_fk = this.userFkeyId;
     this.newComment.postId_fk = Number(this.id);
-    
+
     this.commentService.createComment(this.newComment).subscribe(() => {
       window.alert("Created Comment Successfully");
       this.loadTasks();

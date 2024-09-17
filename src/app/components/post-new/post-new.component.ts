@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
@@ -38,10 +38,8 @@ export class PostNewComponent implements OnInit {
 
   // contentTemplate: string = "own: ,tel: ,cond: ugly ,dlnq: n  ,zest: $  , bd: , ba: , / sqft ,ofr: $ ,call-0 ";
 
-
-
   currentUser?: string = "";
-  currentUserId: number = 0;
+  currentUserId?: number = 0;
 
 
   constructor(private postService: PostService, private userService: UserService, private router: Router) { }
@@ -49,7 +47,7 @@ export class PostNewComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.loadTasks();
+    this.getCurrentUser();
   }
 
   //When page loads, set the focus to the input field. (See Above)
@@ -57,14 +55,15 @@ export class PostNewComponent implements OnInit {
   //   this.myInputField.nativeElement.focus();
   // }
 
-  loadTasks() {
+  getCurrentUser() {
     if (this.userService.currentUserValue) {
-      this.currentUser = this.userService.currentUserValue.userName;
-      this.userService.getCurrentId();
-      this.currentUserId = this.userService.currentId;
-      console.log(this.currentUser);
-      console.log(this.currentUserId);
-    } else (window.alert("In order to create content, you must log in."),
+      this.userService.getCurrentUser().subscribe(response => {
+        this.currentUser = response.userName;
+        this.currentUserId = response.userId!;
+        // console.log('Current User Id: ', this.currentUserId);
+      });
+    } else (window.alert("In order to edit content, you must log in."),
+      this.userService.active$ = this.userService.getUserActiveState('', ''),
       this.router.navigate(['auth/signin']))
   }
 
@@ -95,7 +94,7 @@ export class PostNewComponent implements OnInit {
 
     this.postService.createPost(this.newPost).subscribe(() => {
       window.alert("Created Post Successfully");
-      this.loadTasks();
+      this.getCurrentUser();
       this.newPost.title = "";
       this.newPost.content = "";
       this.column1 = "";
@@ -114,6 +113,7 @@ export class PostNewComponent implements OnInit {
       console.log('Error: ', error)
       window.alert("Both address and description are required.")
       if (error.status === 401 || error.status === 403) {
+        console.log("Token time out.")
         this.router.navigate(['auth/signin']);
       }
     });

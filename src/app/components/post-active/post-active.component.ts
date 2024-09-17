@@ -26,7 +26,7 @@ export class PostActiveComponent implements OnInit {
   archived: boolean = false;
 
 
-  constructor(private postService: PostService, private userService: UserService, 
+  constructor(private postService: PostService, private userService: UserService,
     private router: Router, private viewportScroller: ViewportScroller) { }
 
   ngOnInit(): void {
@@ -41,28 +41,33 @@ export class PostActiveComponent implements OnInit {
   // }
 
   loadTasks() {
-    if (this.userService.currentUserValue) {
-      this.postService.getAllPosts().subscribe(foundposts => {
-        // this.postList = foundposts;
-        this.postList = foundposts.filter(function (active, index) {
-          return active.archive == 0
-        });
-        this.postLength = this.postList.length;
-
-
+    this.postService.getAllPosts().subscribe(foundposts => {
+      // this.postList = foundposts;
+      this.postList = foundposts.filter(function (active, index) {
+        return active.archive == 0
       });
-      this.currentUser = this.userService.currentUserValue.userName;
-      this.userService.getCurrentId();
-      this.currentUserId = this.userService.currentId;
-      console.log(this.currentUser);
-      console.log(this.currentUserId);
+      this.postLength = this.postList.length;
+    });
+
+    this.getCurrentUser();
+
+  }
+
+  getCurrentUser() {
+    if (this.userService.currentUserValue) {
+      this.userService.getCurrentUser().subscribe(response => {
+        this.currentUser = response.userName;
+        this.currentUserId = response.userId!;
+        console.log('Current User Id: ', this.currentUserId);
+      });
     } else (window.alert("In order to edit content, you must log in."),
+      this.userService.active$ = this.userService.getUserActiveState('', ''),
       this.router.navigate(['auth/signin']))
   }
 
-  public onClick(elementId: string): void { 
+  public onClick(elementId: string): void {
     this.viewportScroller.scrollToAnchor(elementId);
-}
+  }
 
   //if user types a search string in lower case, capitalize the first letter
   //to avoid the 'search string not found' error.

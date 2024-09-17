@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
@@ -21,15 +21,16 @@ export class SignInComponent implements OnInit {
   }
 
   signIn() {
-    this.userService.signIn(this.userName, this.password).subscribe((response: any) => {
+    this.userService.signIn(this.userName, this.password).subscribe(() => {
+      console.log("Successful signin")
       // window.alert("User logged in Successfully");
       this.router.navigate(['active']);
       //Look up the current user after login.
-      this.currentName = this.userService.currentUserValue.userName;
+      this.currentName = this.userName;
       //method to display the current user name in the menu.
       this.userService.active$ = this.userService.getUserActiveState("active", this.currentName!)
     }, error => {
-      window.alert("Username or password are incorrect. \n (Note: Username and Email may be different)");
+      window.alert("Username or password are incorrect--Username may be different than Email.");
       console.log('Error: ', error)
     });
   }

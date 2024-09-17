@@ -1,5 +1,5 @@
 export class User {
-    userId?: string;
+    userId?: number;
     userName?: string;
     password?: string;
     firstName?: string;
@@ -12,10 +12,12 @@ export class User {
     posts?: [];
     content?: string;
     token?: string;
+    refreshToken?: string;
+    refreshTokenExpires?: Date;
 
-    constructor(userId?: string, userName?: string, password?: string, firstName?: string
+    constructor(userId?: number, userName?: string, password?: string, firstName?: string
         , lastName?: string, email?: string, state?: string, country?: string, created?: string
-        , posts?: any, content?: string, token?: string) {
+        , posts?: any, content?: string, token?: string, refreshToken?: string, refreshExpires?: Date) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -28,5 +30,7 @@ export class User {
         this.posts = posts;
         this.content = content;
         this.token = token;
+        this.refreshTokenExpires = refreshExpires;
+        this.refreshToken = refreshToken;
     }
 }

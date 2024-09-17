@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -13,7 +13,7 @@ export class UserEditComponent {
 
   id: string = "";
   editUser: User = new User();
-  currentUserId: number = 0;
+  currentUserId?: number = 0;
 
   constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router,
     private location: Location) { }
@@ -27,13 +27,18 @@ export class UserEditComponent {
       // this.editUser.password = "";
     })
 
-    // get the current user ID from local storage if user logged in.
+    this.getCurrentUser();
+  }
 
-    this.userService.getCurrentId()
-    if (this.userService.currentId > 0) {
-      this.currentUserId = this.userService.currentId;
-      console.log("current UserID " + this.currentUserId);
-    }
+  getCurrentUser() {
+    if (this.userService.currentUserValue) {
+      this.userService.getCurrentUser().subscribe(response => {
+        this.currentUserId = response.userId!;
+        // console.log('Current User Id: ', this.currentUserId);
+      });
+    } else (window.alert("In order to edit content, you must log in."),
+      this.userService.active$ = this.userService.getUserActiveState('', ''),
+      this.router.navigate(['auth/signin']))
   }
 
   back(): void {
@@ -41,7 +46,7 @@ export class UserEditComponent {
   }
 
   onSubmit() {
-
+    //only allow users to edit their own profiles
     if (this.currentUserId == Number(this.id)) {
       this.userService.editUserByID(this.id, this.editUser).subscribe(response => {
         console.log(response);
@@ -50,10 +55,11 @@ export class UserEditComponent {
       }, error => {
         console.log('Error: ', error)
         if (error.status === 401 || error.status === 403) {
-          this.router.navigate(['signin']);
+          window.alert("unauthorized user");
+          this.router.navigate(['auth/signin']);
         }
       });
-    } else(window.alert("You can only edit your own profile."))
+    } else (window.alert("You can only edit your own profile."))
   }
 
 

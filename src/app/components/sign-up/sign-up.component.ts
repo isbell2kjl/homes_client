@@ -21,47 +21,93 @@ export class SignUpComponent implements OnInit {
   currentUser?: string = "";
   currentUserId: number = 0;
 
+  email: string = "";
+  password: string = "";
+  loading = false;
+  captcha: string = "";
+
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    if (this.userService.currentUserValue) {
-      this.currentUser = this.userService.currentUserValue.userName;
-      this.userService.getCurrentId();
-      this.currentUserId = this.userService.currentId;
-      console.log(this.currentUser);
-      console.log(this.currentUserId);
-      this.myFormGroup();
-    } else (window.alert("In order to create a user for someone else, you must log in."),
-      this.router.navigate(['auth/signin']))
+    // if (this.userService.currentUserValue) {
+    //   this.currentUser = this.userService.currentUserValue.userName;
+    //   this.userService.getCurrentUser();;
+    //   this.currentUserId = this.userService.currentId;
+    // console.log(this.currentUser);
+    // console.log(this.currentUserId);
+    this.myFormGroup();
+    // } else (window.alert("In order to create a user for someone else, you must log in."),
+    //   this.router.navigate(['auth/signin']))
   }
 
   myFormGroup() {
     this.newUserForm = new FormGroup({
       //not required fields to sign up
       firstName: new FormControl(),
-      lastName: new FormControl (),
-      email: new FormControl (null, [Validators.required, Validators.pattern(EmailFormatRegx)]),
+      lastName: new FormControl(),
+      email: new FormControl(null, [Validators.required, Validators.pattern(EmailFormatRegx)]),
       //required fields to sign up
       userName: new FormControl(null, [Validators.required, Validators.minLength(6)]),
-      password: new FormControl(null,[Validators.required, Validators.pattern(StrongPasswordRegx)]),
-      city: new FormControl(),
-      state: new FormControl (),
-      country: new FormControl (),
+      // password: new FormControl(null, [Validators.required, Validators.pattern(StrongPasswordRegx)]),
+      // city: new FormControl(),
+      // state: new FormControl(),
+      // country: new FormControl(),
     });
   }
 
   signUp() {
+    this.loading = true
     if (!this.newUserForm.valid) {
       window.alert('Please provide all the required values!');
     } else {
       this.newUser = this.newUserForm.value;
+      this.newUser.password = this.randomString(10)
       this.userService.signUp(this.newUser).subscribe(() => {
         window.alert("User Registered Successfully");
-        this.router.navigate(['/auth/signin']);
+        this.email = this.newUser.email!;
+        this.confirmEmail();
       }, error => {
         window.alert("User Registration Error");
         console.log('Error: ', error)
       });
     }
   }
+
+  confirmEmail() {
+    this.userService.forgotPassword(this.email).subscribe(response => {
+      console.log(response)
+      window.alert("Check your email to confirm your account");
+      this.newUserForm.reset();
+      this.email = "";
+      this.loading = false;
+      this.router.navigate(['/auth/signin']);
+    }, error => {
+      window.alert("Enter a valid Email address.");
+      this.loading = false;
+      console.log('Error: ', error)
+      if (error.status === 401 || error.status === 403) {
+        this.router.navigateByUrl('auth/signin');
+      }
+    });
+  }
+
+  resolved(captchaResponse: string) {
+    this.captcha = captchaResponse;
+  }
+
+  randomString(length: number) {
+
+    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    var result = '';
+
+    for ( var i = 0; i < length; i++ ) {
+
+        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+
+    }
+
+    return result;
+
+}
 }
