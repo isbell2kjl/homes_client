@@ -9,6 +9,9 @@ h1 {
 form {
     margin: 2em 10%;
     width: 80%;
+    justify-content: center;
+    text-align: center;
+    font-size: medium;
   }
 
 button {

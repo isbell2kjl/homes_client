@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: "edit/:id", component: PostEditComponent },
   { path: "post/:id", component:CommentNewComponent},
   { path: "action/:id", component:CommentEditComponent},
-  { path: "auth/signup", component: SignUpComponent },
+  { path: "auth/signupnewuser1", component: SignUpComponent },
   { path: "auth/signin", component: SignInComponent },
   { path: "profile/:id", component: UserComponent },
   { path: "profile/edit/:id", component: UserEditComponent },

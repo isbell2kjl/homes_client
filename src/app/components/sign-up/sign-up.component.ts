@@ -3,7 +3,7 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { StrongPasswordRegx } from 'src/constants';
+// import { StrongPasswordRegx } from 'src/constants';
 import { EmailFormatRegx } from 'src/constants';
 
 
@@ -29,15 +29,9 @@ export class SignUpComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    // if (this.userService.currentUserValue) {
-    //   this.currentUser = this.userService.currentUserValue.userName;
-    //   this.userService.getCurrentUser();;
-    //   this.currentUserId = this.userService.currentId;
-    // console.log(this.currentUser);
-    // console.log(this.currentUserId);
+
     this.myFormGroup();
-    // } else (window.alert("In order to create a user for someone else, you must log in."),
-    //   this.router.navigate(['auth/signin']))
+
   }
 
   myFormGroup() {
@@ -59,6 +53,7 @@ export class SignUpComponent implements OnInit {
     this.loading = true
     if (!this.newUserForm.valid) {
       window.alert('Please provide all the required values!');
+      this.loading = false
     } else {
       this.newUser = this.newUserForm.value;
       this.newUser.password = this.randomString(10)
@@ -101,13 +96,13 @@ export class SignUpComponent implements OnInit {
 
     var result = '';
 
-    for ( var i = 0; i < length; i++ ) {
+    for (var i = 0; i < length; i++) {
 
-        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+      result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
 
     }
 
     return result;
 
-}
+  }
 }

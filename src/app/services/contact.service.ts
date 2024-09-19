@@ -7,8 +7,8 @@ import { Injectable } from '@angular/core';
 })
 export class ContactService {
 
-   // contactBaseURL: string = "https://localhost:7279/api/contact";
-  contactBaseURL: string = "https://myproperties.ddns.net/api/contact"
+   contactBaseURL: string = "https://localhost:7279/api/contact";
+  // contactBaseURL: string = "https://myproperties.ddns.net/api/contact"
 
   constructor(private http: HttpClient) { }
 

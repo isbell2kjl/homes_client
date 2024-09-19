@@ -30,7 +30,7 @@ export class SignInComponent implements OnInit {
       //method to display the current user name in the menu.
       this.userService.active$ = this.userService.getUserActiveState("active", this.currentName!)
     }, error => {
-      window.alert("Username or password are incorrect--Username may be different than Email.");
+      window.alert("Username or password are incorrect.");
       console.log('Error: ', error)
     });
   }

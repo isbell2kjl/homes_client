@@ -19,7 +19,9 @@ input{
 form {
     margin: 0.5em;
     width: 80%;
-    text-align: left;
+    justify-content: center;
+    text-align: center;
+    font-size: medium;
   }
 
   label {
