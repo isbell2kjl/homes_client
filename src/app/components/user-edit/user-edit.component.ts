@@ -30,15 +30,14 @@ export class UserEditComponent {
 
     this.userService.getUserByID(this.id).subscribe(foundUser => {
       this.editUser = foundUser;
-      console.log(this.editUser.firstName)
-     
+
       this.oldFormGroup();
-    
+
     })
 
     this.getCurrentUser();
-   
-   
+
+
   }
 
   getCurrentUser() {
