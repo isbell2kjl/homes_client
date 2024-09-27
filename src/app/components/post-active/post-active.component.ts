@@ -54,15 +54,18 @@ export class PostActiveComponent implements OnInit {
   }
 
   getCurrentUser() {
-    if (this.userService.currentUserValue) {
-      this.userService.getCurrentUser().subscribe(response => {
-        this.currentUser = response.userName;
-        this.currentUserId = response.userId!;
-        console.log('Current User Id: ', this.currentUserId);
-      });
-    } else (window.alert("In order to edit content, you must log in."),
-      this.userService.active$ = this.userService.getUserActiveState('', ''),
-      this.router.navigate(['auth/signin']))
+    this.userService.getCurrentUser().subscribe(response => {
+      this.currentUser = response.userName;
+      this.currentUserId = response.userId!;
+      // console.log('Current User Id: ', this.currentUserId);
+    }, error => {
+      console.log('Error: ', error)
+      if (error.status === 401 || error.status === 403) {
+        window.alert("Access timeout, you must log in again.");
+        this.userService.active$ = this.userService.getUserActiveState('', '');
+        this.router.navigate(['auth/signin']);
+      }
+    });
   }
 
   public onClick(elementId: string): void {
@@ -124,20 +127,20 @@ export class PostActiveComponent implements OnInit {
     else (this.loadTasks())
   }
 
-  onDelete(post_Id: string) {
-    if (confirm("Are you sure you want to delete this item, including all action details?")) {
-      this.postService.deletePostByID(post_Id).subscribe(response => {
-        console.log(response);
-        this.loadTasks();
-        // window.alert("Deleted Post Successfully");
-        // this.router.navigate(['add']);
-      }, error => {
-        console.log('Error: ', error)
-        if (error.status === 401 || error.status === 403) {
-          // this.router.navigate(['signin']);
-        }
-      });
-    }
-  }
+  // onDelete(post_Id: string) {
+  //   if (confirm("Are you sure you want to delete this item, including all action details?")) {
+  //     this.postService.deletePostByID(post_Id).subscribe(response => {
+  //       console.log(response);
+  //       this.loadTasks();
+  //       // window.alert("Deleted Post Successfully");
+  //       // this.router.navigate(['add']);
+  //     }, error => {
+  //       console.log('Error: ', error)
+  //       if (error.status === 401 || error.status === 403) {
+  //         // this.router.navigate(['signin']);
+  //       }
+  //     });
+  //   }
+  // }
 
 }

@@ -3,8 +3,8 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-// import { StrongPasswordRegx } from 'src/constants';
-import { EmailFormatRegx } from 'src/constants';
+// import { StrongPasswordRegx } from 'src/app/helpers/constants';
+import { EmailFormatRegx } from 'src/app/helpers/constants';
 
 
 @Component({
@@ -21,6 +21,9 @@ export class SignUpComponent implements OnInit {
   currentUser?: string = "";
   currentUserId: number = 0;
 
+  username: string = "";
+  usernameError: string = "";
+  emailError: string = "";
   email: string = "";
   password: string = "";
   loading = false;
@@ -56,16 +59,41 @@ export class SignUpComponent implements OnInit {
       this.loading = false
     } else {
       this.newUser = this.newUserForm.value;
-      this.newUser.password = this.randomString(10)
+      this.checkUserName();
+      this.checkEmail();
+      if(this.emailError) {window.alert("Try a different email address")};
+      this.newUser.password = this.randomString(10);
       this.userService.signUp(this.newUser).subscribe(() => {
-        window.alert("User Registered Successfully");
-        this.email = this.newUser.email!;
         this.confirmEmail();
+        window.alert("User Registered Successfully");
       }, error => {
         window.alert("User Registration Error");
+        this.loading = false
         console.log('Error: ', error)
       });
     }
+  }
+
+  checkUserName() {
+    this.username = this.newUser.userName!;
+    this.userService.checkUserName(this.username).subscribe(response => {
+      console.log(response)
+    }, error => {
+      window.alert("Username in use. Try a different one.");
+      this.loading = false;
+      console.log('Error: ', error)
+    });
+  }
+
+  checkEmail() {
+    this.email = this.newUser.email!;
+    this.userService.checkEmail(this.email).subscribe(response => {
+      console.log(response)
+    }, error => {
+      window.alert("Email address in use. Try a different one.");
+      this.loading = false;
+      console.log('Error: ', error)
+    });
   }
 
   confirmEmail() {

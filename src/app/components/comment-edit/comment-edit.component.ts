@@ -46,14 +46,17 @@ export class CommentEditComponent implements OnInit {
   }
 
   getCurrentUser() {
-    if (this.userService.currentUserValue) {
-      this.userService.getCurrentUser().subscribe(response => {
-        this.currentUserId = response.userId!;
-        console.log('Current User Id: ', this.currentUserId);
-      });
-    } else (window.alert("In order to edit content, you must log in."),
-      this.userService.active$ = this.userService.getUserActiveState('', ''),
-      this.router.navigate(['auth/signin']))
+    this.userService.getCurrentUser().subscribe(response => {
+      this.currentUserId = response.userId!;
+      // console.log('Current User Id: ', this.currentUserId);
+    }, error => {
+      console.log('Error: ', error)
+      if (error.status === 401 || error.status === 403) {
+        window.alert("Access timeout, you must log in again.");
+        this.userService.active$ = this.userService.getUserActiveState('', '');
+        this.router.navigate(['auth/signin']);
+      }
+    });
   }
 
   back(): void {

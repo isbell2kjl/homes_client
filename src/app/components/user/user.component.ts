@@ -39,13 +39,17 @@ export class UserComponent implements OnInit {
 
 
   getCurrentUser() {
-    if (this.userService.currentUserValue) {
-      this.userService.getCurrentUser().subscribe(response => {
-        this.currentUserId = response.userId!;
-      });
-    } else (window.alert("In order to edit content, you must log in."),
-      this.userService.active$ = this.userService.getUserActiveState('', ''),
-      this.router.navigate(['auth/signin']))
+    this.userService.getCurrentUser().subscribe(response => {
+      this.currentUserId = response.userId!;
+      // console.log('Current User Id: ', this.currentUserId);
+    }, error => {
+      console.log('Error: ', error)
+      if (error.status === 401 || error.status === 403) {
+        window.alert("Access timeout, you must log in again.");
+        this.userService.active$ = this.userService.getUserActiveState('', '');
+        this.router.navigate(['auth/signin']);
+      }
+    });
   }
 
   onDelete(userId: string) {
@@ -53,9 +57,13 @@ export class UserComponent implements OnInit {
       this.userService.deleteUserByID(userId).subscribe(response => {
         console.log(response);
         window.alert("User Deleted Successfully");
-        //this removes the current username and resets the menu
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
+        this.router.navigate(['search']);
+        //If a user deletes his own profile go to signin page. If admin (id=1), stay on page.
+        if (this.currentUserId > 1) {
+          //this removes the current username and resets the menu
+          this.userService.active$ = this.userService.getUserActiveState('', '');
+          this.router.navigate(['auth/signin']);
+        }
       }, error => {
         console.log('Error: ', error)
         if (error.status === 401 || error.status === 403) {
@@ -70,7 +78,7 @@ export class UserComponent implements OnInit {
       this.userService.Signout()
       //this removes the current username and resets the menu
       this.userService.active$ = this.userService.getUserActiveState('', '');
-      this.router.navigate(['auth/signupnewuser1'])
+      this.router.navigate(['auth/signup-newuser-now'])
     }
 
   }

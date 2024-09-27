@@ -14,18 +14,16 @@ import { Token } from '@angular/compiler';
 export class UserService {
   private currentUserSubject: BehaviorSubject<User | null>;
   public user: Observable<User | null>;
-  public currentId: number = 0;
   //variables used to modify dropdown menu
   public active$!: Observable<boolean>;
   public currentName: string = "";
-  currentUserId: number = 0;
   private refreshTokenTimeout?: any;
 
-  authBaseURL: string = "https://localhost:7279/api/auth";
-  // authBaseURL: string = "https://myproperties.ddns.net/api/auth"
+  // authBaseURL: string = "https://localhost:7279/api/auth";
+  authBaseURL: string = "https://myproperties.ddns.net/api/auth"
   // authBaseURL: string = "https://raspberrypi4.wlan/api/auth";
-  userBaseURL: string = "https://localhost:7279/api/user";
-  // userBaseURL: string = "https://myproperties.ddns.net/api/user"
+  // userBaseURL: string = "https://localhost:7279/api/user";
+  userBaseURL: string = "https://myproperties.ddns.net/api/user"
   // userBaseURL: string = "https://raspberrypi4.wlan/api/user";
 
   //currently logged in user ideas from:
@@ -114,6 +112,14 @@ export class UserService {
 
   getUserByID(userId: string): Observable<User> {
     return this.http.get<User>(this.userBaseURL + "/" + userId);
+  }
+
+  checkUserName(username: string): Observable<any> {
+    return this.http.get(`${this.userBaseURL}/check-username?username=${username}`);
+  }
+
+  checkEmail(email: string): Observable<any> {
+    return this.http.get(`${this.userBaseURL}/check-email?email=${email}`);
   }
 
   editUserByID(userId: string, editedUser: User): Observable<User> {

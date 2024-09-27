@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { appInitializer } from './helpers/app.initializer';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -35,6 +36,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { UserService } from './services/user.service';
 
 
 @NgModule({
@@ -79,7 +81,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
     ReactiveFormsModule,
     RecaptchaModule,
   ],
-  providers: [],
+  providers: [{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [UserService] },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

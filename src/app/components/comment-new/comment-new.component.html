@@ -10,9 +10,9 @@
     <img width="300" src="{{currentPhoto}}" alt="">
     <h3>{{currentAddress}}</h3>
     <div class="d-flex justify-content-start">
-        <div *ngIf="this.currentUserId > 0 && this.currentUserId == this.postUsrId">
+        <div *ngIf="(this.currentUserId > 0 && this.currentUserId == this.postUsrId) || this.currentUserId == 1">
             <button mat-button color="accent" [routerLink]="['/edit', this.currentPost.postId]">Edit</button>
-            <button mat-button color="warn" (click)="onDelete(this.currentPost.postId!)">Delete</button>
+            <button mat-button color="warn" (click)="onDeletePost(this.currentPost.postId!)">Delete</button>
         </div>
     </div>
 </div>
@@ -20,8 +20,7 @@
 
 <div>
     <form class="post-wrapper" (ngSubmit)="addComment()">
-        <textarea placeholder="Post new Action" type="text" name="text"
-            [(ngModel)]="newComment.text"></textarea>
+        <textarea placeholder="Post new Action" type="text" name="text" [(ngModel)]="newComment.text"></textarea>
         <br><br>
         <button mat-flat-button color="primary">Add Action</button>
     </form>
@@ -29,20 +28,21 @@
     <div class="list-wrapper" *ngFor="let c of commentList.slice(0,100).reverse(); let i=index;">
         <div class="content-wrapper">{{c.text}}</div>
         <div class="posted-wrapper"> {{c.comDate | date:"MM/dd/yy, HH:mm"}},
-            <a [routerLink]="['/profile', c.usrId_fk]"><strong>{{c.userName}}  </strong></a>
-                <div [hidden]="true">{{i}}</div>       
+            <a [routerLink]="['/profile', c.usrId_fk]"><strong>{{c.userName}} </strong></a>
+            <div [hidden]="true">{{i}}</div>
         </div>
-        
-    <div class="button-row">
-        <div class="left-buttons" *ngIf="this.currentUserId > 0 && this.currentUserId == c.usrId_fk || this.currentUserId == this.postUsrId">
-            <button class="btn" mat-button color="primary" [routerLink]="['/action', c.comId]">Edit</button>
-            <button class="btn" mat-button color="warn" (click)="onDelete(c.comId!)">Delete</button>
-            <button class="btn" mat-button color="primary" (click)="onClick('AnchorId')">To Top</button>
+
+        <div class="button-row">
+            <div class="left-buttons" *ngIf="(this.currentUserId > 0 && this.currentUserId == c.usrId_fk) || (this.currentUserId == this.postUsrId)
+            || (this.currentUserId == 1)">
+                <button class="btn" mat-button color="primary" [routerLink]="['/action', c.comId]">Edit</button>
+                <button class="btn" mat-button color="warn" (click)="onDelete(c.comId!)">Delete</button>
+                <button class="btn" mat-button color="primary" (click)="onClick('AnchorId')">To Top</button>
+            </div>
+            <div class="right-button">
+
+            </div>
         </div>
-        <div class="right-button">
-            
-        </div>
-    </div>
-        
+
     </div>
 </div>

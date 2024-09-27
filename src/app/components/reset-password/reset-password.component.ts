@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { StrongPasswordRegx } from 'src/constants';
-import Validation from 'src/constants';
+import { StrongPasswordRegx } from 'src/app/helpers/constants';
+import Validation from 'src/app/helpers/constants';
 
 @Component({
   selector: 'app-reset-password',
@@ -42,9 +42,7 @@ export class ResetPasswordComponent implements OnInit {
     }, error => {
       console.log('Error: ', error)
       window.alert("Your token is NOT valid");
-      if (error.status === 401 || error.status === 403) {
-        this.router.navigateByUrl('/forgot-password');
-      }
+      this.router.navigateByUrl('/forgot-password');
     });
   }
 

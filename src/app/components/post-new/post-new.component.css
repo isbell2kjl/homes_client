@@ -1,3 +1,7 @@
+h1 {
+    margin: 30px;
+}
+
 .post-wrapper {
     margin: 2em;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -9,8 +13,8 @@
 
 
 textarea {
-    width: 80%;
-    height: 6em;
+    width: 85%;
+    height: 3em;
     font-size: 16px;
     display: inline-block;
     vertical-align: top;
@@ -27,19 +31,12 @@ button {
 
 .content-wrapper {
     text-align: left;
-    width: 80%;
+    width: 85%;
     padding-left: .1em;
     margin-bottom: .5em;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
-
-input {
-    width: 80%;
-    font-size: 16px;
-}
-
-
 
 
 .flex-container {
@@ -72,6 +69,12 @@ a {
     grid-template-columns: repeat(5, 115px);
     gap: 0;
     margin-bottom: 1em;
+}
+
+input {
+    width: 85%;
+    font-size: 16px;
+    margin-bottom: 0.3em;
 }
 
 .table-row {

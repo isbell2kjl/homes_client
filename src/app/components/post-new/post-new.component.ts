@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
@@ -20,17 +21,22 @@ export class PostNewComponent implements OnInit {
 
   newPost: Post = new Post();
 
-  column1: string = '';
-  column2: string = '';
-  column3: string = '';
-  column4: string = '';
-  column5: string = '';
-  column6: string = '';
-  column7: string = '';
-  column8: string = '';
-  column9: string = '';
-  column10: string = '';
+  column01: string = ''; //address
+  column02: string = ''; //city
+  column03: string = ''; //state
+  column04: string = ''; //zip
+  column1: string = ''; //owner
+  column2: string = ''; //telephone
+  column3: string = ''; //call status
+  column4: string = ''; //condition
+  column5: string = ''; //delinquint status
+  column6: string = ''; //bed
+  column7: string = ''; //bath
+  column8: string = ''; //square feet
+  column9: string = ''; //Zestimate
+  column10: string = '';//My offer
   notes: string = '';
+  addressString: string = '';
   concatenatedString: string = '';
 
   quote: any;
@@ -42,7 +48,9 @@ export class PostNewComponent implements OnInit {
   currentUserId?: number = 0;
 
 
-  constructor(private postService: PostService, private userService: UserService, private router: Router) { }
+  constructor(private postService: PostService, private userService: UserService, private router: Router,
+    private location: Location
+  ) { }
 
 
   ngOnInit(): void {
@@ -56,37 +64,55 @@ export class PostNewComponent implements OnInit {
   // }
 
   getCurrentUser() {
-    if (this.userService.currentUserValue) {
-      this.userService.getCurrentUser().subscribe(response => {
-        this.currentUser = response.userName;
-        this.currentUserId = response.userId!;
-        // console.log('Current User Id: ', this.currentUserId);
-      });
-    } else (window.alert("In order to edit content, you must log in."),
-      this.userService.active$ = this.userService.getUserActiveState('', ''),
-      this.router.navigate(['auth/signin']))
+    this.userService.getCurrentUser().subscribe(response => {
+      this.currentUserId = response.userId!;
+      // console.log('Current User Id: ', this.currentUserId);
+    }, error => {
+      console.log('Error: ', error)
+      if (error.status === 401 || error.status === 403) {
+        window.alert("Access timeout, you must log in again.");
+        this.userService.active$ = this.userService.getUserActiveState('', '');
+        this.router.navigate(['auth/signin']);
+      }
+    });
+  }
+
+  updateAddressString() {
+    this.addressString = [
+      this.column01,
+      this.column02,
+      this.column03,
+      this.column04
+    ].join(', ');
   }
 
   updateConcatenatedString() {
     this.concatenatedString = [
-      this.column1,
-      this.column2,
+      ('Own-' + this.column1),
+      ('Tel-' + this.column2),
       ('Call-' + this.column3),
-      this.column4,
-      ('delq-' + this.column5),
+      ('Cond-' + this.column4),
+      ('Delq-' + this.column5),
       (this.column6 + 'bd'),
       (this.column7 + 'ba'),
       (this.column8 + 'sqft'),
       ('$' + this.column9),
       ('$' + this.column10),
       this.notes
-    ].join('\t');
+      // ].join('\t');
+    ].join(', ');
+  }
+
+  back(): void {
+    this.location.back()
   }
 
   addPost() {
     this.newPost.userId_fk = this.currentUserId;
+    this.updateAddressString();
+    this.newPost.title = this.addressString;
 
-    // Make sure address field has a value before performing functions.
+    // Make sure address field has a value before performing continuning.
     if (this.newPost.title?.length! > 0) {
       this.updateConcatenatedString();
       this.newPost.content = this.concatenatedString;

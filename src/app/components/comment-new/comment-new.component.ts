@@ -65,10 +65,11 @@ export class CommentNewComponent implements OnInit {
       this.currentPostDate = this.currentPost.posted
       this.currentPhoto = this.currentPost.photoURL
       this.currentAddress = this.currentPost.title
-      this.postUser = this.currentPost.userName
+      //Need to modify backend in order to display userName
+      // this.postUser = this.currentPost.userName
       this.postUsrId = this.currentPost.userId_fk
 
-      console.log("postUser: " + this.postUser)
+      // console.log("postUser: " + this.postUser)
 
 
       this.commentService.getPostComments(this.numId).subscribe(response => {
@@ -86,16 +87,19 @@ export class CommentNewComponent implements OnInit {
   }
 
   getCurrentUser() {
-    if (this.userService.currentUserValue) {
-      this.userService.getCurrentUser().subscribe(response => {
-        this.currentUser = response.userName;
-        this.currentUserId = response.userId!;
-        this.userFkeyId = this.currentUserId;
-        console.log('Current User Id: ', this.currentUserId);
-      });
-    } else (window.alert("In order to edit content, you must log in."),
-      this.userService.active$ = this.userService.getUserActiveState('', ''),
-      this.router.navigate(['auth/signin']))
+    this.userService.getCurrentUser().subscribe(response => {
+      this.currentUser = response.userName;
+      this.currentUserId = response.userId!;
+      this.userFkeyId = this.currentUserId;
+      // console.log('Current User Id: ', this.currentUserId);
+    }, error => {
+      console.log('Error: ', error)
+      if (error.status === 401 || error.status === 403) {
+        window.alert("Access timeout, you must log in again.");
+        this.userService.active$ = this.userService.getUserActiveState('', '');
+        this.router.navigate(['auth/signin']);
+      }
+    });
   }
 
   back(): void {
@@ -125,6 +129,22 @@ export class CommentNewComponent implements OnInit {
         this.ngOnInit();
         // window.alert("Deleted Post Successfully");
         // this.router.navigate(['add']);
+      }, error => {
+        console.log('Error: ', error)
+        if (error.status === 401 || error.status === 403) {
+          // this.router.navigate(['signin']);
+        }
+      });
+    }
+  }
+
+  onDeletePost(post_Id: string) {
+    if (confirm("Are you sure you want to delete this item, including all action details?")) {
+      this.postService.deletePostByID(post_Id).subscribe(response => {
+        console.log(response);
+        // this.loadTasks();
+        // window.alert("Deleted Post Successfully");
+        this.router.navigate(['active']);
       }, error => {
         console.log('Error: ', error)
         if (error.status === 401 || error.status === 403) {

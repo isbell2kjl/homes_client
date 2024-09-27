@@ -9,8 +9,8 @@ import { UserService } from './user.service';
 }) 
 export class CommentService {
 
-  baseURL: string = "https://localhost:7279/api/comment"
-  // baseURL: string = "https://myproperties.ddns.net/api/comment"
+  // baseURL: string = "https://localhost:7279/api/comment"
+  baseURL: string = "https://myproperties.ddns.net/api/comment"
   // baseURL: string = "https://raspberrypi4.wlan/api/comment"
  
   constructor(private http: HttpClient, private userService: UserService) { }

@@ -1,6 +1,22 @@
+<div class="d-flex justify-content-left">
+    <button mat-button color="primary" (click)="back()">Back</button>
+</div>
+
+<h1>Enter New Property</h1>
+
 <form class="post-wrapper" (ngSubmit)="addPost()">
-    <textarea class="content-wrapper" placeholder="Post new Address" type="text" name="title"
-        [(ngModel)]="newPost.title"></textarea>
+    <div>
+        <input placeholder="Enter Street Address" type="text" name="address" [(ngModel)]="column01">
+    </div>
+    <div>
+        <input placeholder="City" type="text" name="address" [(ngModel)]="column02">
+    </div>
+    <div>
+        <input placeholder="State" type="text" name="address" [(ngModel)]="column03">
+    </div>
+    <div>
+        <input placeholder="Zip" type="text" name="address" [(ngModel)]="column04">
+    </div>
     <!-- <p class="content-wrapper"><strong>User defined notes: call code example (0-no answer,1-not interested,2-potential
             deal)</strong>
     </p> -->
@@ -31,12 +47,11 @@
                 <input placeholder="Sqft" type="text" name="content" [(ngModel)]="column8">
             </div>
             <div>
-                <input placeholder="Zestimate" type="text" name="content" [(ngModel)]="column9">
+                <input placeholder="Zest 123K" type="text" name="content" [(ngModel)]="column9">
             </div>
             <div>
-                <input placeholder="Offer" type="text" name="content" [(ngModel)]="column10">
+                <input placeholder="Offer 123K" type="text" name="content" [(ngModel)]="column10">
             </div>
-
         </div>
     </div>
 
@@ -47,7 +62,8 @@
     <div class="action-wrapper">
         <!-- <div class="d-flex justify-content-start"> -->
         <div class="active-wrapper">
-            <mat-checkbox class="active" [checked]="newPost.visible === 1" (change)="newPost.visible = $event.checked ? 1 : 0">
+            <mat-checkbox class="active" [checked]="newPost.visible === 1"
+                (change)="newPost.visible = $event.checked ? 1 : 0">
                 Visible to public </mat-checkbox>
             <button class="active" mat-flat-button color="primary">Add Post</button><br>
         </div>

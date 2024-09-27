@@ -37,15 +37,25 @@ export class UserSearchComponent {
   }
 
 
+  // getCurrentUser() {
+  //   if (this.userService.currentUserValue) {
+  //     this.userService.getCurrentUser().subscribe(response => {
+  //       this.currentUser = response.userName;
+  //       this.currentUserId = response.userId!;
+  //     });
+  //   } else (window.alert("In order to edit content, you must log in."),
+  //     this.userService.active$ = this.userService.getUserActiveState('', ''),
+  //     this.router.navigate(['auth/signin']))
+  // }
+
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe(response => {
-      this.currentUser = response.userName;
       this.currentUserId = response.userId!;
       // console.log('Current User Id: ', this.currentUserId);
     }, error => {
       console.log('Error: ', error)
       if (error.status === 401 || error.status === 403) {
-        window.alert("In order to edit content, you must log in.");
+        window.alert("Access timeout, you must log in again.");
         this.userService.active$ = this.userService.getUserActiveState('', '');
         this.router.navigate(['auth/signin']);
       }
