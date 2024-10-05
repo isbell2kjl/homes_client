@@ -1,10 +1,10 @@
 <div class="searchWrapper" id="AnchorId">
     <mat-form-field appearance="outline">
         <mat-label>Filter content</mat-label>
-        <input *ngIf="archived === false" matInput #searchkeyword (keyup)="searchByKeyword(searchkeyword.value)"
-            name="searchKey" id="searchKey" placeholder="Filter content">
-        <input *ngIf="archived === true" matInput #searchkeyword (keyup)="searchByKeywordA(searchkeyword.value)"
-            name="searchKey" id="searchKey" placeholder="Filter content">
+        <input *ngIf="archived === false" matInput #searchkeyword [(ngModel)]="filterKeyword" 
+            (ngModelChange)="searchByKeyword(searchkeyword.value)" name="searchKey" id="searchKey" placeholder="Filter content">
+        <input *ngIf="archived === true" matInput #searchkeyword [(ngModel)]="filterKeyword" 
+            (ngModelChange)="searchByKeywordA(searchkeyword.value)" name="searchKey" id="searchKey" placeholder="Filter content">
         <mat-hint>Enter any content to filter posts</mat-hint>
     </mat-form-field>
     <div class="active-wrapper">
@@ -12,9 +12,7 @@
     </div>
     <div class="d-flex justify-content-start">
         <button class="active" mat-button color="primary" routerLink="/add">Add New</button>
-        <!-- <button mat-button color="primary" [routerLink]="['/profile', currentUserId]">Archived
-            List</button> -->
-        <mat-slide-toggle class="active" [(ngModel)]="archived" (change)="onArchive()">
+        <mat-slide-toggle class="active" [(ngModel)]="archived" (ngModelChange)="onArchive()">
             Archived
         </mat-slide-toggle>
     </div>
@@ -27,24 +25,15 @@
     <img class="img" width="300" src="{{p.photoURL}}" alt="">
     <div class="content-wrapper">{{p.title}}</div>
     <div class="posted-wrapper"> {{p.posted | date:"MM/dd/yy, HH:mm"}},
-            <a [routerLink]="['/profile', p.userId_fk]"><strong>{{p.userName}}  </strong></a>
-            <div [hidden]="true">{{i}}</div>
-            
+        <a [routerLink]="['/profile', p.userId_fk]"><strong>{{p.userName}} </strong></a>
+        <div [hidden]="true">{{i}}</div>
+
     </div>
-        
-    <!-- <div class="d-flex justify-content-start"> -->
+
     <div class="button-row">
         <div class="left-buttons">
-        <button class="btn" mat-button color="primary" [routerLink]="['/post', p.postId]">Actions</button>
-        <button class="btn" mat-button color="primary" (click)="onClick('AnchorId')">To Top</button>
-        
-        <!-- <div *ngIf="this.currentUserId > 0 && this.currentUserId == p.userId_fk"> -->
-        <!-- <button class="btn" mat-button color="accent" [routerLink]="['/edit', p.postId]">Edit</button>
-        <button class="btn" mat-button color="warn" (click)="onDelete(p.postId!)">Delete</button> -->
-        <!-- </div> -->
-         <div class="right-button">
-            
-         </div>
+            <button class="btn" mat-button color="primary" [routerLink]="['/post', p.postId]">Actions</button>
+            <button class="btn" mat-button color="primary" (click)="onClick('AnchorId')">To Top</button>
         </div>
     </div>
 </div>

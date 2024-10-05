@@ -1,3 +1,7 @@
+
+header > h1 { display: inline-block; }
+header span { margin-left: 55px; } 
+
 h1 {
     margin: 30px;
 }
@@ -5,8 +9,6 @@ h1 {
 .searchWrapper {
     display: inline-block;
     margin-left: 30px;
-    
-
 }
 
 input{

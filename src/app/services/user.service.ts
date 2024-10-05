@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/internal/Observable';
 import { User } from '../models/user';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Token } from '@angular/compiler';
 
 
 
@@ -18,6 +17,7 @@ export class UserService {
   public active$!: Observable<boolean>;
   public currentName: string = "";
   private refreshTokenTimeout?: any;
+  private filterKeyword: string = '';
 
   // authBaseURL: string = "https://localhost:7279/api/auth";
   authBaseURL: string = "https://myproperties.ddns.net/api/auth"
@@ -108,6 +108,14 @@ export class UserService {
   getUsersBySearch(searchKeyword: string): Observable<User[]> {
     return this.http.get<User[]>(this.userBaseURL + "/search?name=" + searchKeyword);
 
+  }
+
+  setFilterKeyword(keyword: string) {
+    this.filterKeyword = keyword
+  }
+
+  getFilterKeyword(): string {
+    return this.filterKeyword
   }
 
   getUserByID(userId: string): Observable<User> {

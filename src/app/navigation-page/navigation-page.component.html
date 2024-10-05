@@ -4,6 +4,7 @@
 
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
+      <!-- If user is signed in, use this menu, othewise use the signedout menu-->
       <ng-template [ngIf]="isActive | async" [ngIfElse]="signedOut">
         <h3 class="site-menu">Welcome {{currentName}}</h3>
         <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Home</a>
@@ -15,10 +16,14 @@
         <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">All
           Users</a>
         <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === false">All Users</a>
+        <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === true"
+          (click)="drawer.toggle()">Contact</a>
+        <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === false">Contact</a>
         <a mat-list-item (click)="logout()" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Sign
           Out</a>
         <a mat-list-item (click)="logout()" *ngIf="(isHandset$ | async) === false">Sign Out</a>
       </ng-template>
+      <!-- If user is signed out, use this menu-->
       <ng-template #signedOut>
         <!-- <a mat-list-item routerLink="auth/signup">Sign Up</a> -->
         <a mat-list-item routerLink="auth/signin" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Sign

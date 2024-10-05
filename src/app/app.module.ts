@@ -37,6 +37,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { UserService } from './services/user.service';
+import { WebmasterComponent } from './components/webmaster/webmaster.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { UserService } from './services/user.service';
     ContactComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    WebmasterComponent,
   ],
   imports: [
 

@@ -9,6 +9,9 @@ import { UserService } from './user.service';
 })
 export class PostService {
 
+  private archived: boolean = false;
+  private filterKeyword: string = '';
+
   // baseURL: string = "https://localhost:7279/api/post"
 baseURL: string = "https://myproperties.ddns.net/api/post"
   // baseURL: string = "https://raspberrypi4.wlan/api/post"
@@ -17,6 +20,24 @@ baseURL: string = "https://myproperties.ddns.net/api/post"
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
+
+  //four filter functions to set and retrieve the filters in the post-active component.
+ //the purpose of this is to perserve the filter when the user clicks the detail and returns to the list.
+  setFilterKeyword(keyword: string) {
+    this.filterKeyword = keyword;
+  }
+  setArchiveFilter(archive: boolean) {
+    this.archived = archive;
+  }
+
+  getFilterKeyword(): string {
+    return this.filterKeyword;
+  }
+  
+  getArchiveFilter(): boolean {
+    return this.archived;
+  }
+  
   getAllPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.baseURL);
 

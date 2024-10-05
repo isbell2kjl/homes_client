@@ -1,9 +1,10 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-post-active',
@@ -14,15 +15,16 @@ export class PostActiveComponent implements OnInit {
 
   // @ViewChild("myinput") myInputField!: ElementRef;
 
+  filterKeyword: string = "";
+
   postList: Post[] = [];
 
   Comments?: [] = [];
 
   currentUser?: string = "";
   currentUserId: number = 0;
-
-  searchText: string = "";
   postLength: number = 0;
+
   archived: boolean = false;
 
 
@@ -31,7 +33,30 @@ export class PostActiveComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.loadTasks();
+    //retreives the search keyword previously saved in the Post Service, if it exists.
+    this.filterKeyword = this.postService.getFilterKeyword();
+
+    //Retreives from the Post Service the boolean true, if dataset is archived, or false, if dataset is active.
+    this.archived = this.postService.getArchiveFilter();
+
+
+    //If the dataset is archived BUT there is NO search keyword, apply the archived ALL filter.
+    if (this.archived == true && !this.filterKeyword) {
+
+      this.onArchive();
+
+      //If the dataset is NOT archived, BUT there IS a search keyword, apply the active search filter.
+    } else if (this.archived == false && this.filterKeyword) {
+
+      this.applyFilterToList();
+
+      //If the dataset IS archived AND there is a search keyword, apply the Archived search filter.
+    } else if (this.archived == true && this.filterKeyword) {
+
+      this.applyFilterToListA();
+
+      // If the dataset is NOT archived AND there is NO search keyword, load ALL the data.   
+    } else (this.loadAll())
 
   }
 
@@ -40,12 +65,16 @@ export class PostActiveComponent implements OnInit {
   //   this.myInputField.nativeElement.focus();
   // }
 
-  loadTasks() {
+  loadAll() {
+    this.filterKeyword = "";
+    this.archived = false;
     this.postService.getAllPosts().subscribe(foundposts => {
       // this.postList = foundposts;
       this.postList = foundposts.filter(function (active, index) {
         return active.archive == 0
       });
+      this.postService.setArchiveFilter(false);
+      this.postService.setFilterKeyword("");
       this.postLength = this.postList.length;
     });
 
@@ -53,6 +82,39 @@ export class PostActiveComponent implements OnInit {
 
   }
 
+  //Apply the active search filter if the the keyword exists.
+  applyFilterToList() {
+    if (this.filterKeyword) {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword)).subscribe(foundSearch => {
+        console.log(foundSearch);
+        this.postList = foundSearch.filter(function (active, index) {
+          return active.archive == 0
+        });
+        this.postLength = this.postList.length;
+      },
+        (error) => {
+          console.log('Search string not found: ', error);
+        })
+    }
+  }
+
+  //Apply the archived search filter if the the keyword exists.
+  applyFilterToListA() {
+    if (this.filterKeyword) {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword)).subscribe(foundSearch => {
+        console.log(foundSearch);
+        this.postList = foundSearch.filter(function (active, index) {
+          return active.archive == 1
+        });
+        this.postLength = this.postList.length;
+      },
+        (error) => {
+          console.log('Search string not found: ', error);
+        })
+    }
+  }
+
+  //Retreive the current user from User Service and assign the name and userId to the variables.
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe(response => {
       this.currentUser = response.userName;
@@ -67,7 +129,7 @@ export class PostActiveComponent implements OnInit {
       }
     });
   }
-
+  //On click function to return to the TOP of the form.
   public onClick(elementId: string): void {
     this.viewportScroller.scrollToAnchor(elementId);
   }
@@ -78,7 +140,7 @@ export class PostActiveComponent implements OnInit {
     return str.replace(/^\w/, (c) => c.toUpperCase());
   }
 
-  //If active, use this search
+  //The active search filter is applied when the user types a value into the search input field.
   searchByKeyword(searchkeyword: any) {
     if (searchkeyword) {
       this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
@@ -86,24 +148,31 @@ export class PostActiveComponent implements OnInit {
         this.postList = foundSearch.filter(function (active, index) {
           return active.archive == 0
         });
+        this.filterKeyword = searchkeyword;
+        // Set the filterkeyword in the postService variable for later retrieval.
+        this.postService.setFilterKeyword(this.filterKeyword);
         this.postLength = this.postList.length;
       },
         (error) => {
           console.log('Search string not found: ', error);
         })
     }
-    //if search field is empty, show all users.
-    else (this.loadTasks())
+    //if search field or keyword is empty, show all users.
+    else (this.loadAll())
   }
 
-  //If archived, use this search
+  //If archived, use this search filter when user enters a search keyword into the input field.
   searchByKeywordA(searchkeyword: any) {
     if (searchkeyword) {
       this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
         console.log(foundSearch);
+
         this.postList = foundSearch.filter(function (active, index) {
           return active.archive == 1
         });
+        this.filterKeyword = searchkeyword;
+        // Set the filterkeyword in the postService variable for later retrieval.
+        this.postService.setFilterKeyword(this.filterKeyword);
         this.postLength = this.postList.length;
       },
         (error) => {
@@ -114,6 +183,7 @@ export class PostActiveComponent implements OnInit {
     else (this.onArchive())
   }
 
+  //Apply or remove the archive filter when the archive toggle is changed.
   onArchive() {
     if (this.archived === true) {
       this.postService.getAllPosts().subscribe(foundposts => {
@@ -122,25 +192,11 @@ export class PostActiveComponent implements OnInit {
           return active.archive == 1
         });
         this.postLength = this.postList.length;
+        this.postService.setArchiveFilter(this.archived);
+        this.filterKeyword = "";
+        this.postService.setFilterKeyword("");
       })
     }
-    else (this.loadTasks())
+    else (this.loadAll())
   }
-
-  // onDelete(post_Id: string) {
-  //   if (confirm("Are you sure you want to delete this item, including all action details?")) {
-  //     this.postService.deletePostByID(post_Id).subscribe(response => {
-  //       console.log(response);
-  //       this.loadTasks();
-  //       // window.alert("Deleted Post Successfully");
-  //       // this.router.navigate(['add']);
-  //     }, error => {
-  //       console.log('Error: ', error)
-  //       if (error.status === 401 || error.status === 403) {
-  //         // this.router.navigate(['signin']);
-  //       }
-  //     });
-  //   }
-  // }
-
 }

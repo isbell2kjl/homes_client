@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="column-1">
+      <img src="assets/photos/Keith.jpg" alt="my image" />
+    </div>
+    <div class="column column-2">
+      <h2 class="contact-title">Get in Touch</h2>
+      <p>My name is Keith Isbell and I live and work in the Seattle area. If you have issues or questions about this website, 
+        please feel free to contact me.
+      </p>
+      <p><b>Email address:</b> isbell2kjl@gmail.com</p>
+      <p>If you would like to make a donation, please click the link below.</p>
+
+      <a href="https://www.paypal.com/donate/?hosted_button_id=QCBB3HCU2ZJJA">
+        <button class="btn" mat-flat-button color="primary">Donate</button>
+      </a>
+
+    </div>
+  </div>
+  
+  <section class="contact-section">
+    <div class="contact-intro">
+      <h2 class="">Contact Me</h2>
+      <p class="contact-description">
+        Fill out the form and I'll get back to you as soon as possible.
+      </p>
+    </div>
+  
+    <form (ngSubmit)="onSubmit()">
+  
+      <div class="form-group-container">
+        <div class="form-group">
+          <!-- <label for="name" class="form-label">Name</label> -->
+          <input id="name" name="name" class="form-input" placeholder="Your name" type="text" [(ngModel)]="name" />
+        </div>
+        <div class="form-group">
+          <!-- <label for="email" class="form-label">Email</label> -->
+          <input id="email" name="email" class="form-input" placeholder="Your email" type="email" [(ngModel)]="email" />
+        </div>
+        <div class="form-group">
+          <!-- <label for="phone" class="form-label">Phone</label> -->
+          <input id="phone" name="phone" class="form-input" placeholder="206-123-1234" type="text" [(ngModel)]="phone" />
+        </div>
+        <div class="form-group">
+          <!-- <label for="message" class="form-label">Message</label> -->
+          <textarea class="form-textarea" id="message" name="message" placeholder="Your message" [(ngModel)]="message">
+            </textarea>
+        </div>
+      </div>
+  
+      <div class="d-flex justify-content-center" id="button-wrapper">
+        <div [hidden]="captcha">
+          <re-captcha (resolved)="resolved($event)" siteKey="6LdNGyEqAAAAAD94Gnk-Uv6_Ia0pzbHyJ99jQQjM"></re-captcha>
+        </div>
+        <div [hidden]="!captcha">
+          <button mat-flat-button class="input-wrapper" mat-flat-button color="primary" [class.spinner]="loading"
+            [disabled]="loading">Submit</button>
+        </div>
+      </div>
+    </form>
+  </section>
