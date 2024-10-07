@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Post } from '../models/post';
 import { UserService } from './user.service';
-// import { environment } from 'src/environments/environment'; 
+import { baseURL } from '../helpers/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,6 @@ export class PostService {
 
   private archived: boolean = false;
   private filterKeyword: string = '';
-
-  baseURL: string = 'https://myproperties.ddns.net/api';
 
 
   constructor(private http: HttpClient, private userService: UserService) { }
@@ -37,17 +35,17 @@ export class PostService {
   }
   
   getAllPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.baseURL}/post`);
+    return this.http.get<Post[]>(`${baseURL}/post`);
 
   }
 
   getPostsBySearch(searchKeyword: string): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.baseURL}/post/search?name=${searchKeyword}`);
+    return this.http.get<Post[]>(`${baseURL}/post/search?name=${searchKeyword}`);
 
   }
 
   getUserPosts(userId: number): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.baseURL}/post/userpost/${userId}`);
+    return this.http.get<Post[]>(`${baseURL}/post/userpost/${userId}`);
 
   }
 
@@ -57,12 +55,12 @@ export class PostService {
       Authorization: `Bearer ${tokenKey}`
     }
     console.log(reqHeaders);
-    return this.http.post(`${this.baseURL}/post`, newPost, { headers: reqHeaders });
+    return this.http.post(`${baseURL}/post`, newPost, { headers: reqHeaders });
   
   }
 
   getPostByID(postId: string): Observable<Post> {
-    return this.http.get<Post>(`${this.baseURL}/post/${postId}`);
+    return this.http.get<Post>(`${baseURL}/post/${postId}`);
   }
 
   editPostByID(postId: string, edittedPost: Post): Observable<Post> {
@@ -70,7 +68,7 @@ export class PostService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.put<Post>(`${this.baseURL}/post/${postId}`, edittedPost, { headers: reqHeaders });
+    return this.http.put<Post>(`${baseURL}/post/${postId}`, edittedPost, { headers: reqHeaders });
   } 
 
   deletePostByID(postId: string): Observable<any>  {
@@ -78,7 +76,7 @@ export class PostService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.delete<any>(`${this.baseURL}/post/${postId}`,  { headers: reqHeaders })
+    return this.http.delete<any>(`${baseURL}/post/${postId}`,  { headers: reqHeaders })
 
   }
 

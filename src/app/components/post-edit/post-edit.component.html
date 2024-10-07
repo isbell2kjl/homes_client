@@ -5,10 +5,10 @@
 <form class="post-wrapper" (ngSubmit)="onSubmit()">
 
     <div class="content wrapper">
-        <textarea placeholder="Enter Content" type="text" name="Content"
-            [(ngModel)]="currentPost.content"></textarea><br><br>
         <textarea placeholder="Enter Address" type="text" name="Title"
             [(ngModel)]="currentPost.title"></textarea><br><br>
+        <textarea placeholder="Enter Content" type="text" name="Content"
+            [(ngModel)]="currentPost.content"></textarea><br><br>
         <textarea placeholder="Enter Photo URL" type="text" name="imageUrl"
             [(ngModel)]="currentPost.photoURL"></textarea><br><br>
         <!-- <label>Visible </label> -->

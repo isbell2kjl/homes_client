@@ -3,12 +3,11 @@
 </div>
 
 <div class="header-wrapper" id="AnchorId">
-    <strong>Owner, Tel, Call, Cond, Delq, Bed, Bath, Sqft, Zest, Offer, Notes </strong>
+    <h3><strong>{{currentAddress}}</strong></h3>
     <h3>{{currentContent}}</h3>
     <h3>{{currentPostDate| date:"MM/dd/yy, HH:mm"}}</h3>
     <h3>{{postUser}}</h3>
     <img width="300" src="{{currentPhoto}}" alt="">
-    <h3>{{currentAddress}}</h3>
     <div class="d-flex justify-content-start">
         <div *ngIf="(this.currentUserId > 0 && this.currentUserId == this.postUsrId) || this.currentUserId == 1">
             <button mat-button color="accent" [routerLink]="['/edit', this.currentPost.postId]">Edit</button>

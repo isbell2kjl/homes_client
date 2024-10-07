@@ -19,11 +19,9 @@
 </div>
 
 <div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
-    <div class="content-wrapper"><strong>Owner, Tel, Call, Cond, Delq, Bed, Bath, Sqft, Zest, Offer, Notes </strong>
-    </div>
+    <div class="content-wrapper"><strong>{{p.title}}</strong></div>
     <div class="content-wrapper">{{p.content}}</div>
     <img class="img" width="300" src="{{p.photoURL}}" alt="">
-    <div class="content-wrapper">{{p.title}}</div>
     <div class="posted-wrapper"> {{p.posted | date:"MM/dd/yy, HH:mm"}},
         <a [routerLink]="['/profile', p.userId_fk]"><strong>{{p.userName}} </strong></a>
         <div [hidden]="true">{{i}}</div>
