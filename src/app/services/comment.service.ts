@@ -3,25 +3,24 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Comment } from '../models/comment';
 import { UserService } from './user.service';
+// import { environment } from 'src/environments/environment'; 
 
 @Injectable({
   providedIn: 'root'
 }) 
 export class CommentService {
 
-  // baseURL: string = "https://localhost:7279/api/comment"
-  baseURL: string = "https://myproperties.ddns.net/api/comment"
-  // baseURL: string = "https://raspberrypi4.wlan/api/comment"
+  baseURL: string = 'https://myproperties.ddns.net/api';
  
   constructor(private http: HttpClient, private userService: UserService) { }
 
   getAllComments(): Observable<Comment[]> {
-    return this.http.get<Comment[]>(this.baseURL);
+    return this.http.get<Comment[]>(`${this.baseURL}/comment`);
 
   }
 
   getPostComments(postId: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(this.baseURL + "/postComment/" + postId);
+    return this.http.get<Comment[]>(`${this.baseURL}/comment/postComment/${postId}`);
 
   }
 
@@ -31,12 +30,12 @@ export class CommentService {
       Authorization: `Bearer ${tokenKey}`
     }
     console.log(reqHeaders);
-    return this.http.post(this.baseURL, newComment, { headers: reqHeaders });
+    return this.http.post(`${this.baseURL}/comment`, newComment, { headers: reqHeaders });
   
   }
 
   getCommentByID(comId: string): Observable<Comment> {
-    return this.http.get<Comment>(this.baseURL + "/" + comId);
+    return this.http.get<Comment>(`${this.baseURL}/comment/${comId}`);
   
   }
 
@@ -45,7 +44,7 @@ export class CommentService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.put<Comment>(this.baseURL + "/" + comId, edittedComment, { headers: reqHeaders });
+    return this.http.put<Comment>(`${this.baseURL}/comment/${comId}`, edittedComment, { headers: reqHeaders });
   
   }
 
@@ -54,7 +53,7 @@ export class CommentService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.delete<any>(this.baseURL + "/" + comId,  { headers: reqHeaders })
+    return this.http.delete<any>(`${this.baseURL}/comment/${comId}`,  { headers: reqHeaders })
 
   }
 

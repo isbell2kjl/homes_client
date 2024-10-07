@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
-import { QuoteService } from 'src/app/services/quote.service';
+
 
 @Component({
   selector: 'app-post-list',
@@ -20,7 +20,7 @@ export class PostListComponent implements OnInit {
   Comments?: [] = [];
 
 
-  constructor(private postService: PostService, private quoteService: QuoteService) { }
+  constructor(private postService: PostService) { }
 
   ngOnInit(): void {
     this.postService.getAllPosts().subscribe(post => {
@@ -29,10 +29,6 @@ export class PostListComponent implements OnInit {
       });
       this.Comments = this.currentPost.comment
     });
-    // this.quoteService.getQuote().subscribe((data: any) => {
-    //   console.log(data)
-    //   this.quote = data;
-    // });
   }
 
 }

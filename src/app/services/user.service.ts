@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { User } from '../models/user';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { BehaviorSubject, of} from 'rxjs';
 import { map } from 'rxjs/operators';
-
+// import { environment } from 'src/environments/environment'; 
 
 
 @Injectable({
@@ -19,12 +19,7 @@ export class UserService {
   private refreshTokenTimeout?: any;
   private filterKeyword: string = '';
 
-  // authBaseURL: string = "https://localhost:7279/api/auth";
-  authBaseURL: string = "https://myproperties.ddns.net/api/auth"
-  // authBaseURL: string = "https://raspberrypi4.wlan/api/auth";
-  // userBaseURL: string = "https://localhost:7279/api/user";
-  userBaseURL: string = "https://myproperties.ddns.net/api/user"
-  // userBaseURL: string = "https://raspberrypi4.wlan/api/user";
+  baseURL: string = 'https://myproperties.ddns.net/api';
 
   //currently logged in user ideas from:
   //https://jasonwatmore.com/post/2021/12/14/net-6-jwt-authentication-tutorial-with-example-api
@@ -47,13 +42,11 @@ export class UserService {
       Authorization: `Bearer ${tokenKey}`
     }
 
-    return this.http.get<User>(`${this.userBaseURL}/current`, {
+    return this.http.get<User>(`${this.baseURL}/user/current`, {
       headers: reqHeaders,
     });
 
   }
-
-
 
   //method used to modify dropdown menu.
   getUserActiveState(state: string, username: string): Observable<boolean> {
@@ -67,11 +60,11 @@ export class UserService {
   }
 
   signUp(newUser: User) {
-    return this.http.post(`${this.authBaseURL}/signup`, newUser);
+    return this.http.post(`${this.baseURL}/auth/signup`, newUser);
   }
 
   signIn(username: string, password: string) {
-    return this.http.post<any>(`${this.authBaseURL}/signin`, { username, password }, { withCredentials: true })
+    return this.http.post<any>(`${this.baseURL}/auth/signin`, { username, password }, { withCredentials: true })
       .pipe(map(user => {
         this.currentUserSubject.next(user);
         this.startRefreshTokenTimer();
@@ -80,7 +73,7 @@ export class UserService {
   }
 
   refreshToken() {
-    return this.http.post<any>(`${this.authBaseURL}/refresh-token`, {}, { withCredentials: true })
+    return this.http.post<any>(`${this.baseURL}/auth/refresh-token`, {}, { withCredentials: true })
       .pipe(map((user) => {
         this.currentUserSubject.next(user);
         this.startRefreshTokenTimer();
@@ -95,18 +88,18 @@ export class UserService {
       Authorization: `Bearer ${tokenKey}`
     }
 
-    this.http.post<any>(`${this.authBaseURL}/revoke-token`, {}, { headers: reqHeaders, withCredentials: true }).subscribe();
+    this.http.post<any>(`${this.baseURL}/auth/revoke-token`, {}, { headers: reqHeaders, withCredentials: true }).subscribe();
     this.stopRefreshTokenTimer();
     this.currentUserSubject.next(null);
 }
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.userBaseURL);
+    return this.http.get<User[]>(`${this.baseURL}/user`);
 
   }
 
   getUsersBySearch(searchKeyword: string): Observable<User[]> {
-    return this.http.get<User[]>(this.userBaseURL + "/search?name=" + searchKeyword);
+    return this.http.get<User[]>(`${this.baseURL}/user/search?name=${searchKeyword}`);
 
   }
 
@@ -119,15 +112,15 @@ export class UserService {
   }
 
   getUserByID(userId: string): Observable<User> {
-    return this.http.get<User>(this.userBaseURL + "/" + userId);
+    return this.http.get<User>(`${this.baseURL}/user/${userId}`);
   }
 
   checkUserName(username: string): Observable<any> {
-    return this.http.get(`${this.userBaseURL}/check-username?username=${username}`);
+    return this.http.get(`${this.baseURL}/user/check-username?username=${username}`);
   }
 
   checkEmail(email: string): Observable<any> {
-    return this.http.get(`${this.userBaseURL}/check-email?email=${email}`);
+    return this.http.get(`${this.baseURL}/user/check-email?email=${email}`);
   }
 
   editUserByID(userId: string, editedUser: User): Observable<User> {
@@ -135,7 +128,7 @@ export class UserService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.put<User>(this.userBaseURL + "/" + userId, editedUser, { headers: reqHeaders });
+    return this.http.put<User>(`${this.baseURL}/user/${userId}`, editedUser, { headers: reqHeaders });
   }
 
   deleteUserByID(userId: string): Observable<any>  {
@@ -144,19 +137,19 @@ export class UserService {
       Authorization: `Bearer ${tokenKey}`
     }
     this.stopRefreshTokenTimer();
-    return this.http.delete<any>(this.userBaseURL + "/" + userId,  { headers: reqHeaders })
+    return this.http.delete<any>(`${this.baseURL}/user/${userId}`,  { headers: reqHeaders })
   }
 
   forgotPassword(email: string) {
-    return this.http.post(`${this.authBaseURL}/forgot-password`, { email });
+    return this.http.post(`${this.baseURL}/auth/forgot-password`, { email });
   }
 
   validateResetToken(token: string) {
-    return this.http.post(`${this.authBaseURL}/validate-reset-token`, { token });
+    return this.http.post(`${this.baseURL}/auth/validate-reset-token`, { token });
   }
 
   resetPassword(token: string, password: string, confirmPassword: string) {
-    return this.http.post(`${this.authBaseURL}/reset-password`, { token, password, confirmPassword });
+    return this.http.post(`${this.baseURL}/auth/reset-password`, { token, password, confirmPassword });
   }
 
   private startRefreshTokenTimer() {

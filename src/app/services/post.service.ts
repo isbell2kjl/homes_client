@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Post } from '../models/post';
 import { UserService } from './user.service';
+// import { environment } from 'src/environments/environment'; 
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,7 @@ export class PostService {
   private archived: boolean = false;
   private filterKeyword: string = '';
 
-  // baseURL: string = "https://localhost:7279/api/post"
-baseURL: string = "https://myproperties.ddns.net/api/post"
-  // baseURL: string = "https://raspberrypi4.wlan/api/post"
-
+  baseURL: string = 'https://myproperties.ddns.net/api';
 
 
   constructor(private http: HttpClient, private userService: UserService) { }
@@ -39,17 +37,17 @@ baseURL: string = "https://myproperties.ddns.net/api/post"
   }
   
   getAllPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(this.baseURL);
+    return this.http.get<Post[]>(`${this.baseURL}/post`);
 
   }
 
   getPostsBySearch(searchKeyword: string): Observable<Post[]> {
-    return this.http.get<Post[]>(this.baseURL + "/search?name=" + searchKeyword);
+    return this.http.get<Post[]>(`${this.baseURL}/post/search?name=${searchKeyword}`);
 
   }
 
   getUserPosts(userId: number): Observable<Post[]> {
-    return this.http.get<Post[]>(this.baseURL + "/userpost/" + userId);
+    return this.http.get<Post[]>(`${this.baseURL}/post/userpost/${userId}`);
 
   }
 
@@ -59,12 +57,12 @@ baseURL: string = "https://myproperties.ddns.net/api/post"
       Authorization: `Bearer ${tokenKey}`
     }
     console.log(reqHeaders);
-    return this.http.post(this.baseURL, newPost, { headers: reqHeaders });
+    return this.http.post(`${this.baseURL}/post`, newPost, { headers: reqHeaders });
   
   }
 
   getPostByID(postId: string): Observable<Post> {
-    return this.http.get<Post>(this.baseURL + "/" + postId);
+    return this.http.get<Post>(`${this.baseURL}/post/${postId}`);
   }
 
   editPostByID(postId: string, edittedPost: Post): Observable<Post> {
@@ -72,15 +70,15 @@ baseURL: string = "https://myproperties.ddns.net/api/post"
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.put<Post>(this.baseURL + "/" + postId, edittedPost, { headers: reqHeaders });
-  }
+    return this.http.put<Post>(`${this.baseURL}/post/${postId}`, edittedPost, { headers: reqHeaders });
+  } 
 
   deletePostByID(postId: string): Observable<any>  {
     let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.delete<any>(this.baseURL + "/" + postId,  { headers: reqHeaders })
+    return this.http.delete<any>(`${this.baseURL}/post/${postId}`,  { headers: reqHeaders })
 
   }
 
