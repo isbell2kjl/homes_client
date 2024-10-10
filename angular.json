@@ -104,7 +104,6 @@
       }
     }
   },
-  "defaultProject": "homes_client",
   "cli": {
     "analytics": false
   }

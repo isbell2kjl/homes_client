@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { StrongPasswordRegx } from 'src/app/helpers/constants';
 import Validation from 'src/app/helpers/constants';
 
@@ -12,7 +12,7 @@ import Validation from 'src/app/helpers/constants';
 })
 export class ResetPasswordComponent implements OnInit {
 
-  resetPasswordForm!: FormGroup;
+  resetPasswordForm!: UntypedFormGroup;
 
   token: string = "";
   password: string = "";
@@ -22,9 +22,9 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit() {
 
-    this.resetPasswordForm = new FormGroup({
-      password: new FormControl(null, [Validators.required, Validators.pattern(StrongPasswordRegx)]),
-      confirmPassword: new FormControl(null, [Validators.required]),
+    this.resetPasswordForm = new UntypedFormGroup({
+      password: new UntypedFormControl(null, [Validators.required, Validators.pattern(StrongPasswordRegx)]),
+      confirmPassword: new UntypedFormControl(null, [Validators.required]),
     }, { validators: Validation.match('password', 'confirmPassword') }
     );
 

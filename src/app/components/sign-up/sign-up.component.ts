@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 // import { StrongPasswordRegx } from 'src/app/helpers/constants';
 import { EmailFormatRegx } from 'src/app/helpers/constants';
 
@@ -16,7 +16,7 @@ export class SignUpComponent implements OnInit {
 
   newUser: User = new User();
 
-  newUserForm!: FormGroup;
+  newUserForm!: UntypedFormGroup;
 
   currentUser?: string = "";
   currentUserId: number = 0;
@@ -38,13 +38,13 @@ export class SignUpComponent implements OnInit {
   }
 
   myFormGroup() {
-    this.newUserForm = new FormGroup({
+    this.newUserForm = new UntypedFormGroup({
       //not required fields to sign up
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      email: new FormControl(null, [Validators.required, Validators.pattern(EmailFormatRegx)]),
+      firstName: new UntypedFormControl(),
+      lastName: new UntypedFormControl(),
+      email: new UntypedFormControl(null, [Validators.required, Validators.pattern(EmailFormatRegx)]),
       //required fields to sign up
-      userName: new FormControl(null, [Validators.required, Validators.minLength(6)]),
+      userName: new UntypedFormControl(null, [Validators.required, Validators.minLength(6)]),
       // password: new FormControl(null, [Validators.required, Validators.pattern(StrongPasswordRegx)]),
       // city: new FormControl(),
       // state: new FormControl(),
