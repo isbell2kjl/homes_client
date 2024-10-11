@@ -14,7 +14,7 @@ export class ContactComponent implements OnInit {
     phone: string = '';
     message: string= '';
     loading = false;
-    captcha: string = "";
+    captcha: string | null = "";
 
   constructor(private contactService: ContactService, private router: Router) { }
 
@@ -39,7 +39,7 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  resolved(captchaResponse: string) {
+  resolved(captchaResponse: string | null) {
     this.captcha = captchaResponse;
   }
   

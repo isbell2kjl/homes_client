@@ -12,7 +12,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   email: string = "";
   loading = false;
-  captcha: string = "";
+  captcha: string | null = "";
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -40,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   }
 
-  resolved(captchaResponse: string) {
+  resolved(captchaResponse: string | null) {
     this.captcha = captchaResponse;
   }
 
