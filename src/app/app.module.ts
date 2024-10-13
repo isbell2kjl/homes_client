@@ -35,7 +35,7 @@ import { PostActiveComponent } from './components/post-active/post-active.compon
 import { ContactComponent } from './components/contact/contact.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule } from 'ng-recaptcha-2';
 import { UserService } from './services/user.service';
 import { WebmasterComponent } from './components/webmaster/webmaster.component';
 
