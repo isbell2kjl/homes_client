@@ -1,0 +1,68 @@
+h1, h2, h3 {
+    /* margin: 2em; */
+    text-align: left;
+}
+
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 600px;
+
+}
+.form-group {
+    display: flex;
+   flex-direction: column;
+    align-items: flex-start;
+}
+
+
+.post-wrapper {
+    margin: 2em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 80%;
+    padding: 0.5em;
+    text-align: left;
+    align-items: left;
+}
+
+button {
+    margin-left: .5em;
+    margin-top: .5em;
+}
+
+.content-wrapper {
+    text-align: left;
+    width: 50%;
+    padding-left: .1em;
+    margin-bottom: .5em;
+}
+
+form {
+    margin: 2em;
+    width: 80%;
+  }
+
+label {
+    margin-bottom: 5px;
+    font-weight: bolder;
+}
+
+input {
+    width: 85%;
+    height: 2em;
+    font-size: 16px;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+textarea {
+    width: 85%;
+    height: 8em;
+    font-size: 16px;
+    vertical-align: top;
+    padding: 0.5m;
+    word-wrap: break-word;
+}
+
+

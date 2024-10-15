@@ -16,6 +16,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { WebmasterComponent } from './components/webmaster/webmaster.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ContentEditComponent } from './components/content-edit/content-edit.component';
 
 
 
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: "webmaster", component: WebmasterComponent},
   { path: "forgot-password", component: ForgotPasswordComponent },
   { path: "reset-password", component: ResetPasswordComponent },
+  { path: "content-edit", component: ContentEditComponent }
 ];
 
 @NgModule({

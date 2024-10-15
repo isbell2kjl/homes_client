@@ -26,15 +26,22 @@ export class UserComponent implements OnInit {
     private router: Router, private location: Location) { }
 
   ngOnInit(): void {
-    this.id = this.activatedRoute.snapshot.params['id'];
-    this.fkeyId = Number(this.id);
-    console.log("fkeyId " + this.fkeyId)
 
-    this.userService.getUserByID(this.id).subscribe(foundUser => {
-      this.selectedUser = foundUser;
-    })
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
 
-    this.getCurrentUser();
+      this.id = this.activatedRoute.snapshot.params['id'];
+      this.fkeyId = Number(this.id);
+      console.log("fkeyId " + this.fkeyId)
+
+      this.userService.getUserByID(this.id).subscribe(foundUser => {
+        this.selectedUser = foundUser;
+      })
+
+      this.getCurrentUser();
+
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
   }
 
 
@@ -53,24 +60,29 @@ export class UserComponent implements OnInit {
   }
 
   onDelete(userId: string) {
-    if (confirm("Warning:  This will delete this user and all properties and actions created by this user.")) {
-      this.userService.deleteUserByID(userId).subscribe(response => {
-        console.log(response);
-        window.alert("User Deleted Successfully");
-        this.router.navigate(['search']);
-        //If a user deletes his own profile go to signin page. If admin (id=1), stay on page.
-        if (this.currentUserId > 1) {
-          //this removes the current username and resets the menu
-          this.userService.active$ = this.userService.getUserActiveState('', '');
-          this.router.navigate(['auth/signin']);
-        }
-      }, error => {
-        console.log('Error: ', error)
-        if (error.status === 401 || error.status === 403) {
-          // this.router.navigate(['signin']);
-        }
-      });
-    }
+    
+    //No one can delete user with userId == 1 (same as fkeyid). This is always the admin user, the first to sign up for an account.
+    if (this.fkeyId > 1) {
+      if (confirm("Warning:  This will delete this user and all properties and actions created by this user.")) {
+        this.userService.deleteUserByID(userId).subscribe(response => {
+          console.log(response);
+          window.alert("User Deleted Successfully");
+          this.router.navigate(['search']);
+          //If a user deletes his own profile go to signin page. If admin (id=1), stay on page.
+          if (this.currentUserId > 1) {
+            //this removes the current username and resets the menu
+            this.userService.active$ = this.userService.getUserActiveState('', '');
+            this.router.navigate(['auth/signin']);
+          }
+        }, error => {
+          console.log('Error: ', error)
+          if (error.status === 401 || error.status === 403) {
+            // this.router.navigate(['signin']);
+          }
+        });
+      }
+    } else (window.alert("You cannot delete the admin account."))
+
   }
 
   onNewUser() {

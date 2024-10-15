@@ -10,10 +10,8 @@ import { PostService } from 'src/app/services/post.service';
 })
 export class PostListComponent implements OnInit {
 
-
-  quote: any;
-
   postList: Post[] = [];
+  postLength: number = 0;
 
   currentPost: Post = new Post();
 
@@ -28,6 +26,7 @@ export class PostListComponent implements OnInit {
         return active.visible == 1
       });
       this.Comments = this.currentPost.comment
+      this.postLength = this.postList.length;
     });
   }
 

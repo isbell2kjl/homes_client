@@ -16,9 +16,12 @@
         <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">All
           Users</a>
         <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === false">All Users</a>
+        <a mat-list-item routerLink="/content-edit" *ngIf="(isHandset$ | async) === true"
+          (click)="drawer.toggle()">Site Content</a>
+        <a mat-list-item routerLink="/content-edit" *ngIf="(isHandset$ | async) === false">Site Content</a>
         <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === true"
           (click)="drawer.toggle()">Contact</a>
-        <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === false">Contact</a>
+        <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === false">Site Help</a>
         <a mat-list-item (click)="logout()" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Sign
           Out</a>
         <a mat-list-item (click)="logout()" *ngIf="(isHandset$ | async) === false">Sign Out</a>
@@ -48,7 +51,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <img src="assets/photos/house_outline.png" alt="" width="40">
-      <span class="site-title">My Advantage Properties</span>
+      <span class="site-title">{{pageContent.siteName}}</span>
     </mat-toolbar>
 
     <div class="content">

@@ -23,21 +23,27 @@ export class UserEditComponent {
     private location: Location) { }
 
   ngOnInit(): void {
-    console.log(this.activatedRoute.snapshot.params['id']);
-    this.id = this.activatedRoute.snapshot.params['id'];
 
-    this.newFormGroup();
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
 
-    this.userService.getUserByID(this.id).subscribe(foundUser => {
-      this.editUser = foundUser;
+      console.log(this.activatedRoute.snapshot.params['id']);
+      this.id = this.activatedRoute.snapshot.params['id'];
 
-      this.oldFormGroup();
+      this.newFormGroup();
 
-    })
+      this.userService.getUserByID(this.id).subscribe(foundUser => {
+        this.editUser = foundUser;
 
-    this.getCurrentUser();
+        this.oldFormGroup();
 
+      })
 
+      this.getCurrentUser();
+
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
+      
   }
 
   getCurrentUser() {

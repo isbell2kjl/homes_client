@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 import { ContactService } from 'src/app/services/contact.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { ContactService } from 'src/app/services/contact.service';
 export class WebmasterComponent implements OnInit {
 
 
-  
+
   name: string = '';
   email: string = '';
   phone: string = '';
@@ -18,10 +19,16 @@ export class WebmasterComponent implements OnInit {
   loading = false;
   captcha: string | null = "";
 
-  constructor(private contactService: ContactService, private router: Router) {}
+  constructor(private contactService: ContactService, private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
+      console.log("User logged in")
+
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
+
   }
 
   onSubmit() {

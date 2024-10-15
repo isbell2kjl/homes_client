@@ -33,37 +33,38 @@ export class PostActiveComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //retreives the search keyword previously saved in the Post Service, if it exists.
-    this.filterKeyword = this.postService.getFilterKeyword();
+    if (this.userService.currentUserValue) {
 
-    //Retreives from the Post Service the boolean true, if dataset is archived, or false, if dataset is active.
-    this.archived = this.postService.getArchiveFilter();
+      //retreives the search keyword previously saved in the Post Service, if it exists.
+      this.filterKeyword = this.postService.getFilterKeyword();
+
+      //Retreives from the Post Service the boolean true, if dataset is archived, or false, if dataset is active.
+      this.archived = this.postService.getArchiveFilter();
 
 
-    //If the dataset is archived BUT there is NO search keyword, apply the archived ALL filter.
-    if (this.archived == true && !this.filterKeyword) {
+      //If the dataset is archived BUT there is NO search keyword, apply the archived ALL filter.
+      if (this.archived == true && !this.filterKeyword) {
 
-      this.onArchive();
+        this.onArchive();
 
-      //If the dataset is NOT archived, BUT there IS a search keyword, apply the active search filter.
-    } else if (this.archived == false && this.filterKeyword) {
+        //If the dataset is NOT archived, BUT there IS a search keyword, apply the active search filter.
+      } else if (this.archived == false && this.filterKeyword) {
 
-      this.applyFilterToList();
+        this.applyFilterToList();
 
-      //If the dataset IS archived AND there is a search keyword, apply the Archived search filter.
-    } else if (this.archived == true && this.filterKeyword) {
+        //If the dataset IS archived AND there is a search keyword, apply the Archived search filter.
+      } else if (this.archived == true && this.filterKeyword) {
 
-      this.applyFilterToListA();
+        this.applyFilterToListA();
 
-      // If the dataset is NOT archived AND there is NO search keyword, load ALL the data.   
-    } else (this.loadAll())
+        // If the dataset is NOT archived AND there is NO search keyword, load ALL the data.   
+      } else (this.loadAll())
+
+    } else (window.alert("You must log in to access this path."),
+      this.userService.active$ = this.userService.getUserActiveState('', ''),
+      this.router.navigate(['auth/signin']))
 
   }
-
-  //When page loads, set the focus to the input field. (See Above)
-  // ngAfterViewInit() {
-  //   this.myInputField.nativeElement.focus();
-  // }
 
   loadAll() {
     this.filterKeyword = "";
@@ -119,7 +120,7 @@ export class PostActiveComponent implements OnInit {
     this.userService.getCurrentUser().subscribe(response => {
       this.currentUser = response.userName;
       this.currentUserId = response.userId!;
-      // console.log('Current User Id: ', this.currentUserId);
+      console.log('Current User Id: ', this.currentUserId);
     }, error => {
       console.log('Error: ', error)
       if (error.status === 401 || error.status === 403) {

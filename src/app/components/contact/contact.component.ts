@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContactService } from 'src/app/services/contact.service';
+import { PageContent } from 'src/app/models/page-content';
+import { ContentService } from 'src/app/services/content.service';
+
 
 @Component({
   selector: 'app-contact',
@@ -9,17 +12,19 @@ import { ContactService } from 'src/app/services/contact.service';
 })
 export class ContactComponent implements OnInit {
 
-    name: string = '';
-    email: string ='';
-    phone: string = '';
-    message: string= '';
-    loading = false;
-    captcha: string | null = "";
+  pageContent!: PageContent;
 
-  constructor(private contactService: ContactService, private router: Router) { }
+  name: string = '';
+  email: string = '';
+  phone: string = '';
+  message: string = '';
+  loading = false;
+  captcha: string | null = "";
+
+  constructor(private contactService: ContactService, private contentService: ContentService, private router: Router) { }
 
   ngOnInit(): void {
-
+    this.pageContent = this.contentService.getPageContent(); 
   }
 
   onSubmit() {
@@ -42,5 +47,5 @@ export class ContactComponent implements OnInit {
   resolved(captchaResponse: string | null) {
     this.captcha = captchaResponse;
   }
-  
+
 }

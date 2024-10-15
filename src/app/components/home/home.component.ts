@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PageContent } from 'src/app/models/page-content';
+import { ContentService } from 'src/app/services/content.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  pageContent!: PageContent;
+
+  constructor(private contentService: ContentService) { }
 
   ngOnInit(): void {
+    this.pageContent = this.contentService.getPageContent(); 
   }
 
 }

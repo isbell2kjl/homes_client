@@ -3,7 +3,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
+import { ContentService } from '../services/content.service';
 import { Router } from '@angular/router';
+import { PageContent } from '../models/page-content';
 
 
 
@@ -21,12 +23,18 @@ export class NavigationPageComponent {
       shareReplay()
     );
 
+  pageContent!: PageContent;
+
   currentUser?: string = "";
 
-  constructor(private breakpointObserver: BreakpointObserver, private userService: UserService, private router: Router) { }
+
+  constructor(private breakpointObserver: BreakpointObserver, private userService: UserService, private router: Router,
+    private contentService: ContentService
+  ) { }
 
   ngOnInit(): void {
     this.CheckCurrentUser();
+    this.pageContent = this.contentService.getPageContent(); 
   }
 
   CheckCurrentUser() {

@@ -9,8 +9,9 @@
             [(ngModel)]="currentPost.title"></textarea><br><br>
         <textarea placeholder="Enter Content" type="text" name="Content"
             [(ngModel)]="currentPost.content"></textarea><br><br>
-        <textarea placeholder="Enter Photo URL" type="text" name="imageUrl"
-            [(ngModel)]="currentPost.photoURL"></textarea><br><br>
+        <textarea
+            placeholder="Upload your image to a photo service, then paste the URL address here. You can right-click (or control-click for Mac users) on the desired image and choose either ‘Copy image address’ or ‘Copy Image Location’ from the context menu. Once you copy the image location or image address, simply paste it here and it will display on this website."
+            type="text" name="imageUrl" [(ngModel)]="currentPost.photoURL"></textarea><br><br>
         <!-- <label>Visible </label> -->
         <mat-checkbox [checked]="currentPost.visible === 1"
             (change)="currentPost.visible = $event.checked ? 1 : 0">Visible
