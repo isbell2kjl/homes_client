@@ -6,41 +6,33 @@
         <div class="grid-item"><img class="" width="" src="assets/photos/combined_houses.jpg" alt="..." />
         </div>  
         <div class="grid-item">
-            <h1 class="">Turn Your Dreams Into Reality</h1>
-            <p>We buy and sell distressed properties in the Puget Sound area to provide opportunites for owners to
-                recover from potential loss and to provide buyers the chance to turn their
-                dream home into reality.
-            </p>
-            <button mat-flat-button color="primary" routerLink="/post">Active Properties</button>
+            <h1 class="">{{pageContent.homeMainTitle}}</h1>
+            <p>{{pageContent.homeMainText}}</p>
+            <button mat-button color="primary" routerLink="/post">Active Properties</button>
         </div>
     </div>
     <!-- Call to Action-->
 
     <div class="paragraph-block">
-        <p class="">A win-win opportunity for home owners and buyers to achieve their goals and provide
-            a facelift to their neighborhoods and communities.
-        </p>
+        <p class="">{{pageContent.homeTagLine}}</p>
     </div>
 
     <!-- Content Row-->
     <div class="lower-grid">
         <div class="grid-item">
-            <h2 class="card-title">Short Time to Close</h2>
-            <p class="card-text">As we specialize in cash only transactions for properties in their current "as is" condition,
-                we can typically close on your property within 30-45 days, depending on title status.</p>
+            <h2 class="card-title">{{pageContent.homeSub1Title}}</h2>
+            <p class="card-text">{{pageContent.homeSub1Text}}</p>
                 <!-- <button mat-flat-button color="primary">More Info</button> -->
         </div>
         <div class="grid-item">
-            <h2 class="card-title">Any Condition</h2>
-            <p class="card-text">We buy properties in any condition. If you are unable to spend the extra time and money
-                to prepare your house for resale, we can make a great offer in its current condition.</p>
+            <h2 class="card-title">{{pageContent.homeSub2Title}}</h2>
+            <p class="card-text">{{pageContent.homeSub2Text}}</p>
                 <!-- <button mat-flat-button color="primary">More Info</button> -->
         </div>
         <div class="grid-item">
-            <h2 class="card-title">Personal Contact</h2>
-            <p class="card-text">We live and work in the Seattle area and can meet with you personally to address your concerns
-                and negotiate offers that make sense for you.</p>
-                <!-- <button mat-flat-button color="primary">More Info</button> -->
+            <h2 class="card-title">{{pageContent.homeSub3Title}}</h2>
+            <p class="card-text">{{pageContent.homeSub3Text}}</p>
+                <button mat-button color="primary" routerLink="/contact">Contact</button>
         </div>
     </div>
 </body>

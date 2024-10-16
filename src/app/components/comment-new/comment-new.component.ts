@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { Comment } from 'src/app/models/comment';
@@ -46,7 +46,15 @@ export class CommentNewComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.loadTasks();
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
+
+      this.loadTasks();
+
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
+
+
 
   }
 

@@ -25,10 +25,17 @@ export class UserSearchComponent {
   constructor(private userService: UserService, private router: Router,) { }
 
   ngOnInit(): void {
-    //retreive the search keyword previously saved in the User Service, if it exists.
-    this.filterKeyword = this.userService.getFilterKeyword();
-    this.getCurrentUser();
-    this.getFilteredUsers();
+
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
+
+      //retreive the search keyword previously saved in the User Service, if it exists.
+      this.filterKeyword = this.userService.getFilterKeyword();
+      this.getCurrentUser();
+      this.getFilteredUsers();
+
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
   }
 
   //if no search kewyord exists, show all the users.
@@ -40,8 +47,9 @@ export class UserSearchComponent {
         this.userService.setFilterKeyword("");
       }
     });
+
   }
- 
+
 
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe(response => {

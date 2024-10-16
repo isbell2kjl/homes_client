@@ -24,38 +24,35 @@ export class PostEditComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit(): void {
-    console.log(this.activatedRoute.snapshot.params['id']);
-    this.id = this.activatedRoute.snapshot.params['id'];
 
-    this.postService.getPostByID(this.id).subscribe(foundPost => {
-      this.currentPost = foundPost;
-      // console.log("Photo Url: " + this.currentPost.photoURL);
-      // console.log("Content: " + this.currentPost.content);
-      this.archive = foundPost.archive
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
 
+      console.log(this.activatedRoute.snapshot.params['id']);
+      this.id = this.activatedRoute.snapshot.params['id'];
 
-      // get the current user ID from local storage if user logged in.
-
-      this.getCurrentUser();
-
-      this.fkeyId = this.currentPost.userId_fk!;
-
-      // console.log("current UserID " + this.currentUserId);
-      // console.log("current FKey_ID " + this.fkeyId);
+      this.postService.getPostByID(this.id).subscribe(foundPost => {
+        this.currentPost = foundPost;
+        // console.log("Photo Url: " + this.currentPost.photoURL);
+        // console.log("Content: " + this.currentPost.content);
+        this.archive = foundPost.archive
 
 
-    });
+        // get the current user ID from local storage if user logged in.
+
+        this.getCurrentUser();
+
+        this.fkeyId = this.currentPost.userId_fk!;
+
+        // console.log("current UserID " + this.currentUserId);
+        // console.log("current FKey_ID " + this.fkeyId);
+
+
+      });
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
   }
 
-  // getCurrentUser() {
-  //   if (this.userService.currentUserValue) {
-  //     this.userService.getCurrentUser().subscribe(response => {
-  //       this.currentUserId = response.userId!;
-  //     });
-  //   } else (window.alert("In order to edit content, you must log in."),
-  //     this.userService.active$ = this.userService.getUserActiveState('', ''),
-  //     this.router.navigate(['auth/signin']))
-  // }
 
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe(response => {

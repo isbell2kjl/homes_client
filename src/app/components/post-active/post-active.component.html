@@ -5,7 +5,7 @@
             (ngModelChange)="searchByKeyword(searchkeyword.value)" name="searchKey" id="searchKey" placeholder="Filter content">
         <input *ngIf="archived === true" matInput #searchkeyword [(ngModel)]="filterKeyword" 
             (ngModelChange)="searchByKeywordA(searchkeyword.value)" name="searchKey" id="searchKey" placeholder="Filter content">
-        <mat-hint>Enter any content to filter posts</mat-hint>
+        <!-- <mat-hint>Enter any content to filter posts</mat-hint> -->
     </mat-form-field>
     <div class="active-wrapper">
         <span>Active Properties: <strong>{{postLength}}</strong></span>

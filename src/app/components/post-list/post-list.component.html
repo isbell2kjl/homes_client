@@ -1,19 +1,22 @@
-<!-- <h1>Your Daily Quotes</h1> -->
+<div class="header-wrapper">
+    @if (postLength == 0) {
+    <h2>There are no active properties for sale at this time.</h2>
+    }
+    @else {
+    <h2>Active Properties For Sale</h2>
+    }
+</div>
+
 <body>
-<div class="header-wrapper"></div>
 
-<!-- <div class="content-wrapper" *ngFor="let q of quote">
-    <h3>{{ q.text }} <i>{{q.reference}}</i></h3>
-    <small>{{ q.notice }}</small> 
-</div> -->
 
-<div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
-    <div class="content-wrapper"><strong>{{p.content}}</strong></div>
-    <img class="img" width="300" src="{{p.photoURL}}" alt="">
-    <div class="content-wrapper">{{p.title}}</div>
-    <!-- <div class="content-wrapper">{{p.posted | date:"MM/dd/yy, HH:mm"}}, <strong>{{p.userName}}</strong>
+    <div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
+        <div class="content-wrapper"><strong>{{p.content}}</strong></div>
+        <img class="img" width="300" src="{{p.photoURL}}" alt="">
+        <div class="content-wrapper">{{p.title}}</div>
+        <!-- <div class="content-wrapper">{{p.posted | date:"MM/dd/yy, HH:mm"}}, <strong>{{p.userName}}</strong>
         
     </div> -->
-    <div [hidden]="true">{{i}}</div>
-</div>
+        <div [hidden]="true">{{i}}</div>
+    </div>
 </body>

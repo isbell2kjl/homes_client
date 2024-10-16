@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { EmailFormatRegx } from 'src/app/helpers/constants';
 
 @Component({
@@ -16,28 +16,34 @@ export class UserEditComponent {
   id: string = "";
   editUser: User = new User();
   currentUserId?: number = 0;
-  editUserForm!: FormGroup;
+  editUserForm!: UntypedFormGroup;
 
 
   constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router,
     private location: Location) { }
 
   ngOnInit(): void {
-    console.log(this.activatedRoute.snapshot.params['id']);
-    this.id = this.activatedRoute.snapshot.params['id'];
 
-    this.newFormGroup();
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
 
-    this.userService.getUserByID(this.id).subscribe(foundUser => {
-      this.editUser = foundUser;
+      console.log(this.activatedRoute.snapshot.params['id']);
+      this.id = this.activatedRoute.snapshot.params['id'];
 
-      this.oldFormGroup();
+      this.newFormGroup();
 
-    })
+      this.userService.getUserByID(this.id).subscribe(foundUser => {
+        this.editUser = foundUser;
 
-    this.getCurrentUser();
+        this.oldFormGroup();
 
+      })
 
+      this.getCurrentUser();
+
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
+      
   }
 
   getCurrentUser() {
@@ -59,26 +65,26 @@ export class UserEditComponent {
   }
 
   oldFormGroup() {
-    this.editUserForm = new FormGroup({
-      firstName: new FormControl(this.editUser.firstName),
-      lastName: new FormControl(this.editUser.lastName),
-      email: new FormControl(this.editUser.email, [Validators.required, Validators.pattern(EmailFormatRegx)]),
-      userName: new FormControl(this.editUser.userName, [Validators.required, Validators.minLength(6)]),
-      city: new FormControl(this.editUser.city),
-      state: new FormControl(this.editUser.state),
-      country: new FormControl(this.editUser.country),
+    this.editUserForm = new UntypedFormGroup({
+      firstName: new UntypedFormControl(this.editUser.firstName),
+      lastName: new UntypedFormControl(this.editUser.lastName),
+      email: new UntypedFormControl(this.editUser.email, [Validators.required, Validators.pattern(EmailFormatRegx)]),
+      userName: new UntypedFormControl(this.editUser.userName, [Validators.required, Validators.minLength(6)]),
+      city: new UntypedFormControl(this.editUser.city),
+      state: new UntypedFormControl(this.editUser.state),
+      country: new UntypedFormControl(this.editUser.country),
     });
   }
 
   newFormGroup() {
-    this.editUserForm = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      email: new FormControl(null, [Validators.required, Validators.pattern(EmailFormatRegx)]),
-      userName: new FormControl(null, [Validators.required, Validators.minLength(6)]),
-      city: new FormControl(),
-      state: new FormControl(),
-      country: new FormControl(),
+    this.editUserForm = new UntypedFormGroup({
+      firstName: new UntypedFormControl(),
+      lastName: new UntypedFormControl(),
+      email: new UntypedFormControl(null, [Validators.required, Validators.pattern(EmailFormatRegx)]),
+      userName: new UntypedFormControl(null, [Validators.required, Validators.minLength(6)]),
+      city: new UntypedFormControl(),
+      state: new UntypedFormControl(),
+      country: new UntypedFormControl(),
     });
   }
 

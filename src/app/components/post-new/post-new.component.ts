@@ -14,10 +14,6 @@ import { UserService } from 'src/app/services/user.service';
 
 export class PostNewComponent implements OnInit {
 
-  //When page loads, set the focus to the input field.  See this solution:
-  //https://davidmcintosh.medium.com/auto-focusing-an-angular-input-the-easy-way-part-1-dcb1799e025f
-
-  // @ViewChild("myinput") myInputField!: ElementRef;
 
   newPost: Post = new Post();
 
@@ -42,7 +38,6 @@ export class PostNewComponent implements OnInit {
   quote: any;
   searchText: string = "";
 
-  // contentTemplate: string = "own: ,tel: ,cond: ugly ,dlnq: n  ,zest: $  , bd: , ba: , / sqft ,ofr: $ ,call-0 ";
 
   currentUser?: string = "";
   currentUserId?: number = 0;
@@ -55,13 +50,15 @@ export class PostNewComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getCurrentUser();
-  }
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
+      
+      this.getCurrentUser();
 
-  //When page loads, set the focus to the input field. (See Above)
-  // ngAfterViewInit() {
-  //   this.myInputField.nativeElement.focus();
-  // }
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
+
+  }
 
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe(response => {

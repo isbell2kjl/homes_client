@@ -9,7 +9,7 @@ import { UserComponent } from './components/user/user.component';
 import { PostNewComponent } from './components/post-new/post-new.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { PostEditComponent } from './components/post-edit/post-edit.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavigationPageComponent } from './navigation-page/navigation-page.component';
@@ -35,55 +35,49 @@ import { PostActiveComponent } from './components/post-active/post-active.compon
 import { ContactComponent } from './components/contact/contact.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule } from 'ng-recaptcha-2';
 import { UserService } from './services/user.service';
 import { WebmasterComponent } from './components/webmaster/webmaster.component';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    SignUpComponent,
-    SignInComponent,
-    UserComponent,
-    PostNewComponent,
-    PostListComponent,
-    PostEditComponent,
-    NavigationPageComponent,
-    UserEditComponent,
-    UserSearchComponent,
-    CommentNewComponent,
-    CommentEditComponent,
-    HomeComponent,
-    PostActiveComponent,
-    ContactComponent,
-    ForgotPasswordComponent,
-    ResetPasswordComponent,
-    WebmasterComponent,
-  ],
-  imports: [
 
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatSlideToggleModule,
-    MatButtonToggleModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    RecaptchaModule,
-  ],
-  providers: [{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [UserService] },],
-  bootstrap: [AppComponent]
-})
+
+@NgModule({ declarations: [
+        AppComponent,
+        SignUpComponent,
+        SignInComponent,
+        UserComponent,
+        PostNewComponent,
+        PostListComponent,
+        PostEditComponent,
+        NavigationPageComponent,
+        UserEditComponent,
+        UserSearchComponent,
+        CommentNewComponent,
+        CommentEditComponent,
+        HomeComponent,
+        PostActiveComponent,
+        ContactComponent,
+        ForgotPasswordComponent,
+        ResetPasswordComponent,
+        WebmasterComponent,
+    ],
+    bootstrap: [AppComponent], imports: [AppRoutingModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatSlideToggleModule,
+        MatButtonToggleModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        RecaptchaModule], providers: [{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [UserService] }, provideHttpClient(withInterceptorsFromDi()),] })
 export class AppModule { }

@@ -24,25 +24,32 @@ export class CommentEditComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit(): void {
-    console.log(this.activatedRoute.snapshot.params['id']);
-    this.id = this.activatedRoute.snapshot.params['id'];
 
-    this.CommentService.getCommentByID(this.id).subscribe(foundComment => {
-      this.currentComment = foundComment;
-      console.log("Text: " + this.currentComment.text);
-      this.postId = foundComment.postId_fk;
+    //Check if there is a user logged in.
+    if (this.userService.currentUserValue) {
+
+      console.log(this.activatedRoute.snapshot.params['id']);
+      this.id = this.activatedRoute.snapshot.params['id'];
+
+      this.CommentService.getCommentByID(this.id).subscribe(foundComment => {
+        this.currentComment = foundComment;
+        console.log("Text: " + this.currentComment.text);
+        this.postId = foundComment.postId_fk;
 
 
-      // get the current user ID from local storage if user logged in.
+        // get the current user ID from local storage if user logged in.
 
-      this.getCurrentUser();
+        this.getCurrentUser();
 
-      this.fkeyId = this.currentComment.usrId_fk!;
+        this.fkeyId = this.currentComment.usrId_fk!;
 
-      console.log("current UserID " + this.currentUserId);
-      console.log("current FKey_ID " + this.fkeyId);
+        console.log("current UserID " + this.currentUserId);
+        console.log("current FKey_ID " + this.fkeyId);
 
-    });
+      });
+
+    } else (window.alert("You must log in to access this path."),
+      this.router.navigate(['auth/signin']))
   }
 
   getCurrentUser() {

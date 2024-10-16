@@ -1,0 +1,63 @@
+<form class="post-wrapper" (ngSubmit)="onSubmit()">
+
+    <h1>Content Manager</h1>
+    <h3 style="color: red">You must click Update to save your changes</h3>
+    <!-- <button mat-flat-button color="primary">Update</button> -->
+
+    <div classe="form-container">
+        <div class="form-group">
+            <h2>Website Title</h2>
+            <label class="form-label">Website Name</label>
+            <input class="form-input" placeholder="Enter Website Name" name="siteName"
+                [(ngModel)]="pageContent.siteName"><br><br>
+        </div>
+
+        <div class="form-group">
+            <h2>Home Page</h2>
+            <label class="form-label">Main Title</label>
+            <input class="form-input" placeholder="Enter main title" type="text" name="homeMainTitle"
+                [(ngModel)]="pageContent.homeMainTitle"><br><br>
+            <label class="form-label">Main Text</label>
+            <textarea class="form-input" placeholder="Enter main text" type="text" name="homeMainText"
+                [(ngModel)]="pageContent.homeMainText"></textarea><br><br>
+            <label class="form-label">Tagline</label>
+            <textarea class="form-input" placeholder="Enter tagline" type="text" name="homeTagLine"
+                [(ngModel)]="pageContent.homeTagLine"></textarea><br><br>
+            <label class="form-label">Left Title</label>
+            <input class="form-input" placeholder="Enter lower left section title" type="text" name="homeSub1Title"
+                [(ngModel)]="pageContent.homeSub1Title"><br><br>
+            <label class="form-label">Left Text</label>
+            <textarea class="form-input" placeholder="Enter lower left section text" type="text" name="homeSub1Text"
+                [(ngModel)]="pageContent.homeSub1Text"></textarea><br><br>
+            <label class="form-label">Center Title</label>
+            <input class="form-input" placeholder="Enter lower middle section title" type="text" name="homeSub2Title"
+                [(ngModel)]="pageContent.homeSub2Title"><br><br>
+            <label class="form-label">Center Text</label>
+            <textarea class="form-input" placeholder="Enter lower middle section text" type="text" name="homeSub2Text"
+                [(ngModel)]="pageContent.homeSub2Text"></textarea><br><br>
+            <label class="form-label">Right Title</label>
+            <input class="form-input" placeholder="Enter lower right section title" type="text" name="homeSub3Title"
+                [(ngModel)]="pageContent.homeSub3Title"><br><br>
+            <label class="form-label">Right Text</label>
+            <textarea class="form-input" placeholder="Enter lower right section text" type="text" name="homeSub3Text"
+                [(ngModel)]="pageContent.homeSub3Text"></textarea><br><br>
+        </div>
+
+        <div class="form-group">
+            <h2>Contact Page</h2>
+            <label class="form-label">Main Text</label>
+            <textarea class="form-input" placeholder="Enter the Contact Page main text" type="text" name="contactText"
+                [(ngModel)]="pageContent.contactText"></textarea><br><br>
+            <label class="form-label">Email</label>
+            <input class="form-input" placeholder="Enter contact email" type="text" name="contactEmail"
+                [(ngModel)]="pageContent.contactEmail"><br><br>
+            <label class="form-label">Phone</label>
+            <input class="form-input" placeholder="Enter contact phone" type="text" name="contactPhone"
+                [(ngModel)]="pageContent.contactPhone"><br><br>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <button mat-flat-button color="primary">Update</button>
+        </div>
+    </div>
+</form>
