@@ -23,35 +23,29 @@ export class ContentEditComponent {
   constructor(private userService: UserService, private contentService: ContentService, private router: Router) { }
 
   ngOnInit(): void {
-
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
-
       this.pageContent = this.contentService.getPageContent();
-      this.getCurrentUser();
-
-
+      this.userService.getCurrentUser().subscribe({
+        next: (response) => {
+          //check if user is admin.  UserID 1 is always admin, the first person to sign up for an account.
+          if (response.userId == 1 ) {
+            this.currentUserId = response.userId!;
+          } else 
+            (window.alert("You must be the admin user toaccess this path."),
+              this.router.navigate(['active']))
+        },
+        error: (error) => {
+          console.error('Error retrieving userId');
+          if (error.status === 401 || error.status === 403) {
+            window.alert("Access timeout, you must log in again.");
+            this.userService.active$ = this.userService.getUserActiveState('', '');
+            this.router.navigate(['auth/signin']);
+          }
+        }
+      });
     } else (window.alert("You must log in to access this path."),
-      this.router.navigate(['auth/signin']))
-
-  }
-
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(response => {
-      this.currentUserId = response.userId!;
-      if (this.currentUserId != 1) {
-        (window.alert("You must be the admin user toaccess this path."),
-          this.router.navigate(['active']))
-      }
-      console.log('Current User Id: ', this.currentUserId);
-    }, error => {
-      console.log('Error: ', error)
-      if (error.status === 401 || error.status === 403) {
-        window.alert("Access timeout, you must log in again.");
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
-      }
-    });
+      this.router.navigate(['auth/signin']));
   }
 
   onSubmit(): void {
