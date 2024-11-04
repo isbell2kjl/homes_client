@@ -87,7 +87,7 @@ export class UserComponent implements OnInit {
 
   onNewUser() {
     if (confirm("This will log you out and open a new user sign up form.")) {
-      this.userService.Signout()
+      this.userService.signOut()
       //this removes the current username and resets the menu
       this.userService.active$ = this.userService.getUserActiveState('', '');
       this.router.navigate(['auth/signup-newuser-now'])

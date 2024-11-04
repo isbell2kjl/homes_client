@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Project } from 'src/app/models/project';
 import { ContactService } from 'src/app/services/contact.service';
-import { PageContent } from 'src/app/models/page-content';
-import { ContentService } from 'src/app/services/content.service';
+import { ProjectService } from 'src/app/services/project.service';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { ContentService } from 'src/app/services/content.service';
 })
 export class ContactComponent implements OnInit {
 
-  pageContent!: PageContent;
+  pageContent: Project = new Project();
 
   name: string = '';
   email: string = '';
@@ -21,10 +21,12 @@ export class ContactComponent implements OnInit {
   loading = false;
   captcha: string | null = "";
 
-  constructor(private contactService: ContactService, private contentService: ContentService, private router: Router) { }
+  constructor(private contactService: ContactService, private projectService: ProjectService, private router: Router) { }
 
   ngOnInit(): void {
-    this.pageContent = this.contentService.getPageContent(); 
+    this.projectService.getPageContent().subscribe(foundProject => {
+      this.pageContent = foundProject;
+    })
   }
 
   onSubmit() {

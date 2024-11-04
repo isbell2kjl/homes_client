@@ -1,29 +1,53 @@
-
-.header-wrapper {
-    margin: 2em 4.5em;
-    width: 80%;
-    padding: 0.5em;
-}
-
-.content-wrapper {
-    text-align: left;
-    width: 80%;
-    padding-left: 1em;
-    margin-bottom: 1em;
+body {
+    margin: 0; /* Remove default body margin */
+    padding: 20px; /* Add some padding around the body */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
 }
 
 .img {
     max-width: 100%;
     max-height: 100%;
+    padding: 20px;
 }
 
-.list-wrapper {
-    margin: 2em;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    border-color:darkblue;
-    border-style: solid;
-    /* width: 80%; */
-    width: fit-content;
-    padding: 1em;
-    justify-content: space-between;
+.header-wrapper {
+    margin-top: 20px;
+    text-align: center; /* Center the header text */
+    margin-bottom: 20px; /* Space below the header */
+}
+
+.form-container {
+    display: grid; /* Use grid for layout */
+    grid-template-columns: repeat(3, 1fr); /* 3 columns by default */
+    gap: 20px; /* Space between boxes */
+    max-width: 1200px; /* Optional: max width for the grid */
+    width: 100%; /* Full width */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) { /* Medium screens */
+    .form-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    }
+}
+
+@media (max-width: 480px) { /* Small screens */
+    .form-container {
+        grid-template-columns: 1fr; /* 1 column */
+    }
+}
+
+.form-wrapper {
+    border: 1px solid #ccc; /* Example border */
+    padding: 20px; /* Padding inside the box */
+    box-sizing: border-box; /* Include padding in width calculation */
+    display: flex; /* Use flexbox to center children */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+}
+
+.content-wrapper {
+    text-align: center; /* Center content text */
 }

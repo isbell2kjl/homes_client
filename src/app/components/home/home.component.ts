@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PageContent } from 'src/app/models/page-content';
-import { ContentService } from 'src/app/services/content.service';
+import { Project } from 'src/app/models/project';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-home',
@@ -9,12 +9,14 @@ import { ContentService } from 'src/app/services/content.service';
 })
 export class HomeComponent implements OnInit {
 
-  pageContent!: PageContent;
+  pageContent: Project = new Project();
 
-  constructor(private contentService: ContentService) { }
+  constructor(private projectService: ProjectService) { }
 
   ngOnInit(): void {
-    this.pageContent = this.contentService.getPageContent(); 
+    this.projectService.getPageContent().subscribe(foundProject => {
+      this.pageContent = foundProject;
+    })
   }
 
 }

@@ -48,7 +48,7 @@ export class PostService {
     return this.http.get<Post[]>(`${baseURL}/post/userpost/${userId}`);
 
   }
-
+ 
   createPost(newPost: Post) {
     let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {

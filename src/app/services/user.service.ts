@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { User } from '../models/user';
 import { BehaviorSubject, of} from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { baseURL } from '../helpers/constants';
 
 
@@ -12,12 +12,14 @@ import { baseURL } from '../helpers/constants';
 })
 export class UserService {
   private currentUserSubject: BehaviorSubject<User | null>;
-  public user: Observable<User | null>;
+  public currentUser: Observable<User | null>;
   //variables used to modify dropdown menu
   public active$!: Observable<boolean>;
   public currentName: string = "";
   private refreshTokenTimeout?: any;
   private filterKeyword: string = '';
+  private currentUserId: number | null = null;
+  private currentProjectId: number | null = null;
 
 
   //currently logged in user ideas from:
@@ -26,7 +28,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User | null>(null);
-    this.user = this.currentUserSubject.asObservable();
+    this.currentUser = this.currentUserSubject.asObservable();
   }
 
   public get currentUserValue() {
@@ -34,17 +36,29 @@ export class UserService {
   }
 
   // Get current user
-  getCurrentUser(): Observable<User> {
+  getCurrentUser(): Observable<any> {
 
     let tokenKey: any = this.currentUserValue!.token;
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
 
-    return this.http.get<User>(`${baseURL}/user/current`, {
-      headers: reqHeaders,
-    });
+    return this.http.get<any>(`${baseURL}/user/current`, {headers: reqHeaders }).pipe (
+      tap(user => {
+        if (user) {
+          this.currentUserId = user.userId;
+          this.currentProjectId = user.projId_fk;
+        }
+      })
+    );
+  }
 
+  getUserId(): number | null {
+    return this.currentUserId;
+  }
+
+  getProjectId(): number | null {
+    return this.currentProjectId
   }
 
   //method used to modify dropdown menu.
@@ -80,7 +94,7 @@ export class UserService {
       }));
   }
 
-  Signout() {
+  signOut() {
 
     let tokenKey: any = this.currentUserValue!.token;
     let reqHeaders = {

@@ -38,6 +38,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { RecaptchaModule } from 'ng-recaptcha-2';
 import { UserService } from './services/user.service';
 import { WebmasterComponent } from './components/webmaster/webmaster.component';
+import { ProjectEditComponent } from './components/project-edit/project-edit.component';
 
 
 
@@ -61,6 +62,7 @@ import { WebmasterComponent } from './components/webmaster/webmaster.component';
         ForgotPasswordComponent,
         ResetPasswordComponent,
         WebmasterComponent,
+        ProjectEditComponent,
     ],
     bootstrap: [AppComponent], imports: [AppRoutingModule,
         FormsModule,

@@ -3,9 +3,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
-import { ContentService } from '../services/content.service';
+import { Project } from '../models/project';
+import { ProjectService } from '../services/project.service';
 import { Router } from '@angular/router';
-import { PageContent } from '../models/page-content';
+
 
 
 
@@ -23,25 +24,36 @@ export class NavigationPageComponent {
       shareReplay()
     );
 
-  pageContent!: PageContent;
+  pageContent: Project = new Project();
 
   currentUser?: string = "";
+  currentProjectId?: number = 0;
 
 
   constructor(private breakpointObserver: BreakpointObserver, private userService: UserService, private router: Router,
-    private contentService: ContentService
-  ) { }
+    private projectService: ProjectService
+  ) {}
 
   ngOnInit(): void {
     this.CheckCurrentUser();
-    this.pageContent = this.contentService.getPageContent(); 
+    this.refreshContent();
+  }
+
+  refreshContent() {
+    this.projectService.getPageContent().subscribe(foundProject => {
+      this.pageContent = foundProject;
+    })
   }
 
   CheckCurrentUser() {
     //in case the page gets manually refreshed, this will maintain the current username in the menu.
     if (this.userService.currentUserValue) {
-      this.currentUser = this.userService.currentUserValue.userName;
-     
+
+      this.userService.getCurrentUser().subscribe(response => {
+        this.currentProjectId = response.projId_fk;
+        this.currentUser = response.userName;
+      });
+
       if (this.currentUser) {
         // Public boolean observable used to modify dropdown menu.
         this.userService.active$ = this.userService.getUserActiveState(
@@ -50,7 +62,7 @@ export class NavigationPageComponent {
         );
         console.log('Current User (from App Component): ', this.currentUser);
       } else {
-        window.alert('No active user signed in.')
+        console.log('No active user signed in.')
       }
     }
   }
@@ -64,7 +76,7 @@ export class NavigationPageComponent {
   }
 
   logout() {
-      this.userService.Signout();
+      this.userService.signOut();
       //this removes the current username and resets the menu
       this.userService.active$ = this.userService.getUserActiveState('', '');
       this.router.navigate(['auth/signin'])

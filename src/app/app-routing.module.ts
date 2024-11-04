@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 import { HomeComponent } from './components/home/home.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -16,16 +17,15 @@ import { ContactComponent } from './components/contact/contact.component';
 import { WebmasterComponent } from './components/webmaster/webmaster.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
-import { ContentEditComponent } from './components/content-edit/content-edit.component';
+import { TermsComponent } from './components/terms/terms.component';
+import { ProjectEditComponent } from './components/project-edit/project-edit.component';
 
-
-
-
-
+ 
 const routes: Routes = [
-  { path: "", redirectTo: "home", pathMatch: "full" },
+  { path: "", redirectTo: "auth/signin", pathMatch: "full" },
   { path: "home", component: HomeComponent },
   { path: "post", component: PostListComponent },
+  { path: "contact", component: ContactComponent },
   { path: "add", component: PostNewComponent },
   { path: "active", component: PostActiveComponent },
   { path: "edit/:id", component: PostEditComponent },
@@ -34,17 +34,17 @@ const routes: Routes = [
   { path: "auth/signup-newuser-now", component: SignUpComponent },
   { path: "auth/signin", component: SignInComponent },
   { path: "profile/:id", component: UserComponent },
-  { path: "profile/edit/:id", component: UserEditComponent },
+  { path: "profile/edit/:id", component: UserEditComponent, canDeactivate: [UnsavedChangesGuard] },
   { path: "search", component: UserSearchComponent },
-  { path: "contact", component: ContactComponent },
-  { path: "webmaster", component: WebmasterComponent},
+  { path: "webmaster", component: WebmasterComponent },
   { path: "forgot-password", component: ForgotPasswordComponent },
   { path: "reset-password", component: ResetPasswordComponent },
-  { path: "content-edit", component: ContentEditComponent }
+  { path: "project/:id", component: ProjectEditComponent},
+  { path: "terms", component: TermsComponent} 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled', enableTracing: false})],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled', enableTracing: false })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

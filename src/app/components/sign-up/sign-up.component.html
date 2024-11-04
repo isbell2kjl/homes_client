@@ -1,43 +1,45 @@
-<div class="form-wrapper">
+<body>
+    <div class="form-wrapper">
 
-    <form [formGroup]="newUserForm" (ngSubmit)="signUp()">
-
-        <input placeholder="Enter User Name" type="text" formControlName="userName">
-        <div>
-            <span style="color: red" *ngIf="!newUserForm.get('userName')?.valid">
-                Must be at least 6 characters</span>
-        </div><br><br>
-        <!-- <input placeholder="Enter Password" type="password" formControlName="password">
+        <form [formGroup]="newUserForm" (ngSubmit)="signUp()">
+            <h1 class="input-wrapper">Sign Up</h1>
+            <input class="input-wrapper" placeholder="Enter User Name" type="text" formControlName="userName">
+            <div class="input-wrapper">
+                <span style="color: red" *ngIf="!newUserForm.get('userName')?.valid">
+                    Must be at least 6 characters</span>
+            </div><br><br>
+            <!-- <input placeholder="Enter Password" type="password" formControlName="password">
         <div>
             <span style="color: red" *ngIf="!newUserForm.get('password')?.valid">
                 At least: 1 uppercase, 1 lowercase, 1digit, 1special character,
                 8 characters long.</span>
         </div><br><br> -->
 
-        <input placeholder="Enter First Name" type="text" formControlName="firstName"><br><br>
+            <input class="input-wrapper" placeholder="Enter First Name" type="text" formControlName="firstName"><br><br>
 
-        <input placeholder="Enter Last Name" type="text" formControlName="lastName"><br><br>
+            <input class="input-wrapper" placeholder="Enter Last Name" type="text" formControlName="lastName"><br><br>
 
-        <input placeholder="Enter Email" type="text" formControlName="email">
-        <div>
-            <span style="color: red" *ngIf="!newUserForm.get('email')?.valid">
-                The email format is incorrect</span>
-        </div><br><br>
-        <!-- <input placeholder="Enter City" type="text" formControlName="city"><br><br>
+            <input class="input-wrapper" placeholder="Enter Email" type="text" formControlName="email">
+            <div class="input-wrapper">
+                <span style="color: red" *ngIf="!newUserForm.get('email')?.valid">
+                    The email format is incorrect</span>
+            </div><br><br>
+            <!-- <input placeholder="Enter City" type="text" formControlName="city"><br><br>
 
         <input placeholder="Enter State" type="text" formControlName="state"><br><br>
 
         <input placeholder="Enter Country" type="text" formControlName="country"><br><br> -->
 
-        <div class="d-flex justify-content-center">
-            <div [hidden]="captcha" id="captcha-wrapper">
-                <re-captcha (resolved)="resolved($event)"
-                    siteKey="6LdNGyEqAAAAAD94Gnk-Uv6_Ia0pzbHyJ99jQQjM"></re-captcha>
+            <div class="recaptcha-container">
+                <div [hidden]="captcha">
+                    <re-captcha (resolved)="resolved($event)"
+                        siteKey="6LdNGyEqAAAAAD94Gnk-Uv6_Ia0pzbHyJ99jQQjM"></re-captcha>
+                </div>
+                <div [hidden]="!captcha">
+                    <button mat-flat-button class="input-wrapper" mat-flat-button color="primary"
+                        [class.spinner]="loading" [disabled]="loading">Submit</button>
+                </div>
             </div>
-            <div [hidden]="!captcha">
-                <button mat-flat-button class="input-wrapper" mat-flat-button color="primary" [class.spinner]="loading"
-                    [disabled]="loading">Submit</button> 
-            </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
+</body>
