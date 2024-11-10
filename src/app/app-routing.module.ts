@@ -30,7 +30,7 @@ const routes: Routes = [
   { path: "active", component: PostActiveComponent },
   { path: "edit/:id", component: PostEditComponent },
   { path: "post/:id", component: CommentNewComponent },
-  { path: "action/:id", component: CommentEditComponent },
+  { path: "action/:id", component: CommentEditComponent, canDeactivate: [UnsavedChangesGuard]  },
   { path: "auth/signup-newuser-now", component: SignUpComponent },
   { path: "auth/signin", component: SignInComponent },
   { path: "profile/:id", component: UserComponent },

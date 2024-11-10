@@ -105,6 +105,7 @@ export class UserEditComponent implements OnInit, CanComponentDeactivate {
         window.alert('Please provide all the required values!');
       } else {
         this.editUser = this.editUserForm.value;
+        console.log('current user' + this.editUser)
         this.userService.editUserByID(this.id, this.editUser).subscribe(response => {
           console.log(response);
           //this sets the form.dirty status to false.

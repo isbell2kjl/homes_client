@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Comment } from '../models/comment';
 import { UserService } from './user.service';
 import { baseURL } from '../helpers/constants';
+import { CommentUpdate } from '../models/commentUpdate';
 
 @Injectable({
   providedIn: 'root'
@@ -38,12 +39,12 @@ export class CommentService {
   
   }
 
-  editCommentByID(comId: string, edittedComment: Comment): Observable<Comment> {
+  editCommentByID(comId: string, data: CommentUpdate): Observable<CommentUpdate> {
     let tokenKey: any = this.userService.currentUserValue!.token
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.put<Comment>(`${baseURL}/comment/${comId}`, edittedComment, { headers: reqHeaders });
+    return this.http.put<CommentUpdate>(`${baseURL}/comment/${comId}`, data, { headers: reqHeaders });
   
   }
 

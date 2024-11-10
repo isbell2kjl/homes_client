@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 // import { StrongPasswordRegx } from 'src/app/helpers/constants';
 import { EmailFormatRegx } from 'src/app/helpers/constants';
+import { MyRecaptchaKey } from 'src/app/helpers/constants';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class SignUpComponent implements OnInit {
 
   newUser: User = new User();
 
-  newUserForm!: UntypedFormGroup;
+  newUserForm!: FormGroup;
 
   currentUser?: string = "";
   currentUserId: number = 0;
@@ -28,8 +29,9 @@ export class SignUpComponent implements OnInit {
   password: string = "";
   loading = false;
   captcha: string | null = "";
+  siteKey: string = MyRecaptchaKey;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
 
@@ -38,22 +40,28 @@ export class SignUpComponent implements OnInit {
   }
 
   myFormGroup() {
-    this.newUserForm = new UntypedFormGroup({
+    this.newUserForm = this.formBuilder.group({
       //not required fields to sign up
-      firstName: new UntypedFormControl(),
-      lastName: new UntypedFormControl(),
-      email: new UntypedFormControl(null, [Validators.required, Validators.pattern(EmailFormatRegx)]),
+      firstName: [""],
+      lastName: [""],
+      email: [null, [Validators.required, Validators.pattern(EmailFormatRegx)]],
       //required fields to sign up
-      userName: new UntypedFormControl(null, [Validators.required, Validators.minLength(6)]),
-      // password: new FormControl(null, [Validators.required, Validators.pattern(StrongPasswordRegx)]),
-      // city: new FormControl(),
-      // state: new FormControl(),
-      // country: new FormControl(),
+      userName: [null, [Validators.required, Validators.minLength(6)]],
+      // password: [null, [Validators.required, Validators.pattern(StrongPasswordRegx)]],
+      // city: [""],
+      // state: [""],
+      // country: [""],
     });
   }
 
-  signUp() {
-    this.loading = true
+  signUp(event: Event) {
+    //prevent the SignIn from bypassing captcha
+    if (!this.captcha) {
+      event.preventDefault();
+      window.alert("You must verify that you're not a robot")
+      return;
+    } else
+      this.loading = true
     if (!this.newUserForm.valid) {
       window.alert('Please provide all the required values!');
       this.loading = false
@@ -61,7 +69,7 @@ export class SignUpComponent implements OnInit {
       this.newUser = this.newUserForm.value;
       this.checkUserName();
       this.checkEmail();
-      if(this.emailError) {window.alert("Try a different email address")};
+      if (this.emailError) { window.alert("Try a different email address") };
       this.newUser.password = this.randomString(10);
       this.userService.signUp(this.newUser).subscribe(() => {
         this.confirmEmail();
@@ -114,8 +122,19 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  resolved(captchaResponse: string | null) {
+   //when user checks "I'm not a robot"
+   resolved(captchaResponse: string | null) {
     this.captcha = captchaResponse;
+  }
+
+  //prevent the ENTER key from bypassing captcha
+  onEnter(event: Event) {
+    const keyboardEvent = event as KeyboardEvent;
+    if (!this.captcha) {
+      keyboardEvent.preventDefault();
+      window.alert("You must verify that you're not a robot")
+      return;
+    }
   }
 
   randomString(length: number) {

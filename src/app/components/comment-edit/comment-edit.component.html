@@ -2,10 +2,9 @@
     <button mat-button color="primary" (click)="back()">Back</button>
 </div>
 
-<form class="post-wrapper" (ngSubmit)="onSubmit()">
+<form [formGroup]="editCommentForm" class="post-wrapper" (ngSubmit)="onSubmit()">
     <div>
-        <textarea placeholder="Enter Action" type="text" name="Text"
-            [(ngModel)]="currentComment.text"></textarea><br><br>
+        <textarea placeholder="Enter Action" type="text" formControlName="text"></textarea><br><br>
     </div>
 
     <div class="d-flex justify-content-center">
