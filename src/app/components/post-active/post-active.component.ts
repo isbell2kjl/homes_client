@@ -1,10 +1,9 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-post-active',
@@ -21,6 +20,8 @@ export class PostActiveComponent implements OnInit {
 
   Comments?: [] = [];
 
+  projectId: number = 0;
+
   currentUser?: string = "";
   currentUserId: number = 0;
   postLength: number = 0;
@@ -34,6 +35,9 @@ export class PostActiveComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.userService.currentUserValue) {
+
+    this.projectId = this.userService.getProjectId()
+    
 
       //retreives the search keyword previously saved in the Post Service, if it exists.
       this.filterKeyword = this.postService.getFilterKeyword();
@@ -69,7 +73,7 @@ export class PostActiveComponent implements OnInit {
   loadAll() {
     this.filterKeyword = "";
     this.archived = false;
-    this.postService.getAllPosts().subscribe(foundposts => {
+    this.postService.getProjectPosts(String(this.projectId)).subscribe(foundposts => {
       // this.postList = foundposts;
       this.postList = foundposts.filter(function (active, index) {
         return active.archive == 0
@@ -86,7 +90,7 @@ export class PostActiveComponent implements OnInit {
   //Apply the active search filter if the the keyword exists.
   applyFilterToList() {
     if (this.filterKeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword)).subscribe(foundSearch => {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword),this.projectId).subscribe(foundSearch => {
         console.log(foundSearch);
         this.postList = foundSearch.filter(function (active, index) {
           return active.archive == 0
@@ -102,7 +106,7 @@ export class PostActiveComponent implements OnInit {
   //Apply the archived search filter if the the keyword exists.
   applyFilterToListA() {
     if (this.filterKeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword)).subscribe(foundSearch => {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword),this.projectId).subscribe(foundSearch => {
         console.log(foundSearch);
         this.postList = foundSearch.filter(function (active, index) {
           return active.archive == 1
@@ -144,7 +148,7 @@ export class PostActiveComponent implements OnInit {
   //The active search filter is applied when the user types a value into the search input field.
   searchByKeyword(searchkeyword: any) {
     if (searchkeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword),this.projectId).subscribe(foundSearch => {
         console.log(foundSearch);
         this.postList = foundSearch.filter(function (active, index) {
           return active.archive == 0
@@ -165,7 +169,7 @@ export class PostActiveComponent implements OnInit {
   //If archived, use this search filter when user enters a search keyword into the input field.
   searchByKeywordA(searchkeyword: any) {
     if (searchkeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundSearch => {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword),this.projectId).subscribe(foundSearch => {
         console.log(foundSearch);
 
         this.postList = foundSearch.filter(function (active, index) {
@@ -187,7 +191,7 @@ export class PostActiveComponent implements OnInit {
   //Apply or remove the archive filter when the archive toggle is changed.
   onArchive() {
     if (this.archived === true) {
-      this.postService.getAllPosts().subscribe(foundposts => {
+      this.postService.getProjectPosts(String(this.projectId)).subscribe(foundposts => {
         // this.postList = foundposts;
         this.postList = foundposts.filter(function (active, index) {
           return active.archive == 1

@@ -39,9 +39,18 @@ export class PostService {
 
   }
 
-  getPostsBySearch(searchKeyword: string): Observable<Post[]> {
-    return this.http.get<Post[]>(`${baseURL}/post/search?name=${searchKeyword}`);
+  getProjectPosts(projectId: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`${baseURL}/post/projectposts/${projectId}`);
 
+  }
+
+  // getPostsBySearch(searchKeyword: string): Observable<Post[]> {
+  //   return this.http.get<Post[]>(`${baseURL}/post/search?name=${searchKeyword}`);
+
+  // }
+
+  getPostsBySearch(searchKeyword: string, projectId: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`${baseURL}/post/search?name=${searchKeyword}&projectId=${projectId}`);
   }
 
   getUserPosts(userId: number): Observable<Post[]> {
@@ -59,9 +68,9 @@ export class PostService {
   
   }
 
-  getPostByID(postId: string): Observable<Post> {
-    return this.http.get<Post>(`${baseURL}/post/${postId}`);
-  }
+  getPostByID(postId: string): Observable<Post> { 
+    return this. http.get<Post>(`${baseURL}/post/${postId}`);
+  } 
 
   editPostByID(postId: string, edittedPost: Post): Observable<Post> {
     let tokenKey: any = this.userService.currentUserValue!.token

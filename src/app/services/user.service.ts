@@ -19,7 +19,7 @@ export class UserService {
   private refreshTokenTimeout?: any;
   private filterKeyword: string = '';
   private currentUserId: number | null = null;
-  private currentProjectId: number | null = null;
+  private currentProjectId: number = 0;
 
 
   //currently logged in user ideas from:
@@ -57,7 +57,7 @@ export class UserService {
     return this.currentUserId;
   }
 
-  getProjectId(): number | null {
+  getProjectId(): number {
     return this.currentProjectId
   }
 

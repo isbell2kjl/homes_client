@@ -4,18 +4,18 @@
 
 <h1>Enter New Property</h1>
 
-<form class="post-wrapper" (ngSubmit)="addPost()">
+<form [formGroup]="newPostForm" class="post-wrapper" (ngSubmit)="addPost()">
     <div>
-        <input placeholder="Enter Street Address" type="text" name="address" [(ngModel)]="column01">
+        <input placeholder="Enter Street Address" type="text" name="address" formControlName="address">
     </div>
     <div>
-        <input placeholder="City" type="text" name="address" [(ngModel)]="column02">
+        <input placeholder="City" type="text" name="address" formControlName="city">
     </div>
     <div>
-        <input placeholder="State" type="text" name="address" [(ngModel)]="column03">
+        <input placeholder="State" type="text" name="address" formControlName="state">
     </div>
     <div>
-        <input placeholder="Zip" type="text" name="address" [(ngModel)]="column04">
+        <input placeholder="Zip" type="text" name="address" formControlName="zip">
     </div>
     <!-- <p class="content-wrapper"><strong>User defined notes: call code example (0-no answer,1-not interested,2-potential
             deal)</strong>
@@ -23,48 +23,47 @@
     <div class="responsive-table">
         <div class="table-row">
             <div>
-                <input placeholder="Owner" type="text" name="content" [(ngModel)]="column1">
+                <input placeholder="Owner" type="text" formControlName="owner">
             </div>
             <div>
-                <input placeholder="Telephone" type="text" name="content" [(ngModel)]="column2">
+                <input placeholder="Telephone" type="text" formControlName="telephone">
             </div>
             <div>
-                <input placeholder="Call 0,1,2" type="text" name="content" [(ngModel)]="column3">
+                <input placeholder="Call 0,1,2" type="text" formControlName="call">
             </div>
             <div>
-                <input placeholder="Condition" type="text" name="content" [(ngModel)]="column4 ">
+                <input placeholder="Condition" type="text" formControlName="condition">
             </div>
             <div>
-                <input placeholder="DELQ y/n" type="text" name="content" [(ngModel)]="column5">
+                <input placeholder="DELQ y/n" type="text" formControlName="delinquent">
             </div>
             <div>
-                <input placeholder="Bed" type="text" name="content" [(ngModel)]="column6">
+                <input placeholder="Bed" type="text" formControlName="bed">
             </div>
             <div>
-                <input placeholder="Bath" type="text" name="content" [(ngModel)]="column7">
+                <input placeholder="Bath" type="text" formControlName="bath">
             </div>
             <div>
-                <input placeholder="Sqft" type="text" name="content" [(ngModel)]="column8">
+                <input placeholder="Sqft" type="text" formControlName="sqft">
             </div>
             <div>
-                <input placeholder="Zest 123K" type="text" name="content" [(ngModel)]="column9">
+                <input placeholder="Zest 123K" type="text" formControlName="zestimate">
             </div>
             <div>
-                <input placeholder="Offer 123K" type="text" name="content" [(ngModel)]="column10">
+                <input placeholder="Offer 123K" type="text" formControlName="offer">
             </div>
         </div>
     </div>
 
-    <textarea class="content-wrapper" placeholder="Post additional notes" type="text" name="content"
-        [(ngModel)]="notes">
-    </textarea>
+    <textarea class="content-wrapper" placeholder="Post additional notes" type="text"
+        formControlName="notes"></textarea>
 
     <div class="action-wrapper">
-        <!-- <div class="d-flex justify-content-start"> -->
+
         <div class="active-wrapper">
-            <mat-checkbox class="active" [checked]="newPost.visible === 1"
-                (change)="newPost.visible = $event.checked ? 1 : 0">
-                Visible to public </mat-checkbox>
+            <mat-checkbox class="active" formControlName="visible">
+                Visible to public
+            </mat-checkbox>
             <button class="active" mat-flat-button color="primary">Add Post</button><br>
         </div>
     </div>

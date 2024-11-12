@@ -6,13 +6,15 @@ import { PostService } from 'src/app/services/post.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { UserService } from 'src/app/services/user.service';
 import { ViewportScroller, Location } from '@angular/common';
+import { FormGroup, FormControl } from '@angular/forms';
+import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.interface';
 
 @Component({
   selector: 'app-comment-new',
   templateUrl: './comment-new.component.html',
   styleUrls: ['./comment-new.component.css']
 })
-export class CommentNewComponent implements OnInit {
+export class CommentNewComponent implements OnInit, CanComponentDeactivate {
 
   commentList: Comment[] = [];
 
@@ -26,7 +28,13 @@ export class CommentNewComponent implements OnInit {
 
   currentPost: Post = new Post();
 
+  newComment: Comment = new Comment();
 
+  //this initializes the FormGroup, 
+  // only used for "text" property
+  newCommentForm = new FormGroup({
+    text: new FormControl(''),
+  });
 
   currentContent?: string = "";
   currentPostDate?: string = "";
@@ -34,11 +42,6 @@ export class CommentNewComponent implements OnInit {
   currentAddress?: string = "";
   postUser?: string = "";
   postUsrId?: number = 0;
-
-
-  newComment: Comment = new Comment();
-
-
 
   constructor(private postService: PostService, private commentService: CommentService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private viewportScroller: ViewportScroller,
@@ -53,12 +56,7 @@ export class CommentNewComponent implements OnInit {
 
     } else (window.alert("You must log in to access this path."),
       this.router.navigate(['auth/signin']))
-
-
-
   }
-
-
 
   loadTasks() {
 
@@ -73,12 +71,8 @@ export class CommentNewComponent implements OnInit {
       this.currentPostDate = this.currentPost.posted
       this.currentPhoto = this.currentPost.photoURL
       this.currentAddress = this.currentPost.title
-      //Need to modify backend in order to display userName
-      // this.postUser = this.currentPost.userName
+      this.postUser = this.currentPost.userName
       this.postUsrId = this.currentPost.userId_fk
-
-      // console.log("postUser: " + this.postUser)
-
 
       this.commentService.getPostComments(this.numId).subscribe(response => {
         this.commentList = response;
@@ -99,7 +93,6 @@ export class CommentNewComponent implements OnInit {
       this.currentUser = response.userName;
       this.currentUserId = response.userId!;
       this.userFkeyId = this.currentUserId;
-      // console.log('Current User Id: ', this.currentUserId);
     }, error => {
       console.log('Error: ', error)
       if (error.status === 401 || error.status === 403) {
@@ -114,14 +107,23 @@ export class CommentNewComponent implements OnInit {
     this.location.back()
   }
 
+  //When any value is changed, the form.dirty is set to true.
+  isFormDirty(): boolean {
+    return this.newCommentForm && this.newCommentForm.dirty;
+  }
+
   addComment() {
+    //assign foreign keys to newComment object values.
     this.newComment.usrId_fk = this.userFkeyId;
     this.newComment.postId_fk = Number(this.id);
-
+    //assign the new Text entered by user to the newComment object's text value.
+    this.newComment.text = this.newCommentForm.get('text')?.value!;
+    //use the newComment object to update the database.
     this.commentService.createComment(this.newComment).subscribe(() => {
       window.alert("Created Comment Successfully");
       this.loadTasks();
-      this.newComment.text = "";
+      // Reset the text control to an empty string, which also sets formControl to 'pristine'
+      this.newCommentForm.get('text')?.reset('');
     }, error => {
       console.log('Error: ', error)
       if (error.status === 401 || error.status === 403) {

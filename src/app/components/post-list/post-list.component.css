@@ -7,9 +7,11 @@ body {
 }
 
 .img {
-    max-width: 100%;
-    max-height: 100%;
-    padding: 20px;
+    display: block; /* Remove inline padding/margins from images */
+    margin: 20px auto; /* Center image horizontally */
+    max-width: 100%; /* Ensure the image fits inside the container */
+    height: auto; /* Maintain aspect ratio */
+
 }
 
 .header-wrapper {

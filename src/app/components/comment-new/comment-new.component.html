@@ -18,8 +18,8 @@
 
 
 <div>
-    <form class="post-wrapper" (ngSubmit)="addComment()">
-        <textarea placeholder="Post new Action" type="text" name="text" [(ngModel)]="newComment.text"></textarea>
+    <form  [formGroup]="newCommentForm" class="post-wrapper" (ngSubmit)="addComment()">
+        <textarea placeholder="Post new Action" type="text" formControlName="text"></textarea>
         <br><br>
         <button mat-flat-button color="primary">Add Action</button>
     </form>

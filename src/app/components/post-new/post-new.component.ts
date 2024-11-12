@@ -4,6 +4,8 @@ import { Location } from '@angular/common';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
+import { FormGroup, FormControl } from '@angular/forms';
+import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.interface';
 
 @Component({
   selector: 'app-post-new',
@@ -12,34 +14,31 @@ import { UserService } from 'src/app/services/user.service';
 })
 
 
-export class PostNewComponent implements OnInit {
+export class PostNewComponent implements OnInit, CanComponentDeactivate {
 
+  //this initializes the FormGroup.
+  newPostForm = new FormGroup({
+    address: new FormControl(''), //address
+    city: new FormControl(''), //city
+    state: new FormControl(''), //state
+    zip: new FormControl(''), //zip
+    owner: new FormControl(''), //owner
+    telephone: new FormControl(''), //telephone
+    call: new FormControl(''), //call status
+    condition: new FormControl(''), //condition
+    delinquent: new FormControl(''), //delinquint status
+    bed: new FormControl(''), //bed
+    bath: new FormControl(''), //bath
+    sqft: new FormControl(''), //square feet
+    zestimate: new FormControl(''), //Zestimate
+    offer: new FormControl(''),//My offer
+    notes: new FormControl(''),
+    visible: new FormControl(0),
+  });
 
   newPost: Post = new Post();
-
-  column01: string = ''; //address
-  column02: string = ''; //city
-  column03: string = ''; //state
-  column04: string = ''; //zip
-  column1: string = ''; //owner
-  column2: string = ''; //telephone
-  column3: string = ''; //call status
-  column4: string = ''; //condition
-  column5: string = ''; //delinquint status
-  column6: string = ''; //bed
-  column7: string = ''; //bath
-  column8: string = ''; //square feet
-  column9: string = ''; //Zestimate
-  column10: string = '';//My offer
-  notes: string = '';
   addressString: string = '';
   concatenatedString: string = '';
-
-  quote: any;
-  searchText: string = "";
-
-
-  currentUser?: string = "";
   currentUserId?: number = 0;
 
 
@@ -52,7 +51,13 @@ export class PostNewComponent implements OnInit {
 
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
-      
+
+      // Map `visible` control values between true/false and 1/0
+      this.newPostForm.get('visible')?.valueChanges.subscribe((checked) => {
+        this.newPostForm.patchValue({ visible: checked ? 1 : 0 }, { emitEvent: false });
+      });
+
+
       this.getCurrentUser();
 
     } else (window.alert("You must log in to access this path."),
@@ -63,7 +68,6 @@ export class PostNewComponent implements OnInit {
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe(response => {
       this.currentUserId = response.userId!;
-      // console.log('Current User Id: ', this.currentUserId);
     }, error => {
       console.log('Error: ', error)
       if (error.status === 401 || error.status === 403) {
@@ -76,32 +80,38 @@ export class PostNewComponent implements OnInit {
 
   updateAddressString() {
     this.addressString = [
-      this.column01,
-      this.column02,
-      this.column03,
-      this.column04
-    ].join(', ');
+      this.newPostForm.get('address')?.value,
+      this.newPostForm.get('city')?.value,
+      this.newPostForm.get('state')?.value,
+      this.newPostForm.get('zip')?.value
+    ].filter(value => value).join(', ');
   }
 
   updateConcatenatedString() {
     this.concatenatedString = [
-      ('Own-' + this.column1),
-      ('Tel-' + this.column2),
-      ('Call-' + this.column3),
-      ('Cond-' + this.column4),
-      ('Delq-' + this.column5),
-      (this.column6 + 'bd'),
-      (this.column7 + 'ba'),
-      (this.column8 + 'sqft'),
-      ('$' + this.column9),
-      ('$' + this.column10),
-      this.notes
-      // ].join('\t');
-    ].join(', ');
+      'Own-' + this.newPostForm.get('owner')?.value,
+      'Tel-' + this.newPostForm.get('telephone')?.value,
+      'Call-' + this.newPostForm.get('call')?.value,
+      'Cond-' + this.newPostForm.get('condition')?.value,
+      'Delq-' + this.newPostForm.get('delinquent')?.value,
+      this.newPostForm.get('bed')?.value + 'bd',
+      this.newPostForm.get('bath')?.value + 'ba',
+      this.newPostForm.get('sqft')?.value + 'sqft',
+      '$' + this.newPostForm.get('zestimate')?.value,
+      '$' + this.newPostForm.get('offer')?.value,
+      this.newPostForm.get('notes')?.value
+    ]
+      .filter(value => value) // Filter out null/undefined/empty values
+      .join(', '); // Join with a comma and space
   }
 
   back(): void {
     this.location.back()
+  }
+
+  //When any value is changed, the form.dirty is set to true.
+  isFormDirty(): boolean {
+    return this.newPostForm && this.newPostForm.dirty;
   }
 
   addPost() {
@@ -120,17 +130,7 @@ export class PostNewComponent implements OnInit {
       this.getCurrentUser();
       this.newPost.title = "";
       this.newPost.content = "";
-      this.column1 = "";
-      this.column2 = "";
-      this.column3 = "";
-      this.column4 = "";
-      this.column5 = "";
-      this.column6 = "";
-      this.column7 = "";
-      this.column8 = "";
-      this.column9 = "";
-      this.column10 = "";
-      this.notes = "";
+      this.newPostForm.reset();
       this.router.navigate(['active']);
     }, error => {
       console.log('Error: ', error)
