@@ -35,11 +35,6 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.myFormGroup();
-
-  }
-
-  myFormGroup() {
     this.newUserForm = this.formBuilder.group({
       //not required fields to sign up
       firstName: [""],
@@ -52,6 +47,7 @@ export class SignUpComponent implements OnInit {
       // state: [""],
       // country: [""],
     });
+
   }
 
   signUp(event: Event) {

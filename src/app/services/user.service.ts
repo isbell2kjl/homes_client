@@ -106,13 +106,13 @@ export class UserService {
     this.currentUserSubject.next(null);
 }
 
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${baseURL}/user`);
+  getAllUsers(projectId: string): Observable<User[]> {
+    return this.http.get<User[]>(`${baseURL}/user/project/${projectId}`);
 
   }
 
-  getUsersBySearch(searchKeyword: string): Observable<User[]> {
-    return this.http.get<User[]>(`${baseURL}/user/search?name=${searchKeyword}`);
+  getUsersBySearch(searchKeyword: string, projectId: number): Observable<User[]> {
+    return this.http.get<User[]>(`${baseURL}/user/search?name=${searchKeyword}&projectId=${projectId}`);
 
   }
 

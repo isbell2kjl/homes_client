@@ -10,27 +10,27 @@
         <!-- <h1 class="input-wrapper">Edit User Profile</h1> -->
 
         <label>User Name </label>
-        <input placeholder="Enter UserName" type="text" name="userName" formControlName="userName">
+        <input placeholder="Enter UserName" type="text" formControlName="userName">
         <div>
             <span style="color: red" *ngIf="!editUserForm.get('userName')?.valid">
                 Must be at least 6 characters</span>
         </div><br><br>
         <label>First Name</label>
-        <input placeholder="Enter First Name" type="text" name="firstName" formControlName="firstName"><br><br>
+        <input placeholder="Enter First Name" type="text"  formControlName="firstName"><br><br>
         <label>Last Name</label>
-        <input placeholder="Enter Last Name" type="text" name="lastName" formControlName="lastName"><br><br>
+        <input placeholder="Enter Last Name" type="text"  formControlName="lastName"><br><br>
         <label>Email </label>
-        <input placeholder="Enter Email" type="email" name="email" formControlName="email">
+        <input placeholder="Enter Email" type="email"  formControlName="email">
         <div>
             <span style="color: red" *ngIf="!editUserForm.get('email')?.valid">
                 The email format is incorrect</span>
         </div><br><br>
         <label>City </label>
-        <input placeholder="Enter City" type="text" name="city" formControlName="city"><br><br>
+        <input placeholder="Enter City" type="text" formControlName="city"><br><br>
         <label>State </label>
-        <input placeholder="Enter State" type="text" name="state" formControlName="state"><br><br>
+        <input placeholder="Enter State" type="text"  formControlName="state"><br><br>
         <label>Country</label>
-        <input placeholder="Enter Country" type="text" name="country" formControlName="country"><br><br>
+        <input placeholder="Enter Country" type="text"  formControlName="country"><br><br>
 
         <div class="d-flex justify-content-center">
             <button mat-raised-button color="primary" type="submit">Update</button>

@@ -15,10 +15,10 @@ import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.interface
 export class UserEditComponent implements OnInit, CanComponentDeactivate {
 
   id: string = "";
-  editUser: User = new User();
   currentUserId?: number = 0;
   editUserForm!: FormGroup;
 
+  editUser: User = new User();
 
   constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router,
     private location: Location, private formbuilder: FormBuilder) { }
@@ -28,21 +28,36 @@ export class UserEditComponent implements OnInit, CanComponentDeactivate {
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
 
+      this.editUserForm = this.formbuilder.group({
+        userId: [0],
+        password:  [''],
+        firstName: [''],
+        lastName: [''],
+        email: [null, [Validators.required, Validators.pattern(EmailFormatRegx)]],
+        userName: [null, [Validators.required, Validators.minLength(6)]],
+        city: [''],
+        state: [''],
+        country: [''],
+        created: [''],
+        posts: [[]],
+        content: [''],
+        token: [''],
+        refreshToken: [''],
+        refreshTokenExpires: [null],
+        terms: [0],
+        privacy:[0],
+        projId_fk:[0],
+        role: [0],
+      });
+
       console.log(this.activatedRoute.snapshot.params['id']);
       this.id = this.activatedRoute.snapshot.params['id'];
 
-      //this initializes the form
-      this.newFormGroup();
 
       this.userService.getUserByID(this.id).subscribe(foundUser => {
-        this.editUser = foundUser;
-
-      //this populates the form with the existing values before edit.
-      this.oldFormGroup();
-
+          //this assigns the current values from the database to the template.
+          this.editUserForm.patchValue(foundUser);
       })
-
-
 
       this.getCurrentUser();
 
@@ -74,43 +89,18 @@ export class UserEditComponent implements OnInit, CanComponentDeactivate {
     return this.editUserForm && this.editUserForm.dirty;
   }
 
-  oldFormGroup() {
-    this.editUserForm = this.formbuilder.group({
-      firstName: [this.editUser.firstName],
-      lastName: [this.editUser.lastName],
-      email: [this.editUser.email, [Validators.required, Validators.pattern(EmailFormatRegx)]],
-      userName: [this.editUser.userName, [Validators.required, Validators.minLength(6)]],
-      city: [this.editUser.city],
-      state: [this.editUser.state],
-      country: [this.editUser.country],
-    });
-  }
-
-  newFormGroup() {
-    this.editUserForm = this.formbuilder.group({
-      firstName: [''],
-      lastName: [''],
-      email: [null, [Validators.required, Validators.pattern(EmailFormatRegx)]],
-      userName: [null, [Validators.required, Validators.minLength(6)]],
-      city: [''],
-      state: [''],
-      country: [''],
-    });
-  }
-
   onSubmit() {
     //only allow users to edit their own profiles
     if (this.currentUserId == Number(this.id)) {
       if (!this.editUserForm.valid) {
         window.alert('Please provide all the required values!');
       } else {
+        //the next two lines assign the edited values from the user to update the database.
         this.editUser = this.editUserForm.value;
-        console.log('current user' + this.editUser)
         this.userService.editUserByID(this.id, this.editUser).subscribe(response => {
           console.log(response);
           //this sets the form.dirty status to false.
           this.editUserForm.markAsPristine();
-          // console.log("Form Dirty Status", this.editUserForm.dirty)
           window.alert("Edited User Successfully");
           this.router.navigate(['profile/' + this.id]);
         }, error => {

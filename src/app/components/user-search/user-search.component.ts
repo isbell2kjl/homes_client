@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
-// import { FilterPipe } from 'src/app/pipes/filter.pipe';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -16,6 +15,7 @@ export class UserSearchComponent {
   filterKeyword: string = '';
   userList: User[] = [];
   searchText: string = "";
+  projectId: number = 0;
 
   // User variables
   currentUser?: string = "";
@@ -29,6 +29,9 @@ export class UserSearchComponent {
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
 
+      this.projectId = this.userService.getProjectId()
+
+
       //retreive the search keyword previously saved in the User Service, if it exists.
       this.filterKeyword = this.userService.getFilterKeyword();
       this.getCurrentUser();
@@ -41,7 +44,7 @@ export class UserSearchComponent {
   //if no search kewyord exists, show all the users.
   getAllUsers() {
     this.filtered = "";
-    this.userService.getAllUsers().subscribe(data => {
+    this.userService.getAllUsers(String(this.projectId)).subscribe(data => {
       if (data) {
         this.userList = data;
         this.userService.setFilterKeyword("");
@@ -75,7 +78,7 @@ export class UserSearchComponent {
   //filter the list when the user types a value in the input field.
   searchByKeyword(searchkeyword: any) {
     if (searchkeyword) {
-      this.userService.getUsersBySearch(this.capitalizeFirstLetter(searchkeyword)).subscribe(foundUsers => {
+      this.userService.getUsersBySearch(this.capitalizeFirstLetter(searchkeyword),this.projectId).subscribe(foundUsers => {
         console.log(foundUsers);
         this.userList = foundUsers;
         this.filterKeyword = searchkeyword;
@@ -93,7 +96,7 @@ export class UserSearchComponent {
   //If the search keyword exists, filter the list.
   getFilteredUsers() {
     if (this.filterKeyword) {
-      this.userService.getUsersBySearch(this.capitalizeFirstLetter(this.filterKeyword)).subscribe(foundUsers => {
+      this.userService.getUsersBySearch(this.capitalizeFirstLetter(this.filterKeyword),this.projectId).subscribe(foundUsers => {
         console.log(foundUsers);
         this.userList = foundUsers;
       },

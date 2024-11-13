@@ -40,14 +40,9 @@ export class PostService {
   }
 
   getProjectPosts(projectId: string): Observable<Post[]> {
-    return this.http.get<Post[]>(`${baseURL}/post/projectposts/${projectId}`);
+    return this.http.get<Post[]>(`${baseURL}/post/project/${projectId}`);
 
   }
-
-  // getPostsBySearch(searchKeyword: string): Observable<Post[]> {
-  //   return this.http.get<Post[]>(`${baseURL}/post/search?name=${searchKeyword}`);
-
-  // }
 
   getPostsBySearch(searchKeyword: string, projectId: number): Observable<Post[]> {
     return this.http.get<Post[]>(`${baseURL}/post/search?name=${searchKeyword}&projectId=${projectId}`);

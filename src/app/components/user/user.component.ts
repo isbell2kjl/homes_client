@@ -13,6 +13,7 @@ export class UserComponent implements OnInit {
 
   id: string = "";
   fkeyId: number = 0;
+  role: number = 0;
   currentUserId: number = 0;
   refreshExpires: Date = new (Date);
   token: any = "";
@@ -30,12 +31,14 @@ export class UserComponent implements OnInit {
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
 
+      
       this.id = this.activatedRoute.snapshot.params['id'];
       this.fkeyId = Number(this.id);
       console.log("fkeyId " + this.fkeyId)
 
       this.userService.getUserByID(this.id).subscribe(foundUser => {
         this.selectedUser = foundUser;
+        this.role = this.selectedUser.role!;
       })
 
       this.getCurrentUser();
