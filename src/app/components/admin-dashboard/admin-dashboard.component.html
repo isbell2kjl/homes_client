@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-left">
+  <button mat-button color="primary" (click)="back()">Back</button>
+</div>
+
+<body>
+  <div class="admin-dashboard-container">
+    <h1>Admin Dashboard</h1>
+
+    <div class="requests">
+      <section *ngIf="pendingRequests.length > 0; else noRequests">
+        <h2>Pending Join Requests</h2>
+        <table class="requests-table">
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Requested At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let request of pendingRequests">
+              <td>{{ request.userName }}</td>
+              <td>{{ request.email }}</td>
+              <td>{{ request.requestedAt | date: 'short' }}</td>
+              <td>
+                <div class="button-container">
+                  <button (click)="approveRequest(request.requestId)" class="btn-approve">Approve</button>
+                  <button (click)="rejectRequest(request.requestId)" class="btn-reject">Reject</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- No Requests Message -->
+      <ng-template #noRequests>
+        <p>No pending join requests at the moment.</p>
+      </ng-template>
+    </div>
+
+    <div class="link-wrapper">
+
+      <a *ngIf="webSite" class="link" [routerLink]="['/project', 1]"><strong>Site Content</strong></a>
+      <a class="link" [routerLink]="['/project', currentProjectId]"><strong>Group Details</strong></a>
+      <a class="link" routerLink="/search"><strong>All Users</strong></a>
+      <a class="link" (click)="onNewUser()"><strong>SignUp Link</strong></a>
+
+    </div>
+
+  </div>
+</body>

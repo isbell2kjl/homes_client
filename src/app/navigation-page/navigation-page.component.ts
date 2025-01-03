@@ -5,6 +5,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
 import { Project } from '../models/project';
 import { ProjectService } from '../services/project.service';
+import { webSite } from '../helpers/constants';
 import { Router } from '@angular/router';
 
 
@@ -28,6 +29,7 @@ export class NavigationPageComponent {
 
   currentUser?: string = "";
   currentProjectId?: number = 0;
+  webSite = webSite;
 
 
   constructor(private breakpointObserver: BreakpointObserver, private userService: UserService, private router: Router,
@@ -77,8 +79,6 @@ export class NavigationPageComponent {
 
   logout() {
       this.userService.signOut();
-      //this removes the current username and resets the menu
-      this.userService.active$ = this.userService.getUserActiveState('', '');
       this.router.navigate(['auth/signin'])
     // });
   }

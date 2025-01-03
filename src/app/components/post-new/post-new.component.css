@@ -63,18 +63,46 @@ a {
     text-decoration: none;
 }
 
-.responsive-table {
-    display: grid;
-    width: 80%;
-    grid-template-columns: repeat(5, 115px);
-    gap: 0;
-    margin-bottom: 1em;
-}
 
 input {
     width: 85%;
     font-size: 16px;
     margin-bottom: 0.3em;
+}
+.responsive-table {
+    display: grid;
+    width: 80%;
+    grid-template-columns: repeat(4, 1fr); /* Adjust columns to take full space, equal width */
+    gap: 0.2em; /* Increase gap between fields */
+    margin-bottom: 1em;
+    overflow: visible;
+}
+
+mat-form-field {
+    width: 100%; /* Ensure the form field takes full width of the grid item */
+}
+
+mat-form-field input {
+    background-color: white !important; /* Set background to white */
+    padding: 0px 8px; /* Adjust left-right padding as needed */
+    height: 36px; /* Decrease height of input field */
+    font-size: 16px; /* Adjust font size if needed */
+}
+
+mat-form-field .mat-form-field-infix {
+    background-color: white !important; /* Ensure the background inside is white */
+    padding: 0; /* Reduce padding to decrease height */
+}
+
+mat-form-field .mat-form-field-outline {
+    border-width: 1px; /* Thin border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 0;
+}
+
+/* Optional: Remove the label spacing */
+mat-form-field .mat-form-field-label {
+    padding: 0; /* Adjust label positioning if needed */
 }
 
 .table-row {

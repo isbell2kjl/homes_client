@@ -2,16 +2,15 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-terms',
-  templateUrl: './terms.component.html',
-  styleUrl: './terms.component.css'
+  selector: 'app-privacy',
+  templateUrl: './privacy.component.html',
+  styleUrl: './privacy.component.css'
 })
-export class TermsComponent {
+export class PrivacyComponent {
 
   constructor( private location: Location) { }
 
   back(): void {
     this.location.back()
   }
-
 }

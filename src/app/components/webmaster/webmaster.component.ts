@@ -31,8 +31,11 @@ export class WebmasterComponent implements OnInit, CanComponentDeactivate {
     if (this.userService.currentUserValue) {
       console.log("User logged in")
 
-    } else (window.alert("You must log in to access this path."),
-      this.router.navigate(['auth/signin']))
+    } else {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();  // Sign out the user if not logged in.
+      this.router.navigate(['auth/signin']);
+    	}
 
   }
 

@@ -42,7 +42,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.loading = true
       this.userService.forgotPassword(this.email).subscribe(response => {
       console.log(response)
-      window.alert("If this account exists, you will receive an email witha token.");
+      window.alert("If this account exists, you will receive an email.");
       this.loading = false;
       this.emailForm.reset();
       this.router.navigateByUrl('/reset-password');

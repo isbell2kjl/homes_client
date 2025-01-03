@@ -10,13 +10,21 @@
         <textarea
             placeholder="Paste the photo URL address here, using right-click ‘Copy image address’ or ‘Copy Image Location’"
             type="text" formControlName="photoURL"></textarea><br><br>
-            
-        <mat-checkbox formControlName="visible">
-            Visible
-        </mat-checkbox><br>
+        <div *ngIf="webSite">
+            <mat-checkbox formControlName="visible">
+                Visible
+            </mat-checkbox><br>
+        </div>
         <mat-checkbox formControlName="archive">
             Archive
         </mat-checkbox><br>
+    </div>
+    <!-- Warning message -->
+    <div *ngIf="showWarning" style="color: red; margin-top: 8px;">
+        Warning: By checking "visible" this record is publically viewalbe on the internet!
+        It is against the terms of service to display the owner name or contact information.
+        First, cut the content and paste it to a new Action note, which is not visible.
+        Then, enter a promotional note in the content field used for marketing the property.
     </div>
 
     <div class="d-flex justify-content-center">

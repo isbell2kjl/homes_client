@@ -1,10 +1,12 @@
 body {
   margin: 0; /* Remove default body margin */
-  height: 50vh; /* Full height for centering */
+  
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: flex-start; /* Align items at the top */
-  padding-top: 80px; /* Adjust this value to move the box higher or lower */
+  padding-top: 20px; /* Adjust this value to move the box higher or lower */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  min-height: 100vh; /* Use full viewport height */
 }
 
 form {
@@ -23,6 +25,7 @@ form {
   display: flex; /* Use flexbox to center children */
   flex-direction: column; /* Stack children vertically */
   align-items: center; /* Center children horizontally */
+  margin-bottom: 30px; /* Add space at the bottom to avoid overlap with the footer */
 }
 
 input{
@@ -33,6 +36,7 @@ input{
   width: 100%; /* Full width of the input wrapper */
   display: flex; /* Use flexbox to center content */
   justify-content: center; /* Center the input horizontally */
+  margin-bottom: 2px; /* Adds space between each input field */
 }
 
 
@@ -52,6 +56,15 @@ button {
 #link {
   margin-top: 10px;
   font-size: small;
+}
+
+.terms-wrapper {
+  display: flex;
+  padding: 10px;
+}
+
+.terms {
+  margin: 10px;
 }
 
 .recaptcha-container {

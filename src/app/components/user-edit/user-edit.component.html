@@ -5,7 +5,7 @@
 
 <div class="form-wrapper">
     
-    <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+    <form *ngIf="editUserForm" [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
 
         <!-- <h1 class="input-wrapper">Edit User Profile</h1> -->
 

@@ -47,7 +47,7 @@ export class CommentEditComponent implements OnInit, CanComponentDeactivate {
 
         // get the current user ID from local storage if user logged in.
 
-        this.getCurrentUser();
+       this.currentUserId = this.userService.getUserId();
 
 
         console.log("current UserID " + this.currentUserId);
@@ -55,22 +55,11 @@ export class CommentEditComponent implements OnInit, CanComponentDeactivate {
 
       });
 
-    } else (window.alert("You must log in to access this path."),
-      this.router.navigate(['auth/signin']))
-  }
-
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(response => {
-      this.currentUserId = response.userId!;
-      // console.log('Current User Id: ', this.currentUserId);
-    }, error => {
-      console.log('Error: ', error)
-      if (error.status === 401 || error.status === 403) {
-        window.alert("Access timeout, you must log in again.");
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
-      }
-    });
+    } else {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();  // Sign out the user if not logged in.
+      this.router.navigate(['auth/signin']);
+    }
   }
 
   back(): void {

@@ -18,19 +18,21 @@ import { WebmasterComponent } from './components/webmaster/webmaster.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { TermsComponent } from './components/terms/terms.component';
+import { PrivacyComponent } from './components/privacy/privacy.component';
 import { ProjectEditComponent } from './components/project-edit/project-edit.component';
+import { JoinRequestComponent } from './components/join-request/join-request.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { webSite } from './helpers/constants';
+
 
  
-const routes: Routes = [
-  { path: "", redirectTo: "auth/signin", pathMatch: "full" },
-  { path: "home", component: HomeComponent },
-  { path: "post", component: PostListComponent },
-  { path: "contact", component: ContactComponent, canDeactivate: [UnsavedChangesGuard] },
-  { path: "add", component: PostNewComponent, canDeactivate: [UnsavedChangesGuard]  },
+// Common routes
+const commonRoutes: Routes = [
+  { path: "add", component: PostNewComponent, canDeactivate: [UnsavedChangesGuard] },
   { path: "active", component: PostActiveComponent },
   { path: "edit/:id", component: PostEditComponent, canDeactivate: [UnsavedChangesGuard] },
   { path: "post/:id", component: CommentNewComponent, canDeactivate: [UnsavedChangesGuard] },
-  { path: "action/:id", component: CommentEditComponent, canDeactivate: [UnsavedChangesGuard]  },
+  { path: "action/:id", component: CommentEditComponent, canDeactivate: [UnsavedChangesGuard] },
   { path: "auth/signup-newuser-now", component: SignUpComponent },
   { path: "auth/signin", component: SignInComponent },
   { path: "profile/:id", component: UserComponent },
@@ -39,12 +41,31 @@ const routes: Routes = [
   { path: "webmaster", component: WebmasterComponent, canDeactivate: [UnsavedChangesGuard] },
   { path: "forgot-password", component: ForgotPasswordComponent },
   { path: "reset-password", component: ResetPasswordComponent },
-  { path: "project/:id", component: ProjectEditComponent, canDeactivate: [UnsavedChangesGuard]},
-  { path: "terms", component: TermsComponent} 
+  { path: "project/:id", component: ProjectEditComponent, canDeactivate: [UnsavedChangesGuard] },
+  { path: "terms", component: TermsComponent },
+  { path: "privacy", component: PrivacyComponent },
+  { path: "join-request", component: JoinRequestComponent },
+  { path: "admin-dashboard", component: AdminDashboardComponent },
 ];
 
+// Dynamic route generation
+const generateRoutes = (): Routes => {
+  const websiteRoutes: Routes = [
+    { path: "", redirectTo: "home", pathMatch: "full" },
+    { path: "home", component: HomeComponent },
+    { path: "post", component: PostListComponent },
+    { path: "contact", component: ContactComponent, canDeactivate: [UnsavedChangesGuard] },
+  ];
+
+  const fallbackRoutes: Routes = [
+    { path: "", redirectTo: "auth/signin", pathMatch: "full" },
+  ];
+
+  return webSite ? [...websiteRoutes, ...commonRoutes] : [...fallbackRoutes, ...commonRoutes];
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled', enableTracing: false })],
+  imports: [RouterModule.forRoot(generateRoutes(), { scrollPositionRestoration: 'enabled', enableTracing: false })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

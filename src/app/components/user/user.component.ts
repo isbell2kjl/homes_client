@@ -12,8 +12,9 @@ import { UserService } from 'src/app/services/user.service';
 export class UserComponent implements OnInit {
 
   id: string = "";
-  fkeyId: number = 0;
-  role: number = 0;
+  foundUserId: number = 0;
+  currentUserRole: number = 0;
+  foundUserRole: number = 0;
   currentUserId: number = 0;
   refreshExpires: Date = new (Date);
   token: any = "";
@@ -31,49 +32,49 @@ export class UserComponent implements OnInit {
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
 
-      
+
       this.id = this.activatedRoute.snapshot.params['id'];
-      this.fkeyId = Number(this.id);
-      console.log("fkeyId " + this.fkeyId)
+      this.foundUserId = Number(this.id);
+      console.log("foundUserId " + this.foundUserId)
 
       this.userService.getUserByID(this.id).subscribe(foundUser => {
         this.selectedUser = foundUser;
-        this.role = this.selectedUser.role!;
+        this.foundUserRole = foundUser.role!;
+
       })
 
-      this.getCurrentUser();
+      this.userService.getCurrentUser().subscribe({
+        next: (user) => {
+          this.currentUserId = user.UserId;
+          this.currentUserRole = user.role
+          console.log("role ", this.currentUserRole)
+        },
+        error: (err) => {
+          console.error('Error fetching user:', err);
+        }
+      });
 
-    } else (window.alert("You must log in to access this path."),
-      this.router.navigate(['auth/signin']))
+    } else {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();  // Sign out the user if not logged in.
+      this.router.navigate(['auth/signin']);
+    }
   }
 
-
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(response => {
-      this.currentUserId = response.userId!;
-      // console.log('Current User Id: ', this.currentUserId);
-    }, error => {
-      console.log('Error: ', error)
-      if (error.status === 401 || error.status === 403) {
-        window.alert("Access timeout, you must log in again.");
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
-      }
-    });
-  }
 
   onDelete(userId: string) {
-    
-    //No one can delete user with userId == 1 (same as fkeyid). This is always the admin user, the first to sign up for an account.
-    if (this.fkeyId > 1) {
+
+    //Don't allow anyone to delete the admin user. And only allow admin users to delete  other users.
+    if (this.foundUserRole !== 1 && (this.currentUserId == this.foundUserId || this.currentUserRole == 1)) {
       if (confirm("Warning:  This will delete this user and all properties and actions created by this user.")) {
-        this.userService.deleteUserByID(userId).subscribe(response => {
+        this.userService.deleteUserByID(this.id).subscribe(response => {
           console.log(response);
           window.alert("User Deleted Successfully");
           this.router.navigate(['search']);
           //If a user deletes his own profile go to signin page. If admin (id=1), stay on page.
-          if (this.currentUserId > 1) {
-            //this removes the current username and resets the menu
+          if (this.currentUserId == this.foundUserId) {
+            //this signsOut and removes the current username and resets the menu
+            this.userService.signOut();
             this.userService.active$ = this.userService.getUserActiveState('', '');
             this.router.navigate(['auth/signin']);
           }
@@ -85,16 +86,6 @@ export class UserComponent implements OnInit {
         });
       }
     } else (window.alert("You cannot delete the admin account."))
-
-  }
-
-  onNewUser() {
-    if (confirm("This will log you out and open a new user sign up form.")) {
-      this.userService.signOut()
-      //this removes the current username and resets the menu
-      this.userService.active$ = this.userService.getUserActiveState('', '');
-      this.router.navigate(['auth/signup-newuser-now'])
-    }
 
   }
 

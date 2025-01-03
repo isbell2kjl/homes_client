@@ -8,21 +8,19 @@
       <ng-template [ngIf]="isActive | async" [ngIfElse]="signedOut">
         <h2 class="site-menu">Welcome {{currentName}}</h2>
 
-        <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()"
-          (click)="refreshContent()">Home</a>
-        <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === false" (click)="refreshContent()">Home</a>
+        <!--Only show this div section if single user website mode-->
+        <div *ngIf="webSite">
+          <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()"
+            (click)="refreshContent()">Home</a>
+          <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === false" (click)="refreshContent()">Home</a>
+        </div>
 
         <a mat-list-item routerLink="/active" *ngIf="(isHandset$ | async) === true"
           (click)="drawer.toggle()">Properties</a>
         <a mat-list-item routerLink="/active" *ngIf="(isHandset$ | async) === false">Properties</a>
-        <!-- routerLinkActive="router-link-active" -->
-        <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">All
-          Users</a>
-        <a mat-list-item routerLink="/search" *ngIf="(isHandset$ | async) === false">All Users</a>
-        <a mat-list-item [routerLink]="['/project', currentProjectId]" *ngIf="(isHandset$ | async) === true"
-          (click)="drawer.toggle()">Site Content</a>
-        <a mat-list-item [routerLink]="['/project', currentProjectId]" *ngIf="(isHandset$ | async) === false">Site
-          Content</a>
+        <a mat-list-item routerLink="/admin-dashboard" *ngIf="(isHandset$ | async) === true"
+          (click)="drawer.toggle()">Admin</a>
+        <a mat-list-item routerLink="/admin-dashboard" *ngIf="(isHandset$ | async) === false">Admin</a>
         <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === true"
           (click)="drawer.toggle()">Webmaster</a>
         <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === false">Webmaster</a>
@@ -31,6 +29,7 @@
           Out</a>
         <a mat-list-item (click)="logout()" *ngIf="(isHandset$ | async) === false">Sign Out</a>
       </ng-template>
+
       <!-- If user is signed out, use this menu-->
       <ng-template #signedOut>
 
@@ -38,14 +37,17 @@
           In</a>
         <a mat-list-item routerLink="auth/signin" *ngIf="(isHandset$ | async) === false">Sign In</a>
 
-        <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Home</a>
-        <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === false">Home</a>
-        <a mat-list-item routerLink="/post" *ngIf="(isHandset$ | async) === true"
-          (click)="drawer.toggle()">Properties</a>
-        <a mat-list-item routerLink="/post" *ngIf="(isHandset$ | async) === false">Properties</a>
-        <a mat-list-item routerLink="/contact" *ngIf="(isHandset$ | async) === true"
-          (click)="drawer.toggle()">Contact</a>
-        <a mat-list-item routerLink="/contact" *ngIf="(isHandset$ | async) === false">Contact</a>
+       <!--Only show this div section if single user website mode-->
+       <div *ngIf="webSite">
+          <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Home</a>
+          <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === false">Home</a>
+          <a mat-list-item routerLink="/post" *ngIf="(isHandset$ | async) === true"
+            (click)="drawer.toggle()">Properties</a>
+          <a mat-list-item routerLink="/post" *ngIf="(isHandset$ | async) === false">Properties</a>
+          <a mat-list-item routerLink="/contact" *ngIf="(isHandset$ | async) === true"
+            (click)="drawer.toggle()">Contact</a>
+          <a mat-list-item routerLink="/contact" *ngIf="(isHandset$ | async) === false">Contact</a>
+        </div>
 
       </ng-template>
     </mat-nav-list>
@@ -67,6 +69,7 @@
     <mat-toolbar color="primary" class="footer">
       <span id="copyright">© 2024 {{pageContent.siteName}}</span>
       <!-- <span id="creator">Created by Keith Isbell</span> -->
+      <a id="creator" routerLink="/privacy">Privacy Policy</a>
     </mat-toolbar>
   </mat-sidenav-content>
 </mat-sidenav-container>

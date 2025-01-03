@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
@@ -22,7 +23,7 @@ export class UserSearchComponent {
   currentUserId: number = 0;
   refreshExpire: Date = new Date();
 
-  constructor(private userService: UserService, private router: Router,) { }
+  constructor(private userService: UserService, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
 
@@ -34,11 +35,15 @@ export class UserSearchComponent {
 
       //retreive the search keyword previously saved in the User Service, if it exists.
       this.filterKeyword = this.userService.getFilterKeyword();
-      this.getCurrentUser();
+      this.currentUserId = this.userService.getUserId();
+
       this.getFilteredUsers();
 
-    } else (window.alert("You must log in to access this path."),
-      this.router.navigate(['auth/signin']))
+    } else {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();  // Sign out the user if not logged in.
+      this.router.navigate(['auth/signin']);
+    	}
   }
 
   //if no search kewyord exists, show all the users.
@@ -53,21 +58,6 @@ export class UserSearchComponent {
 
   }
 
-
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(response => {
-      this.currentUserId = response.userId!;
-      // console.log('Current User Id: ', this.currentUserId);
-    }, error => {
-      console.log('Error: ', error)
-      if (error.status === 401 || error.status === 403) {
-        window.alert("Access timeout, you must log in again.");
-        //This removes the username from the Menu
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
-      }
-    });
-  }
 
   //if user types a search string in lower case, capitalize the first letter
   //to avoid the 'search string not found' error.
@@ -107,4 +97,9 @@ export class UserSearchComponent {
     //if search field is empty, show all users.
     else (this.getAllUsers())
   }
+
+  back(): void {
+    this.location.back()
+  }
+
 }

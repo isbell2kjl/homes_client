@@ -13,8 +13,8 @@ export class User {
     posts?: [];
     content?: string;
     token?: string;
-    refreshToken?: string;
-    refreshTokenExpires?: Date;
+    // refreshToken?: string;
+    // refreshTokenExpires?: Date;
     terms?: number;
     privacy?: number;
     projId_fk?: number;
@@ -38,10 +38,10 @@ export class User {
         this.posts = posts;
         this.content = content;
         this.token = token;
-        this.refreshTokenExpires = refreshExpires;
-        this.refreshToken = refreshToken;
+        // this.refreshTokenExpires = refreshExpires;
+        // this.refreshToken = refreshToken;
         this.terms = terms;
-        this.privacy = privacy;
+        this.privacy = privacy; 
         this.projId_fk = projId_fk;
         this.role = role;
     }

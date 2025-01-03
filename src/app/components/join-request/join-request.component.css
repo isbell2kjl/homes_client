@@ -1,0 +1,105 @@
+.content-container {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column; /* Ensure items stack vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  width: 100%;
+}
+
+.form-title {
+  margin: 0 auto; /* Centers the title horizontally */
+  text-align: center; /* Ensures the text inside is centered */
+  width: 100%; /* Ensure it spans the entire container */
+  font-size: 1.8rem; /* Adjust font size as needed */
+  margin-bottom: 20px; /* Space between the title and the form-wrapper */
+  display: flex;
+  justify-content: center; /* Centers the text content when flex is applied */
+}
+
+/* Styling for the form-wrapper */
+.form-wrapper {
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left; /* Ensure content inside is left-aligned */
+}
+
+/* Styling for label-value pairs */
+.group-name-container {
+  display: flex; /* Use flexbox for label and value alignment */
+  justify-content: space-between; /* Ensures the label and value stay on the same line */
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.group-name-container label {
+  font-weight: bold;
+  white-space: nowrap; /* Prevents label text from wrapping */
+  margin-right: 10px; /* Adds space between label and value */
+}
+
+.group-name-container div {
+  flex-grow: 1; /* Ensures the value aligns with the label and doesn't wrap unnecessarily */
+  text-overflow: ellipsis; /* Handles overflow gracefully with ellipsis if needed */
+  overflow: hidden;
+  white-space: nowrap; /* Prevents value from wrapping */
+}
+
+.button-group {
+  width: 100%; /* Full width */
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 10px; /* Space between buttons */
+  margin-bottom: 20px; /* Space below the buttons */
+}
+
+form {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: medium;
+  width: 100%; /* Ensure form takes full width of wrapper */
+}
+
+.input-wrapper {
+  width: 100%; /* Ensure inputs take full width */
+  display: flex;
+  flex-direction: column; /* Stack inputs vertically */
+  align-items: center; /* Center horizontally */
+}
+
+.input-wrapper input {
+  width: 100%; /* Full width */
+  padding: 10px;
+  margin: 10px 0; /* Consistent spacing between inputs */
+  box-sizing: border-box;
+}
+
+.group-name-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adds spacing between the label and the div */
+  margin: 5px 0; /* Adds separation above and below the container */
+}
+
+.group-name-container label {
+  font-weight: bold; /* Makes the label text bold */
+}
+
+
+button {
+  width: 100%; /* Full width */
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.recaptcha-container {
+  width: 100%; /* Ensure reCAPTCHA container is full width */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  margin: 20px 0;
+}
+ 

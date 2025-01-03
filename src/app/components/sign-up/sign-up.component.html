@@ -3,41 +3,54 @@
 
         <form [formGroup]="newUserForm" (ngSubmit)="signUp($event)" (keydown.enter)="onEnter($event)">
             <h1 class="input-wrapper">Sign Up</h1>
-            <input class="input-wrapper" placeholder="Enter User Name" type="text" formControlName="userName">
+            <div class="input-wrapper">
+                <input class="input-wrapper" placeholder="Enter User Name" type="text" formControlName="userName">
+            </div>
             <div class="input-wrapper">
                 <span style="color: red" *ngIf="!newUserForm.get('userName')?.valid">
                     Must be at least 6 characters</span>
-            </div><br><br>
-            <!-- <input placeholder="Enter Password" type="password" formControlName="password">
-        <div>
-            <span style="color: red" *ngIf="!newUserForm.get('password')?.valid">
-                At least: 1 uppercase, 1 lowercase, 1digit, 1special character,
-                8 characters long.</span>
-        </div><br><br> -->
-
-            <input class="input-wrapper" placeholder="Enter First Name" type="text" formControlName="firstName"><br><br>
-
-            <input class="input-wrapper" placeholder="Enter Last Name" type="text" formControlName="lastName"><br><br>
-
-            <input class="input-wrapper" placeholder="Enter Email" type="text" formControlName="email">
+            </div>
+            <div class="input-wrapper">
+                <input placeholder="Enter First Name" type="text" formControlName="firstName">
+            </div>
+            <div class="input-wrapper">
+                <input placeholder="Enter Last Name" type="text" formControlName="lastName">
+            </div>
+            <div class="input-wrapper">
+                <input placeholder="Enter Email" type="text" formControlName="email">
+            </div>
             <div class="input-wrapper">
                 <span style="color: red" *ngIf="!newUserForm.get('email')?.valid">
                     The email format is incorrect</span>
-            </div><br><br>
-            <!-- <input placeholder="Enter City" type="text" formControlName="city"><br><br>
+            </div>
+            <div class="input-wrapper">
+                <input placeholder="Enter City" type="text" formControlName="city">
+            </div>
+            <div class="input-wrapper">
+                <input class="input-wrapper" placeholder="Enter State or Province" type="text" formControlName="state">
+            </div>
+            <div class="input-wrapper">
+                <input class="input-wrapper" placeholder="Enter Country" type="text" formControlName="country">
+            </div>
 
-        <input placeholder="Enter State" type="text" formControlName="state"><br><br>
-
-        <input placeholder="Enter Country" type="text" formControlName="country"><br><br> -->
+            <div class="terms-wrapper">
+                <mat-checkbox class="terms"  formControlName="terms">
+                    I understand and agree to the
+                    <a routerLink="/terms" target="_blank">Terms of Service</a>
+                </mat-checkbox>
+                <mat-checkbox class="terms"  formControlName="privacy">
+                    I understand and agree to the
+                    <a routerLink="/privacy" target="_blank">Privacy Policy</a>
+                </mat-checkbox>
+            </div>
 
             <div class="recaptcha-container">
                 <div [hidden]="captcha">
-                    <re-captcha (resolved)="resolved($event)"
-                    [siteKey]="siteKey"></re-captcha>
+                    <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
                 </div>
                 <div [hidden]="!captcha">
                     <button mat-flat-button class="input-wrapper" mat-flat-button color="primary"
-                        [class.spinner]="loading" [disabled]="loading">Submit</button>
+                        [class.spinner]="loading" [disabled]="loading || !isFormValid()">Submit</button>
                 </div>
             </div>
         </form>

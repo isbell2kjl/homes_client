@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-post-active',
@@ -30,44 +31,58 @@ export class PostActiveComponent implements OnInit {
 
 
   constructor(private postService: PostService, private userService: UserService,
-    private router: Router, private viewportScroller: ViewportScroller) { }
+    private router: Router, private viewportScroller: ViewportScroller, private snackBar: MatSnackBar) { }
+
 
   ngOnInit(): void {
 
-    if (this.userService.currentUserValue) {
-
-    this.projectId = this.userService.getProjectId()
-    
-
-      //retreives the search keyword previously saved in the Post Service, if it exists.
-      this.filterKeyword = this.postService.getFilterKeyword();
-
-      //Retreives from the Post Service the boolean true, if dataset is archived, or false, if dataset is active.
-      this.archived = this.postService.getArchiveFilter();
+    // Check if a user is logged in
+    if (!this.userService.currentUserValue) {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();
+      this.router.navigate(['auth/signin']);
+      return; // Early return to prevent further execution
+    }
 
 
-      //If the dataset is archived BUT there is NO search keyword, apply the archived ALL filter.
-      if (this.archived == true && !this.filterKeyword) {
+    this.filterKeyword = this.postService.getFilterKeyword();
+    this.archived = this.postService.getArchiveFilter();
 
-        this.onArchive();
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.projectId = user.projId_fk;
+        //Do not allow user to proceed if they don't belong to a group. The property projId_fk == 1 is temporary
+        //for users who have signed up but have not created a group or joined a group.
+        if (this.projectId === 1) {
+          // If no pending requests, proceed to the join-request screen.
+          this.snackBar.open('Either your join request is still pending, or you need to join a group',
+            'Close', { duration: 5000, verticalPosition: 'top' });
+          this.router.navigate(['join-request']);
+          return; // Stop further execution
+        } else {
+          this.applyFilters(); // Unified filter logic
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching user:', err);
+      }
+    });
+  }
 
-        //If the dataset is NOT archived, BUT there IS a search keyword, apply the active search filter.
-      } else if (this.archived == false && this.filterKeyword) {
-
-        this.applyFilterToList();
-
-        //If the dataset IS archived AND there is a search keyword, apply the Archived search filter.
-      } else if (this.archived == true && this.filterKeyword) {
-
-        this.applyFilterToListA();
-
-        // If the dataset is NOT archived AND there is NO search keyword, load ALL the data.   
-      } else (this.loadAll())
-
-    } else (window.alert("You must log in to access this path."),
-      this.userService.active$ = this.userService.getUserActiveState('', ''),
-      this.router.navigate(['auth/signin']))
-
+  applyFilters() {
+    if (this.archived) {
+      if (this.filterKeyword) {
+        this.applyFilterToListA(); // Archived + Keyword
+      } else {
+        this.onArchive(); // Archived Only
+      }
+    } else {
+      if (this.filterKeyword) {
+        this.applyFilterToList(); // Active + Keyword
+      } else {
+        this.loadAll(); // Active Only
+      }
+    }
   }
 
   loadAll() {
@@ -83,14 +98,46 @@ export class PostActiveComponent implements OnInit {
       this.postLength = this.postList.length;
     });
 
-    this.getCurrentUser();
-
   }
+
+  // Alternative method to apply filters.
+  // Define action map based on conditions
+  //   const conditions = {
+  //     noKeywordActive: !this.filterKeyword && !this.archived,
+  //     noKeywordArchived: !this.filterKeyword && this.archived,
+  //     keywordActive: this.filterKeyword && !this.archived,
+  //     keywordArchived: this.filterKeyword && this.archived,
+  //   };
+
+  //   // Execute appropriate action
+  //   switch (true) {
+  //     case conditions.noKeywordActive:
+  //       this.loadAll();
+  //       break;
+
+  //     case conditions.noKeywordArchived:
+  //       this.onArchive();
+  //       break;
+
+  //     case conditions.keywordActive:
+  //       this.applyFilterToList();
+  //       break;
+
+  //     case conditions.keywordArchived:
+  //       this.applyFilterToListA();
+  //       break;
+
+  //     default:
+  //       console.warn("Unhandled condition");
+  //   }
+
+  // }
+
 
   //Apply the active search filter if the the keyword exists.
   applyFilterToList() {
     if (this.filterKeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword),this.projectId).subscribe(foundSearch => {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword), this.projectId).subscribe(foundSearch => {
         console.log(foundSearch);
         this.postList = foundSearch.filter(function (active, index) {
           return active.archive == 0
@@ -106,7 +153,7 @@ export class PostActiveComponent implements OnInit {
   //Apply the archived search filter if the the keyword exists.
   applyFilterToListA() {
     if (this.filterKeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword),this.projectId).subscribe(foundSearch => {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword), this.projectId).subscribe(foundSearch => {
         console.log(foundSearch);
         this.postList = foundSearch.filter(function (active, index) {
           return active.archive == 1
@@ -119,21 +166,7 @@ export class PostActiveComponent implements OnInit {
     }
   }
 
-  //Retreive the current user from User Service and assign the name and userId to the variables.
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(response => {
-      this.currentUser = response.userName;
-      this.currentUserId = response.userId!;
-      console.log('Current User Id: ', this.currentUserId);
-    }, error => {
-      console.log('Error: ', error)
-      if (error.status === 401 || error.status === 403) {
-        window.alert("Access timeout, you must log in again.");
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
-      }
-    });
-  }
+
   //On click function to return to the TOP of the form.
   public onClick(elementId: string): void {
     this.viewportScroller.scrollToAnchor(elementId);
@@ -148,7 +181,7 @@ export class PostActiveComponent implements OnInit {
   //The active search filter is applied when the user types a value into the search input field.
   searchByKeyword(searchkeyword: any) {
     if (searchkeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword),this.projectId).subscribe(foundSearch => {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword), this.projectId).subscribe(foundSearch => {
         console.log(foundSearch);
         this.postList = foundSearch.filter(function (active, index) {
           return active.archive == 0
@@ -169,7 +202,7 @@ export class PostActiveComponent implements OnInit {
   //If archived, use this search filter when user enters a search keyword into the input field.
   searchByKeywordA(searchkeyword: any) {
     if (searchkeyword) {
-      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword),this.projectId).subscribe(foundSearch => {
+      this.postService.getPostsBySearch(this.capitalizeFirstLetter(searchkeyword), this.projectId).subscribe(foundSearch => {
         console.log(foundSearch);
 
         this.postList = foundSearch.filter(function (active, index) {

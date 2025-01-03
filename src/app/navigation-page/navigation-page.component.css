@@ -56,8 +56,13 @@ of the page is less than a full page. */
 
 .footer #creator {
   font-size: small;
+  color:white
   /* padding-right: 4%; */
 }
+
+/* a{
+  color:white
+  } */
 
 
 @media only screen and (max-width: 100%) {

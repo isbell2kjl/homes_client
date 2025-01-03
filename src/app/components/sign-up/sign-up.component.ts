@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 // import { StrongPasswordRegx } from 'src/app/helpers/constants';
 import { EmailFormatRegx } from 'src/app/helpers/constants';
 import { MyRecaptchaKey } from 'src/app/helpers/constants';
+import { UserSignUp } from 'src/app/models/user-signup';
 
 
 @Component({
@@ -36,19 +37,27 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
 
     this.newUserForm = this.formBuilder.group({
-      //not required fields to sign up
       firstName: [""],
       lastName: [""],
       email: [null, [Validators.required, Validators.pattern(EmailFormatRegx)]],
-      //required fields to sign up
       userName: [null, [Validators.required, Validators.minLength(6)]],
-      // password: [null, [Validators.required, Validators.pattern(StrongPasswordRegx)]],
-      // city: [""],
-      // state: [""],
-      // country: [""],
+      city: [""],
+      state: [""],
+      country: ["USA"],
+      terms: [false],  // Start with false instead of 0
+      privacy: [false], // Start with false instead of 
+      role: [0],
+      projId_fk: [1] 
     });
 
   }
+
+  // Helper method to check if the button should be enabled
+  isFormValid(): boolean {
+    return this.newUserForm.get('terms')?.value && this.newUserForm.get('privacy')?.value;
+  }
+
+  
 
   signUp(event: Event) {
     //prevent the SignIn from bypassing captcha
@@ -61,13 +70,32 @@ export class SignUpComponent implements OnInit {
     if (!this.newUserForm.valid) {
       window.alert('Please provide all the required values!');
       this.loading = false
+      if (!this.newUserForm.get('terms')?.value || !this.newUserForm.get('privacy')?.value) {
+        window.alert('Please agree to the Terms of Service and Privacy Policy before registering.');
+        return;
+      }
     } else {
-      this.newUser = this.newUserForm.value;
+      this.newUser = this.newUserForm.value as UserSignUp;
+      console.log("newUserForm.value ", this.newUserForm.value);
+      //make sure userName or Email are not already registered.
+      this.username = this.newUserForm.value.userName;
+      this.email = this.newUserForm.value.email;
       this.checkUserName();
       this.checkEmail();
       if (this.emailError) { window.alert("Try a different email address") };
-      this.newUser.password = this.randomString(10);
-      this.userService.signUp(this.newUser).subscribe(() => {
+      
+      //Set the projectId to 1, which is the default,
+      // until user creates a new one or joins an existing one.
+      this.newUser.projId_fk = 1;
+    
+      // Map `true/false` to `1/0` for `terms` and `privacy`
+      const formData = {
+        ...this.newUser,
+        terms: this.newUserForm.get('terms')?.value ? 1 : 0,
+        privacy: this.newUserForm.get('privacy')?.value ? 1 : 0,
+      };
+      
+      this.userService.signUp(formData).subscribe(() => {
         this.confirmEmail();
         window.alert("User Registered Successfully");
       }, error => {
@@ -79,7 +107,7 @@ export class SignUpComponent implements OnInit {
   }
 
   checkUserName() {
-    this.username = this.newUser.userName!;
+    
     this.userService.checkUserName(this.username).subscribe(response => {
       console.log(response)
     }, error => {
@@ -90,7 +118,7 @@ export class SignUpComponent implements OnInit {
   }
 
   checkEmail() {
-    this.email = this.newUser.email!;
+    
     this.userService.checkEmail(this.email).subscribe(response => {
       console.log(response)
     }, error => {
@@ -107,7 +135,7 @@ export class SignUpComponent implements OnInit {
       this.newUserForm.reset();
       this.email = "";
       this.loading = false;
-      this.router.navigate(['/auth/signin']);
+      this.router.navigate(['/reset-password']);
     }, error => {
       window.alert("Enter a valid Email address.");
       this.loading = false;
@@ -118,8 +146,8 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-   //when user checks "I'm not a robot"
-   resolved(captchaResponse: string | null) {
+  //when user checks "I'm not a robot"
+  resolved(captchaResponse: string | null) {
     this.captcha = captchaResponse;
   }
 
@@ -131,21 +159,5 @@ export class SignUpComponent implements OnInit {
       window.alert("You must verify that you're not a robot")
       return;
     }
-  }
-
-  randomString(length: number) {
-
-    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    var result = '';
-
-    for (var i = 0; i < length; i++) {
-
-      result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-
-    }
-
-    return result;
-
   }
 }

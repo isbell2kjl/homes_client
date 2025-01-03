@@ -48,10 +48,7 @@ export class ResetPasswordComponent implements OnInit {
         console.log(response)
         window.alert("Your token is valid");
         this.password = this.resetPasswordForm?.get('password')?.value;
-        // console.log(this.password);
         this.confirmPassword = this.resetPasswordForm?.get('confirmPassword')?.value;
-        // console.log(this.confirmPassword);
-        // console.log(this.token);
         this.userService.resetPassword(this.token, this.password, this.confirmPassword).subscribe(response => {
           console.log(response)
           window.alert("Password reset successful, you can now login.");

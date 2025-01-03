@@ -54,8 +54,11 @@ export class CommentNewComponent implements OnInit, CanComponentDeactivate {
 
       this.loadTasks();
 
-    } else (window.alert("You must log in to access this path."),
-      this.router.navigate(['auth/signin']))
+    } else {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();  // Sign out the user if not logged in.
+      this.router.navigate(['auth/signin']);
+    }
   }
 
   loadTasks() {
@@ -80,27 +83,15 @@ export class CommentNewComponent implements OnInit, CanComponentDeactivate {
 
     });
 
-    this.getCurrentUser();
+    this.currentUser = this.userService.getUserName();
+    this.currentUserId = this.userService.getUserId();
+    this.userFkeyId = this.currentUserId;
+
 
   }
 
   public onClick(elementId: string): void {
     this.viewportScroller.scrollToAnchor(elementId);
-  }
-
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(response => {
-      this.currentUser = response.userName;
-      this.currentUserId = response.userId!;
-      this.userFkeyId = this.currentUserId;
-    }, error => {
-      console.log('Error: ', error)
-      if (error.status === 401 || error.status === 403) {
-        window.alert("Access timeout, you must log in again.");
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
-      }
-    });
   }
 
   back(): void {

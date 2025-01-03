@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Location } from "@angular/common";
 import { FormGroup, FormControl } from '@angular/forms';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.interface';
+import { webSite } from 'src/app/helpers/constants';
 
 
 @Component({
@@ -19,6 +20,8 @@ export class PostEditComponent implements OnInit, CanComponentDeactivate {
   fkeyId: number = 0;
   currentUserId: number = 0;
   archive?: number = 0;
+  webSite = webSite;
+  showWarning: boolean = false; // State to track whether the warning should be displayed
 
   //this initializes the FormGroup.
   editPostForm = new FormGroup({
@@ -53,8 +56,11 @@ export class PostEditComponent implements OnInit, CanComponentDeactivate {
         //this variable to be used later.
         this.fkeyId = foundPost.userId_fk!;
         // Map `visible` control values between true/false and 1/0
-        this.editPostForm.get('visible')?.valueChanges.subscribe((checked) => {
-          this.editPostForm.patchValue({ visible: checked ? 1 : 0 }, { emitEvent: false });
+        this.editPostForm.get('visible')?.valueChanges.subscribe((value) => {
+          const isChecked = !!value; // Convert number/null to boolean
+          this.editPostForm.patchValue({ visible: isChecked ? 1 : 0 }, { emitEvent: false });
+          // Toggle the warning message based on the checkbox state
+        this.showWarning = isChecked;
         });
 
         // Map `archive` control values between true/false and 1/0
@@ -62,28 +68,17 @@ export class PostEditComponent implements OnInit, CanComponentDeactivate {
           this.editPostForm.patchValue({ archive: checked ? 1 : 0 }, { emitEvent: false });
         });
 
-        // get the current user ID from local storage if user logged in.
-        this.getCurrentUser();
+        // get the current user ID
+        this.currentUserId = this.userService.getUserId();
 
       });
-    } else (window.alert("You must log in to access this path."),
-      this.router.navigate(['auth/signin']))
+    } else {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();  // Sign out the user if not logged in.
+      this.router.navigate(['auth/signin']);
+    	}
   }
 
-
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(response => {
-      this.currentUserId = response.userId!;
-      // console.log('Current User Id: ', this.currentUserId);
-    }, error => {
-      console.log('Error: ', error)
-      if (error.status === 401 || error.status === 403) {
-        window.alert("Access timeout, you must log in again.");
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
-      }
-    });
-  }
 
   back(): void {
     this.location.back()

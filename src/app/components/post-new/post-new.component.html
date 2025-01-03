@@ -22,38 +22,95 @@
     </p> -->
     <div class="responsive-table">
         <div class="table-row">
-            <div>
-                <input placeholder="Owner" type="text" formControlName="owner">
-            </div>
-            <div>
-                <input placeholder="Telephone" type="text" formControlName="telephone">
-            </div>
-            <div>
-                <input placeholder="Call 0,1,2" type="text" formControlName="call">
-            </div>
-            <div>
-                <input placeholder="Condition" type="text" formControlName="condition">
-            </div>
-            <div>
-                <input placeholder="DELQ y/n" type="text" formControlName="delinquent">
-            </div>
-            <div>
-                <input placeholder="Bed" type="text" formControlName="bed">
-            </div>
-            <div>
-                <input placeholder="Bath" type="text" formControlName="bath">
-            </div>
-            <div>
-                <input placeholder="Sqft" type="text" formControlName="sqft">
-            </div>
-            <div>
-                <input placeholder="Zest 123K" type="text" formControlName="zestimate">
-            </div>
-            <div>
-                <input placeholder="Offer 123K" type="text" formControlName="offer">
-            </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Owner" type="text" formControlName="owner" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Telephone" type="text" formControlName="telephone" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                placeholder="Calls"
+                formControlName="call"
+                [matAutocomplete]="callAuto"
+                #trigger="matAutocompleteTrigger"
+                (focus)="trigger.openPanel()"
+              />
+              <mat-autocomplete #callAuto="matAutocomplete">
+                <mat-option *ngFor="let option of callOptions" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+                <input
+                  matInput
+                  placeholder="Condition"
+                  formControlName="condition"
+                  [matAutocomplete]="conditionAuto"
+                  #trigger="matAutocompleteTrigger"
+                  (focus)="trigger.openPanel()"
+                />
+                <mat-autocomplete #conditionAuto="matAutocomplete">
+                  <mat-option *ngFor="let option of conditionOptions" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+                <input
+                  matInput
+                  placeholder="Delinquent?"
+                  formControlName="delinquent"
+                  [matAutocomplete]="delinquentAuto"
+                  #trigger="matAutocompleteTrigger"
+                  (focus)="trigger.openPanel()"
+                />
+                <mat-autocomplete #delinquentAuto="matAutocomplete">
+                  <mat-option *ngFor="let option of delinquentOptions" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Beds" type="text" formControlName="bed" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Bath" type="text" formControlName="bath" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="SqFt" type="text" formControlName="sqft" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Est-99K" type="text" formControlName="estimate" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Off-79K" type="text" formControlName="offer" />
+            </mat-form-field>
+          </div>
         </div>
-    </div>
+      </div>
+      
 
     <textarea class="content-wrapper" placeholder="Post additional notes" type="text"
         formControlName="notes"></textarea>
@@ -61,10 +118,10 @@
     <div class="action-wrapper">
 
         <div class="active-wrapper">
-            <mat-checkbox class="active" formControlName="visible">
-                Visible to public
-            </mat-checkbox>
             <button class="active" mat-flat-button color="primary">Add Post</button><br>
+            <!-- <mat-checkbox class="active" formControlName="visible">
+                Visible to public
+            </mat-checkbox> -->
         </div>
     </div>
 </form>

@@ -1,0 +1,113 @@
+body {
+  margin: 0; /* Remove default body margin */
+  height: 50vh;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: flex-start; /* Align items at the top */
+  padding-top: 80px; /* Adjust this value to move the box higher or lower */
+}
+
+.link-wrapper {
+  /* border: 1px solid #ccc; */
+  border-color:darkblue;
+  border-style: solid;
+  padding: 20px; /* Padding inside the box */
+  max-width: 600px; /* Maximum width of the box */
+  width: 100%; /* Make the box responsive */
+  box-sizing: border-box; /* Include padding in width calculation */
+  display: flex; /* Use flexbox to center children */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+}
+
+.link {
+  margin-top: 10px;
+  color: blue; /* Default link color */
+  text-decoration: underline; /* Underline the link */
+  cursor: pointer; /* Indicate it's clickable */
+}
+
+.admin-dashboard-container {
+    text-align: center;
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1, h2 {
+    color: #333;
+  }
+
+  .requests {
+     margin-bottom: 20px;
+  }
+  
+  .requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto;  /* Enable horizontal scroll on small screens */
+  }
+  
+  .requests-table th, .requests-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .requests-table th {
+    background-color: #f4f4f4;
+  }
+
+  @media (max-width: 768px) {  /* For medium and small screens */
+    .requests-table th, .requests-table td {
+      padding: 8px;  /* Reduce padding for smaller screens */
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {  /* For very small screens */
+    .requests-table th, .requests-table td {
+      padding: 6px;  /* Further reduce padding */
+      font-size: 12px;
+    }
+  
+    .btn-approve, .btn-reject {
+      padding: 4px 8px;  /* Smaller buttons on small screens */
+      font-size: 12px;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    gap: 10px; /* Space between buttons horizontally (default) */
+  }
+  
+  @media (max-width: 480px) {  /* For very small screens */
+    .button-container {
+      flex-direction: column;  /* Stack buttons vertically */
+      gap: 10px;  /* Vertical space between buttons */
+      align-items: center;  /* Center buttons horizontally */
+    }
+  }
+  
+  
+  .btn-approve {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;  /* Add space between buttons */
+  }
+  
+  .btn-reject {
+    background-color: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-approve:hover, .btn-reject:hover {
+    opacity: 0.8;
+  }
+  

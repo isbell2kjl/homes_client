@@ -30,11 +30,15 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
     bed: new FormControl(''), //bed
     bath: new FormControl(''), //bath
     sqft: new FormControl(''), //square feet
-    zestimate: new FormControl(''), //Zestimate
+    estimate: new FormControl(''), //estimate
     offer: new FormControl(''),//My offer
     notes: new FormControl(''),
     visible: new FormControl(0),
   });
+
+  callOptions = ['1-none', '2-pending', '3-contract', '4-deal']; // Dropdown options
+  conditionOptions = ['ugly', 'bad', 'good'];
+  delinquentOptions = ['no', 'yes'];
 
   newPost: Post = new Post();
   addressString: string = '';
@@ -53,29 +57,20 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
     if (this.userService.currentUserValue) {
 
       // Map `visible` control values between true/false and 1/0
-      this.newPostForm.get('visible')?.valueChanges.subscribe((checked) => {
-        this.newPostForm.patchValue({ visible: checked ? 1 : 0 }, { emitEvent: false });
-      });
+      // this.newPostForm.get('visible')?.valueChanges.subscribe((checked) => {
+      //   this.newPostForm.patchValue({ visible: checked ? 1 : 0 }, { emitEvent: false });
+      // });
 
 
-      this.getCurrentUser();
+      this.currentUserId = this.userService.getUserId();
 
-    } else (window.alert("You must log in to access this path."),
-      this.router.navigate(['auth/signin']))
 
-  }
+    } else {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();  // Sign out the user if not logged in.
+      this.router.navigate(['auth/signin']);
+    	}
 
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(response => {
-      this.currentUserId = response.userId!;
-    }, error => {
-      console.log('Error: ', error)
-      if (error.status === 401 || error.status === 403) {
-        window.alert("Access timeout, you must log in again.");
-        this.userService.active$ = this.userService.getUserActiveState('', '');
-        this.router.navigate(['auth/signin']);
-      }
-    });
   }
 
   updateAddressString() {
@@ -97,7 +92,7 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
       this.newPostForm.get('bed')?.value + 'bd',
       this.newPostForm.get('bath')?.value + 'ba',
       this.newPostForm.get('sqft')?.value + 'sqft',
-      '$' + this.newPostForm.get('zestimate')?.value,
+      '$' + this.newPostForm.get('estimate')?.value,
       '$' + this.newPostForm.get('offer')?.value,
       this.newPostForm.get('notes')?.value
     ]
@@ -127,7 +122,7 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
 
     this.postService.createPost(this.newPost).subscribe(() => {
       window.alert("Created Post Successfully");
-      this.getCurrentUser();
+      this.currentUserId = this.userService.getUserId();
       this.newPost.title = "";
       this.newPost.content = "";
       this.newPostForm.reset();
