@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { ProjectService } from 'src/app/services/project.service';
-import { MyRecaptchaKey } from 'src/app/helpers/constants';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MyRecaptchaKey } from 'src/app/helpers/constants';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit, OnDestroy {
+
+  passwordVisible = false;
+  hideTimeout: any;
+  captcha: string | null = null;
+  siteKey: string = MyRecaptchaKey;
+
 
   signinForm = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl(''),
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    recaptcha: new FormControl('', Validators.required)
   });
 
   myUserName: string = "";
@@ -26,8 +33,6 @@ export class SignInComponent implements OnInit {
   hasPendingRequests: number = 0;
   hasUserRequests: number = 0;
   currentName?: string = "";
-  captcha: string | null = "";
-  siteKey: string = MyRecaptchaKey;
   currentUser: any;
 
   constructor(private userService: UserService, private projectService: ProjectService, private router: Router,
@@ -38,35 +43,59 @@ export class SignInComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  signIn(event: Event) {
-    //prevent the SignIn from bypassing captcha
-    if (!this.captcha) {
-      event.preventDefault();
-      window.alert("You must verify that you're not a robot")
-      return;
-    } else
-      this.myUserName = this.signinForm.value.username!;
-    this.myPassword = this.signinForm.value.password!;
-    this.userService.signIn(this.myUserName, this.myPassword).subscribe(() => {
-      
-      console.log("Successful signin")
-      
-      //Look up the current user after login.
-      this.currentName = this.myUserName;
+  
 
-      //method to display the current user name in the menu.
-      this.userService.active$ = this.userService.getUserActiveState("active", this.currentName!)
-      this.getCurrentUser();
-
-    }, error => {
-      window.alert("Username or password are incorrect.");
-      console.log('Error: ', error)
-      if (error.status === 429 || error.status === 503) {
-        window.alert("Too many failed attempts. Wait a few minutes and try again.");
-      }
-    });
+  onRecaptchaResolved(token: string | null): void {
+    if (token) {
+      this.signinForm.get('recaptcha')?.setValue(token);
+      this.captcha = token;
+      // Call the backend or process the token
+    } else {
+      this.signinForm.get('recaptcha')?.setValue('');  // Clear the value if token is null
+      console.warn('reCAPTCHA failed or returned null');
+      // Handle the case when token is null (e.g., show an error)
+    }
   }
 
+  signIn(): void {
+    // Prevent the sign-in process from bypassing the captcha
+    if (this.signinForm.valid && this.captcha) {
+
+      this.userService.verifyRecaptcha(this.captcha).subscribe({
+        next: (response) => {
+          console.log('reCAPTCHA verified successfully', response);
+
+          this.myUserName = this.signinForm.value.username!;
+          this.myPassword = this.signinForm.value.password!;
+
+          this.userService.signIn(this.myUserName, this.myPassword).subscribe({
+            next: () => {
+              console.log("Successful sign-in");
+
+              // Look up the current user after login
+              this.currentName = this.myUserName;
+
+              // Method to display the current user name in the menu
+              this.userService.active$ = this.userService.getUserActiveState("active", this.currentName!);
+              this.getCurrentUser();
+            },
+            error: (error) => {
+              window.alert("Username or password are incorrect.");
+              console.log('Error: ', error);
+
+              if (error.status === 429 || error.status === 503) {
+                window.alert("Too many failed attempts. Wait a few minutes and try again.");
+              }
+            }
+          });
+        },
+        error: (err) => {
+          window.alert("Invalid reCAPTCHA.");
+          console.error('Invalid reCAPTCHA', err);
+        }
+      });
+    }
+  }
 
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe({
@@ -75,7 +104,7 @@ export class SignInComponent implements OnInit {
         this.currentUserId = user.userId;
         this.currentProjectId = user.projId_fk;
         this.currentUserRole = user.role;
-  
+
         if (this.currentProjectId === 1) {
           console.log("project Id ", this.currentProjectId);
           // Check if this user already has a pending request
@@ -113,7 +142,7 @@ export class SignInComponent implements OnInit {
             },
             error: (err) => {
               console.error('Error fetching pending requests', err);
-              this.snackBar.open('Failed to check pending requests.', 'Close', { duration: 5000, verticalPosition: 'top'});
+              this.snackBar.open('Failed to check pending requests.', 'Close', { duration: 5000, verticalPosition: 'top' });
             }
           });
         } else {
@@ -131,8 +160,6 @@ export class SignInComponent implements OnInit {
       }
     });
   }
-  
-
 
   logout() {
     this.userService.signOut();
@@ -140,19 +167,12 @@ export class SignInComponent implements OnInit {
     // });
   }
 
-  //when user checks "I'm not a robot"
-  resolved(captchaResponse: string | null) {
-    this.captcha = captchaResponse;
-  }
-
-  //prevent the ENTER key from bypassing captcha
-  onEnter(event: Event) {
-    const keyboardEvent = event as KeyboardEvent;
-    if (!this.captcha) {
-      keyboardEvent.preventDefault();
-      window.alert("You must verify that you're not a robot")
-      return;
+  ngOnDestroy(): void {
+    // Reset reCAPTCHA if needed
+    if (window.grecaptcha) {
+      window.grecaptcha.reset();
     }
   }
+
 
 }

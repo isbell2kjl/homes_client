@@ -5,7 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { StrongPasswordRegx } from 'src/app/helpers/constants';
 import Validation from 'src/app/helpers/validators';
-import { MyRecaptchaKey } from 'src/app/helpers/constants';
+
 
 @Component({
   selector: 'app-reset-password',
@@ -19,7 +19,6 @@ export class ResetPasswordComponent implements OnInit {
   token: string = "";
   password: string = "";
   confirmPassword: string = "";
-  siteKey = MyRecaptchaKey;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService,
     private location: Location, private formBuilder: FormBuilder

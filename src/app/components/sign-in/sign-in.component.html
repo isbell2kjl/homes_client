@@ -1,6 +1,7 @@
 <body>
     <div class="form-wrapper">
-        <form [formGroup]="signinForm" (ngSubmit)="signIn($event)" (keydown.enter)="onEnter($event)">
+        <form [formGroup]="signinForm" (ngSubmit)="signIn()">
+            <!-- (keydown.enter)="onEnter($event)" -->
             <h1 class="input-wrapper">Sign In</h1>
             <!-- <label>User Name </label> -->
             <input class="input-wrapper" placeholder="Enter User Name" type="text" formControlName="username">
@@ -9,18 +10,14 @@
             <input class="input-wrapper" placeholder="Enter Password" type="password" formControlName="password">
             <br><br>
 
-            <!-- <div>
-           {{currentName}}, {{currentID}}, {{loggedIn}}
-        </div> -->
-        <div class="recaptcha-container">
-            <div [hidden]="captcha">
-                <re-captcha (resolved)="resolved($event)"
-                    [siteKey]="siteKey"></re-captcha>
+            <div class="recaptcha-container">
+                <div [hidden]="captcha">
+                    <re-captcha (resolved)="onRecaptchaResolved($event)" [siteKey]="siteKey">></re-captcha>
+                 </div>
+                <div [hidden]="!captcha">
+                    <button mat-flat-button class="input-wrapper" mat-flat-button color="primary" type="submit">Sign In</button>
+                </div>
             </div>
-            <div [hidden]="!captcha">
-                <button mat-flat-button class="input-wrapper" mat-flat-button color="primary">Sign In</button>
-            </div>
-        </div>
             <div class="input-wrapper" id="link">
                 <a [routerLink]="['/forgot-password']">Forgot Password</a>
             </div>

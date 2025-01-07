@@ -35,6 +35,17 @@ export class UserService {
     return this.currentUserSubject.value;
   }
 
+  verifyRecaptcha(token: string): Observable<any> {
+    return this.http.post(`${baseURL}/auth/verify-recaptcha`, { Token: token })
+      .pipe(
+        catchError(error => {
+          console.error('Recaptcha verification failed:', error);
+          return throwError(() => new Error('Recaptcha verification failed.'));
+        })
+      );
+  }
+  
+
   getToken(): string | null {
     return this.currentUserValue?.token || null;
   }

@@ -9,5 +9,3 @@ export const EmailFormatRegx: RegExp =
 /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 
 export const MyRecaptchaKey: string ="6LdNGyEqAAAAAD94Gnk-Uv6_Ia0pzbHyJ99jQQjM";
-
-

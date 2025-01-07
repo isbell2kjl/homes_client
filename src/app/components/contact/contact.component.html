@@ -20,7 +20,7 @@
     </p>
   </div>
 
-  <form [formGroup]="newContactForm"  (ngSubmit)="onSubmit($event)" (keydown.enter)="onEnter($event)">
+  <form [formGroup]="newContactForm"  (ngSubmit)="onSubmit()">
 
     <div class="form-group-container">
       <div class="form-group">
@@ -44,11 +44,11 @@
 
     <div class="d-flex justify-content-center" id="button-wrapper">
       <div [hidden]="captcha">
-        <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+        <re-captcha (resolved)="onRecaptchaResolved($event)" [siteKey]="siteKey">></re-captcha>
       </div>
       <div [hidden]="!captcha">
         <button mat-flat-button class="input-wrapper" mat-flat-button color="primary" [class.spinner]="loading"
-          [disabled]="loading">Submit</button>
+          [disabled]="loading" type="submit">Submit</button>
       </div>
     </div>
   </form>
