@@ -5,6 +5,7 @@ import { User } from 'src/app/models/user';
 import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
 import { webSite } from 'src/app/helpers/constants';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -24,6 +25,7 @@ export class AdminDashboardComponent {
   currentUserId: number = 0;
   currentProjectId: number = 0;
   currentRole: number = 0;
+  loading = false;
 
 
   constructor(private projectService: ProjectService, private userService: UserService, private location: Location,
@@ -140,6 +142,34 @@ export class AdminDashboardComponent {
     }
 
   }
+
+  onSendReports(): void {
+    const confirmation = window.confirm(
+      'This action will generate and send a backup report of properties and actions to the group details email address. \n\n Do you want to proceed?'
+    );
+  
+    if (confirmation) {
+      this.loading = true
+      this.projectService.sendWeeklyReports(this.currentProjectId)
+        .pipe(
+          catchError(error => {
+            console.error('Error sending reports:', error);
+            alert('Failed to send weekly reports.');
+            this.loading = false
+            return of(null);
+          })
+        )
+        .subscribe(response => {
+          if (response) {
+            alert('Weekly reports email successfully sent.');
+            this.loading = false
+          }
+        });
+    } else {
+      alert('Action canceled.');
+    }
+  }
+  
 
   back(): void {
     this.location.back()

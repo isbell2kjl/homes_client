@@ -46,8 +46,10 @@
       <a class="link" [routerLink]="['/project', currentProjectId]"><strong>Group Details</strong></a>
       <a class="link" routerLink="/search"><strong>All Users</strong></a>
       <a class="link" (click)="onNewUser()"><strong>SignUp Link</strong></a>
-
     </div>
-
+    <div>
+      <button class="report-button" mat-flat-button color="primary" (click)="onSendReports()" 
+      [class.spinner]="loading" [disabled]="loading">Send Backup</button>
+    </div>
   </div>
 </body>
