@@ -35,9 +35,11 @@
       </section>
 
       <!-- No Requests Message -->
-      <ng-template #noRequests>
-        <p>No pending join requests at the moment.</p>
-      </ng-template>
+      <div class="centered-text">
+        <ng-template #noRequests>
+          <span>No pending join requests at the moment.</span>
+        </ng-template>
+      </div>
     </div>
 
     <div class="link-wrapper">
@@ -48,8 +50,18 @@
       <a class="link" (click)="onNewUser()"><strong>SignUp Link</strong></a>
     </div>
     <div>
-      <button class="report-button" mat-flat-button color="primary" (click)="onSendReports()" 
-      [class.spinner]="loading" [disabled]="loading">Send Backup</button>
+      <button class="report-button" mat-flat-button color="primary" (click)="onSendReports()" [class.spinner]="loading"
+        [disabled]="loading">Send Backup</button>
+    </div>
+    <div>
+      <div class="centered-text">
+        <span>Donate securely using</span><br>
+        <span>PayPal to support this project</span>
+      </div>
+      <a href="https://www.paypal.com/donate/?hosted_button_id=QCBB3HCU2ZJJA" target="_blank" rel="noopener noreferrer">
+        <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal"
+          class="paypal-button" />
+      </a>
     </div>
   </div>
 </body>

@@ -4,7 +4,7 @@ body {
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: flex-start; /* Align items at the top */
-  padding-top: 80px; /* Adjust this value to move the box higher or lower */
+  padding-top: 10px; /* Adjust this value to move the box higher or lower */
 }
 
 .link-wrapper {
@@ -133,5 +133,16 @@ body {
 
   .report-button {
     margin: 25px;
+  }
+  .centered-text {
+    text-align: center;
+    font-size: 16px;   /* Adjust size as needed */
+    line-height: 1.5;  /* Controls spacing between lines */
+  }
+
+  .paypal-button {
+    margin-top: 20px;
+    width: 100px;  /* Adjust the width as needed */
+    height: auto;  /* Maintain aspect ratio */
   }
   

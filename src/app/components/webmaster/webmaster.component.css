@@ -9,6 +9,10 @@ img {
   .btn {
     padding: 10px 20px;
 }
+.paypal-button {
+  width: 100px;  /* Adjust the width as needed */
+  height: auto;  /* Maintain aspect ratio */
+}
   
   .container {
     display: flex;
