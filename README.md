@@ -1,6 +1,6 @@
 # HomeClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.5.
+Homes_Client is the Angular 18.0 frontend for a real estate tracking application. It interacts with a .NET 8.0 backend connected to a MySQL database, providing a user-friendly interface for managing and tracking real estate properties. This application offers an intuitive solution to record and monitor actions, such as conversations, phone calls, and correspondence with buyers and sellers.
 
 ## Development server
 
