@@ -1,17 +1,15 @@
 img {
   border-radius: 2em;
   margin: 1em;
-  width: 100%;
+  width: 80%; /* Reduce width to make it smaller */
   height: auto;
-  max-width: 200px;
+  max-width: 150px; /* Smaller max-width for all screen sizes */
 }
-
 
 .container {
   display: flex;
   flex-direction: row;
-  gap: 20px;
-  /* align-items: left; */
+  gap: 10px;
   justify-content: center;
   align-items: center;
 }
@@ -23,14 +21,12 @@ img {
 
 .column-1 {
   flex: 1;
-  /* height: auto;
-  max-height: 200px; */
   text-align: center;
 }
 
 .column-2 {
   flex: 3;
-  width: 65%;
+  width: 60%;
   justify-content: center;
   text-align: left;
 }
@@ -39,7 +35,9 @@ img {
   .container {
     flex-direction: column;
   }
-} 
+
+}
+
 
 .contact-section {
   width: 80%;

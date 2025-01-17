@@ -66,6 +66,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
             window.alert("Enter a valid Email address.");
             this.loading = false;
             console.log('Error: ', error)
+            // Reset the reCAPTCHA after a failed attempt
+            this.captcha = null;
+            grecaptcha.reset();
             if (error.status === 401 || error.status === 403) {
               this.router.navigateByUrl('auth/signin');
             }

@@ -43,7 +43,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  
+
 
   onRecaptchaResolved(token: string | null): void {
     if (token) {
@@ -86,6 +86,9 @@ export class SignInComponent implements OnInit, OnDestroy {
               if (error.status === 429 || error.status === 503) {
                 window.alert("Too many failed attempts. Wait a few minutes and try again.");
               }
+              // Reset the reCAPTCHA after a failed attempt
+              this.captcha = null;
+              grecaptcha.reset();
             }
           });
         },

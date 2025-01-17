@@ -77,6 +77,9 @@ export class WebmasterComponent implements OnInit, CanComponentDeactivate, OnDes
             console.log('Error: ', error)
             this.loading = false
             //generic error message for now.  Can implement more complex validation later.
+            // Reset the reCAPTCHA after a failed attempt
+            this.captcha = null;
+            grecaptcha.reset();
           });
         },
         error: (err) => {

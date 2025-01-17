@@ -129,6 +129,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
               window.alert("User Registration Error");
               this.loading = false;
               console.log('Error: ', error);
+              // Reset the reCAPTCHA after a failed attempt
+              this.captcha = null;
+              grecaptcha.reset();
             }
           });
         },
