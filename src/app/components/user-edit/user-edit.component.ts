@@ -133,17 +133,7 @@ export class UserEditComponent implements OnInit, CanComponentDeactivate {
 
             window.alert("You may need to edit your group details as well.")
             this.router.navigate(['/project', projId]);
-            // this.projectService.editProjectById(String(projId), updatedProject).subscribe(
-            //   () => {
-            //     console.log("Group/Project updated successfully");
-            //     window.alert("Since you are the group owner, the corresponding group name and email were also updated");
-            //     this.router.navigate(['profile/' + this.id]);
-            //   },
-            //   error => {
-            //     console.error("Error updating group/project:", error);
-            //     window.alert("Error updating the group");
-            //   }
-            // );
+            
           } else if (projectUpdateNeeded && this.currentUserRole !== 1) {
             console.log("Current user is not an admin. Skipping group/project update.");
             this.router.navigate(['profile/' + this.id]);

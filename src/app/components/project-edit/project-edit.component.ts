@@ -17,8 +17,8 @@ import { webSite } from 'src/app/helpers/constants';
 export class ProjectEditComponent implements OnInit, CanComponentDeactivate {
 
   id: string = "";
-  currentUserId?: number = 0;
   currentProjectId?: number = 0;
+  initialEmail: string | undefined;
   webSite = webSite;
   editProject: Project = new Project();
 
@@ -68,6 +68,8 @@ export class ProjectEditComponent implements OnInit, CanComponentDeactivate {
   loadProjectData(id: string) {
     this.projectService.getProjectById(id).subscribe(foundProject => {
       this.editProjectForm.patchValue(foundProject);
+      // Store initial values for comparison
+      this.initialEmail = foundProject.contactEmail;
     });
   }
 
@@ -77,7 +79,11 @@ export class ProjectEditComponent implements OnInit, CanComponentDeactivate {
     this.editProject = this.editProjectForm.value as Project;
     this.projectService.editProjectById(this.id, this.editProject).subscribe(response => {
       console.log(response);
-      window.alert("Edited Project Successfully. '\n' Click Home on the Menu to review changes.");
+      window.alert("Edited Project Successfully");
+      if (this.editProject.contactEmail !== this.initialEmail) {
+        window.alert("You may consider changing your user email to match this one. \n" +
+          "Remember the user email is the primary contact in case you forget your password.")
+      }
       //this sets the form.dirty status to false.
       this.editProjectForm.markAsPristine();
       this.router.navigate(['admin-dashboard']);
