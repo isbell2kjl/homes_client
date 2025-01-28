@@ -70,6 +70,22 @@ input {
     margin-bottom: 0.3em;
     height: 25px;
 }
+
+.dropdown-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .column1 {
+    font-weight: bold;
+  }
+  
+  .column2 {
+    color: gray;
+    margin-left: 10px;
+  }
+  
 .responsive-table {
     display: grid;
     width: 80%;

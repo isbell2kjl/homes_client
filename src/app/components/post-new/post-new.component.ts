@@ -24,7 +24,6 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
     zip: new FormControl(''), //zip
     owner: new FormControl(''), //owner
     telephone: new FormControl(''), //telephone
-    call: new FormControl(''), //call status
     condition: new FormControl(''), //condition
     delinquent: new FormControl(''), //delinquint status
     bed: new FormControl(''), //bed
@@ -32,13 +31,21 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
     sqft: new FormControl(''), //square feet
     estimate: new FormControl(''), //estimate
     offer: new FormControl(''),//My offer
+    call: new FormControl(''), //call status
     notes: new FormControl(''),
     visible: new FormControl(0),
   });
 
-  callOptions = ['1-none', '2-pending', '3-contract', '4-deal']; // Dropdown options
   conditionOptions = ['ugly', 'bad', 'good'];
   delinquentOptions = ['no', 'yes'];
+
+  callOptions = [
+    { id: '0', name: 'none' },
+    { id: '1', name: 'declined' },
+    { id: '2', name: 'negotiation' },
+    { id: '3', name: 'contract' },
+    { id: '4', name: 'deal' },
+  ];
 
   newPost: Post = new Post();
   addressString: string = '';
@@ -56,22 +63,28 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
 
-      // Map `visible` control values between true/false and 1/0
-      // this.newPostForm.get('visible')?.valueChanges.subscribe((checked) => {
-      //   this.newPostForm.patchValue({ visible: checked ? 1 : 0 }, { emitEvent: false });
-      // });
-
-
       this.currentUserId = this.userService.getUserId();
-
 
     } else {
       window.alert("You must log in to access this path.");
       this.userService.signOut();  // Sign out the user if not logged in.
       this.router.navigate(['auth/signin']);
-    	}
+    }
 
   }
+
+  displayFn(id: string | null): string {
+    if (!id || typeof id !== 'string') return '';  // Prevents errors
+    const selectedOption = this.callOptions?.find(option => option.id === id);
+    return selectedOption ? selectedOption.id : id;  // If not found, return raw input
+  }
+
+
+  onOptionSelected(event: any, controlName: string) {
+    console.log(`Selected value for ${controlName}:`, event.option.value); // Debugging
+    this.newPostForm.get(controlName)?.setValue(event.option.value);
+  }
+  
 
   updateAddressString() {
     this.addressString = [
@@ -86,14 +99,14 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
     this.concatenatedString = [
       'Own-' + this.newPostForm.get('owner')?.value,
       'Tel-' + this.newPostForm.get('telephone')?.value,
-      'Call-' + this.newPostForm.get('call')?.value,
       'Cond-' + this.newPostForm.get('condition')?.value,
       'Delq-' + this.newPostForm.get('delinquent')?.value,
       this.newPostForm.get('bed')?.value + 'bd',
       this.newPostForm.get('bath')?.value + 'ba',
       this.newPostForm.get('sqft')?.value + 'sqft',
-      '$' + this.newPostForm.get('estimate')?.value,
-      '$' + this.newPostForm.get('offer')?.value,
+      'Est-$' + this.newPostForm.get('estimate')?.value,
+      'Offr-$' + this.newPostForm.get('offer')?.value,
+      'Call-' + this.newPostForm.get('call')?.value,
       this.newPostForm.get('notes')?.value
     ]
       .filter(value => value) // Filter out null/undefined/empty values
@@ -113,6 +126,7 @@ export class PostNewComponent implements OnInit, CanComponentDeactivate {
     this.newPost.userId_fk = this.currentUserId;
     this.updateAddressString();
     this.newPost.title = this.addressString;
+    console.log("Address: " + this.newPost.title)
 
     // Make sure address field has a value before performing continuning.
     if (this.newPost.title?.length! > 0) {

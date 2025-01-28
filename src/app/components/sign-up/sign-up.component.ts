@@ -103,8 +103,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
           this.checkEmail();
 
           if (this.emailError) {
-            window.alert("Try a different email address");
+            window.alert("Try a  different email address");
             this.loading = false;
+            grecaptcha.reset();
             return;
           }
 
@@ -124,6 +125,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
               this.confirmEmail();
               window.alert("User Registered Successfully");
               this.loading = false;
+              grecaptcha.reset();
             },
             error: (error) => {
               window.alert("User Registration Error");

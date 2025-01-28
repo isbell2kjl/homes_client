@@ -61,6 +61,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
             window.alert("If this account exists, you will receive an email.");
             this.loading = false;
             this.emailForm.reset();
+            grecaptcha.reset();
             this.router.navigateByUrl('/reset-password');
           }, error => {
             window.alert("Enter a valid Email address.");

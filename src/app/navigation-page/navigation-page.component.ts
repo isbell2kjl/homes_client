@@ -60,7 +60,7 @@ export class NavigationPageComponent {
         // Public boolean observable used to modify dropdown menu.
         this.userService.active$ = this.userService.getUserActiveState(
           'active',
-          this.currentUser
+          this.currentUser 
         );
         console.log('Current User (from App Component): ', this.currentUser);
       } else {

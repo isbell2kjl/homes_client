@@ -70,6 +70,7 @@ export class ContactComponent implements OnInit, CanComponentDeactivate, OnDestr
             window.alert("Thanks for your request. We'll get back to you as soon as possible");
             this.loading = false;
             this.newContactForm.reset(); // Clears the form
+            grecaptcha.reset();
           }, error => {
             console.log('Error: ', error)
             this.loading = false

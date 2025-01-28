@@ -192,6 +192,7 @@ export class UserService {
           // Update BehaviorSubject
           if (user.token) {
             this.currentUserSubject.next(user);
+            this.startRefreshTokenTimer();
           }
 
           return user;
