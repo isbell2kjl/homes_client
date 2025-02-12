@@ -64,3 +64,11 @@ textarea {
     padding: 0.5m;
     word-wrap: break-word;
 }
+
+.button-row {
+    display: flex;
+    justify-content: flex-start;  /* Aligns buttons to the left */
+    flex-shrink: 0;
+    padding: 10px;
+    gap: 5px;  /* Adjusts space between buttons */
+}

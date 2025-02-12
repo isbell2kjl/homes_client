@@ -42,6 +42,7 @@ export class AdminDashboardComponent {
           this.currentUserId = user.UserId;
           this.currentProjectId = user.projId_fk;
           this.currentRole = user.role;
+          this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
 
           if (this.currentRole == 1) {
             this.loadPendingRequests();

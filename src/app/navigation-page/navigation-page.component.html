@@ -9,11 +9,11 @@
         <h2 class="site-menu">Welcome {{currentName}}</h2>
 
         <!--Only show this div section if single user website mode-->
-        <div *ngIf="webSite">
+        <!-- <div *ngIf="webSite">
           <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()"
             (click)="refreshContent()">Home</a>
           <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === false" (click)="refreshContent()">Home</a>
-        </div>
+        </div> -->
 
         <a mat-list-item routerLink="/active" *ngIf="(isHandset$ | async) === true"
           (click)="drawer.toggle()">Properties</a>

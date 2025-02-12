@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Project } from 'src/app/models/project';
 import { ProjectRequest } from 'src/app/models/project-request';
 import { ProjectService } from 'src/app/services/project.service';
+import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmailFormatRegx } from 'src/app/helpers/constants';
@@ -27,7 +28,7 @@ export class JoinRequestComponent {
   showRequestForm: boolean = false;
   showProjectForm: boolean = false;
   showButtons: boolean = true; // Used when webSite is false
-
+  currentUser: User | null = null;
 
   userProject: ProjectRequest = {
     projectId: 1,
@@ -43,9 +44,21 @@ export class JoinRequestComponent {
 
   ngOnInit(): void {
 
-    if (this.webSite) {
-      this.getAdminUsers();
-    }
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.currentUser = user;
+        this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
+        this.loadNames();
+
+        if (this.webSite) {
+          this.getAdminUsers();
+        }
+
+      },
+      error: (err) => {
+        console.error('Error fetching user:', err);
+      }
+    });
 
   }
 
@@ -73,23 +86,38 @@ export class JoinRequestComponent {
     this.showProjectForm = true;
     this.showRequestForm = false;
     // this.showButtons = false;
-    this.loadNames(); // Load email and project name (with userName) when Form 1 is shown.
   }
 
   loadNames(): void {
-    const contactEmail = this.userService.getCurrentEmail();
-    const projectName = this.userService.getUserName();
-    this.newProjectForm.patchValue({ contactEmail });
-    this.newProjectForm.patchValue({ projectName });
-  }
+    if (this.currentUser) {
 
+      this.newProjectForm.patchValue({
+        contactEmail: this.currentUser.email,
+        projectName: this.currentUser.userName
+      });
+
+    } else {
+      window.alert("You must log in to access this path.");
+      this.userService.signOut();
+      this.router.navigate(['auth/signin']);
+    }
+  }
 
   createProject() {
     const formValues = this.newProjectForm.value;
+    // console.log("Form Values: ", formValues);
+
+    if (this.newProjectForm.invalid) {
+      console.error('Form is invalid');
+      return;
+    }
     // Check to make sure email does not already exist
     const email = formValues.contactEmail!;
+
+    
+
     this.projectService.checkEmailTrue(email).subscribe(
-      (response) => {
+      (_) => {
         // Backend returned success (NO EMAIL FOUND), proceed to create the project
 
         // Check the global constant `webSite`
@@ -104,7 +132,7 @@ export class JoinRequestComponent {
               }
 
               // No admin user exists, proceed to create the project
-              this.createProjectAndAssignRole(email, formValues);
+              this.createProjectAndAssignRole(formValues);
             },
             (error) => {
               console.error("Error fetching admin users:", error);
@@ -112,7 +140,8 @@ export class JoinRequestComponent {
           );
         } else {
           // If webSite == false, proceed to create the project without restrictions
-          this.createProjectAndAssignRole(email, formValues);
+          this.createProjectAndAssignRole(formValues);
+          this.router.navigate(['/admin-dashboard']);
         }
       },
       (emailError) => {
@@ -127,41 +156,53 @@ export class JoinRequestComponent {
 
   /**
  * Helper function to create a project and assign the admin role to the user.
+ * 
  */
-  createProjectAndAssignRole(email: string, formValues: any) {
 
-    // Prepare the new project object
+  createProjectAndAssignRole(formValues: any) {
+    if (!this.currentUser) {
+      console.error("Current user is not available.");
+      return;
+    }
+  
     const newProjectData = {
       projectName: formValues.projectName,
-      contactEmail: formValues.contactEmail
+      contactEmail: formValues.contactEmail,
     };
-
+    // console.log("newProjectData ", newProjectData);
+  
     this.projectService.createProject(newProjectData).subscribe(
       (createResponse: Project) => {
-        window.alert("Group created successfully")
+
+        // Check response here
+      // console.log('Create response:', createResponse);
+
+      if (!createResponse || !createResponse.projectId) {
+        console.error('Project creation failed: Missing projectId');
+        return;
+      }
+      
+        window.alert("Group created successfully");
         console.log("Group created successfully", createResponse);
-
-        // Fetch the current user's data
-        this.userService.getCurrentUser().subscribe(
-          (currentUser) => {
-            const updatedUser = {
-              ...currentUser,
-              projId_fk: createResponse.projectId, // Assign the new projectId
-              role: 1, // Set the user role to admin
-            };
-
-            // Update the user in the backend
-            this.userService.editUserByID(currentUser.userId, updatedUser).subscribe(
-              (updateResponse) => {
-                console.log("User's project and role updated successfully", updateResponse);
-              },
-              (updateError) => {
-                console.error("Error updating user's project and role:", updateError);
-              }
-            );
+  
+        const updatedUser = {
+          ...this.currentUser,
+          projId_fk: createResponse.projectId, // Assign the new projectId
+          role: 1, // Set the user role to admin
+        };
+  
+        if (!this.currentUser?.userId) {
+          console.error("User ID is missing.");
+          return;
+        }
+  
+        // Update the user in the backend
+        this.userService.editUserByID(String(this.currentUser.userId), updatedUser).subscribe(
+          (updateResponse) => {
+            console.log("User's project and role updated successfully", updateResponse);
           },
-          (error) => {
-            console.error("Error fetching current user:", error);
+          (updateError) => {
+            console.error("Error updating user's project and role:", updateError);
           }
         );
       },
@@ -170,54 +211,49 @@ export class JoinRequestComponent {
       }
     );
   }
+  
+  
 
-  requestJoin() {
-    if (this.requestJoinForm.valid) {
+  requestJoin(): void {
+    if (this.requestJoinForm.valid && this.currentUser) {
       const email = this.requestJoinForm.value.projectEmail!;
 
-      // Check if this user already has a pending request
-      this.userService.getCurrentUser().subscribe({
-        next: (user) => {
-          this.projectService.getUserRequests(user.userId).subscribe({
-            next: (response) => {
-              if (response.hasUserRequests) {
-                window.alert("You already have a request pending. \n Check back when group owner approves the request.")
-                return; // Stop further execution
-              }
-              // Proceed to check if the group email is valid
-              this.projectService.checkEmail(email).subscribe({
-                next: () => {
-                  this.projectService.requestToJoinProject(email).subscribe({
-                    next: (response) => {
-                      console.log("Request submitted successfully", response);
-                      window.alert(
-                        "Request submitted successfully. \nCheck back when group owner approves the request."
-                      );
-                      this.userService.signOut();
-                      this.router.navigate(['auth/signin']);
-                    },
-                    error: (error) => {
-                      console.error("Error sending join request", error);
-                    },
-                  });
-                },
-                error: () => {
+      this.projectService.getUserRequests(Number(this.currentUser.userId)).subscribe({
+        next: (response) => {
+          if (response.hasUserRequests) {
+            window.alert("You already have a request pending. \n Check back when the group owner approves the request.");
+            return; // Stop further execution
+          }
+          // Proceed to check if the group email is valid
+          this.projectService.checkEmail(email).subscribe({
+            next: () => {
+              this.projectService.requestToJoinProject(email).subscribe({
+                next: (response) => {
+                  console.log("Request submitted successfully", response);
                   window.alert(
-                    "This group email does not exist or is not receiving requests. Try a different one."
+                    "Request submitted successfully. \nCheck back when the group owner approves the request."
                   );
+                  this.userService.signOut();
+                  this.router.navigate(['auth/signin']);
+                },
+                error: (error) => {
+                  console.error("Error sending join request", error);
                 },
               });
             },
-            error: (err) => {
-              console.error('Error fetching user:', err);
-            }
+            error: () => {
+              window.alert(
+                "This group email does not exist or is not receiving requests. Try a different one."
+              );
+            },
           });
         },
-        error: (error) => {
-          console.error("Error checking user requests", error);
-        },
+        error: (err) => {
+          console.error('Error fetching user:', err);
+        }
       });
     }
   }
+
 
 }

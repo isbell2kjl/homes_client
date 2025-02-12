@@ -39,7 +39,7 @@ export class UserComponent implements OnInit {
 
       this.userService.getUserByID(this.id).subscribe(foundUser => {
         this.selectedUser = foundUser;
-        this.foundUserRole = foundUser.role!;
+        this.foundUserRole = foundUser.role!;        
 
       })
 
@@ -48,6 +48,7 @@ export class UserComponent implements OnInit {
           this.currentUserId = user.UserId;
           this.currentUserRole = user.role
           console.log("role ", this.currentUserRole)
+          this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
         },
         error: (err) => {
           console.error('Error fetching user:', err);

@@ -31,6 +31,7 @@ export class UserSearchComponent {
     if (this.userService.currentUserValue) {
 
       this.projectId = this.userService.getProjectId()
+      
 
 
       //retreive the search keyword previously saved in the User Service, if it exists.

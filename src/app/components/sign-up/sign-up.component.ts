@@ -102,12 +102,12 @@ export class SignUpComponent implements OnInit, OnDestroy {
           this.checkUserName();
           this.checkEmail();
 
-          if (this.emailError) {
-            window.alert("Try a  different email address");
-            this.loading = false;
-            grecaptcha.reset();
-            return;
-          }
+          // if (this.emailError) {
+          //   window.alert("Try a  different email address");
+          //   this.loading = false;
+          //   grecaptcha.reset();
+          //   return;
+          // }
 
           // Set the projectId to 1, which is the default,
           // until user creates a new one or joins an existing one

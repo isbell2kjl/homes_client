@@ -35,6 +35,25 @@ export class UserService {
     return this.currentUserSubject.value;
   }
 
+  // initializeUser() {
+  //   // Check if the page was reloaded
+  //   const wasRefreshed = sessionStorage.getItem('wasRefreshed');
+  
+  //   if (wasRefreshed) {
+  //     sessionStorage.removeItem('wasRefreshed'); // Clear flag after running
+  //     console.log('Page was refreshed. Fetching current user...');
+      
+  //     this.getCurrentUser().subscribe(user => {
+  //       if (user) {
+  //         this.currentUserSubject.next(user); // ✅ Update BehaviorSubject
+  //         this.active$ = this.getUserActiveState('active', user.userName);
+  //       }
+  //     }, error => {
+  //       console.log('User not found or session expired.', error);
+  //     });
+  //   }
+  // }
+
   verifyRecaptcha(token: string): Observable<any> {
     return this.http.post(`${baseURL}/auth/verify-recaptcha`, { Token: token })
       .pipe(

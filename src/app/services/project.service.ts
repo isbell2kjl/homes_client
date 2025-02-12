@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { baseURL } from '../helpers/constants';
 import { PendingResponse } from '../models/pending-response';
 import { UserResponse } from '../models/pending-response';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,17 @@ export class ProjectService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.post(`${baseURL}/project`, newProject, {headers: reqHeaders});
+
+    // Check the newProject object to ensure it has all the required fields
+    console.log('Creating project with data:', newProject);
+
+    return this.http.post<Project>(`${baseURL}/project`, newProject, { headers: reqHeaders })
+    .pipe(
+      catchError((error) => {
+        console.error('Error in createProject service:', error);
+        return throwError(error); // Rethrow the error to be caught in the component
+      })
+    );
   }
 
   //This is used to display content on public pages. The content is updated on NgOnInit() within each component.
@@ -36,7 +47,7 @@ export class ProjectService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.get<Project>(`${baseURL}/project/${projectId}`, {headers: reqHeaders});
+    return this.http.get<Project>(`${baseURL}/project/${projectId}`, { headers: reqHeaders });
   }
 
   //Check if email exists for join requests and only allow
@@ -56,7 +67,7 @@ export class ProjectService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.put<Project>(`${baseURL}/project/${projectId}`, editedProject, { headers: reqHeaders});
+    return this.http.put<Project>(`${baseURL}/project/${projectId}`, editedProject, { headers: reqHeaders });
   }
 
   // Method to request to join a project
@@ -65,7 +76,7 @@ export class ProjectService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.post(`${baseURL}/user/request-to-join`, { projectEmail }, { headers: reqHeaders});
+    return this.http.post(`${baseURL}/user/request-to-join`, { projectEmail }, { headers: reqHeaders });
   }
 
   getPendingRequests(projectId: number): Observable<PendingResponse> {
@@ -74,10 +85,10 @@ export class ProjectService {
       Authorization: `Bearer ${tokenKey}`
     }
 
-    return this.http.get<PendingResponse>(`${baseURL}/user/pending-requests/${projectId}`, {headers: reqHeaders},
+    return this.http.get<PendingResponse>(`${baseURL}/user/pending-requests/${projectId}`, { headers: reqHeaders },
     );
   }
-  
+
   getUserRequests(userId: number): Observable<UserResponse> {
     let tokenKey: any = this.userService.currentUserValue!.token;
     let reqHeaders = {
@@ -92,7 +103,7 @@ export class ProjectService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.post<Request>(`${baseURL}/user/approve-request/${requestId}`,{}, {headers: reqHeaders});
+    return this.http.post<Request>(`${baseURL}/user/approve-request/${requestId}`, {}, { headers: reqHeaders });
   }
 
   // project.service.ts
@@ -101,7 +112,7 @@ export class ProjectService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.post<Request>(`${baseURL}/user/reject-request/${requestId}`, {}, {headers: reqHeaders});
+    return this.http.post<Request>(`${baseURL}/user/reject-request/${requestId}`, {}, { headers: reqHeaders });
   }
 
   sendWeeklyReports(projectId: number): Observable<string> {
@@ -113,7 +124,7 @@ export class ProjectService {
     let reqHeaders = {
       Authorization: `Bearer ${tokenKey}`
     }
-    return this.http.delete<any>(`${baseURL}/project/${projectId}`, { headers: reqHeaders})
+    return this.http.delete<any>(`${baseURL}/project/${projectId}`, { headers: reqHeaders })
   }
 
 }

@@ -36,6 +36,7 @@ export class PostActiveComponent implements OnInit {
 
   ngOnInit(): void {
 
+
     // Check if a user is logged in
     if (!this.userService.currentUserValue) {
       window.alert("You must log in to access this path.");
@@ -60,6 +61,7 @@ export class PostActiveComponent implements OnInit {
           this.router.navigate(['join-request']);
           return; // Stop further execution
         } else {
+          this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
           this.applyFilters(); // Unified filter logic
         }
       },

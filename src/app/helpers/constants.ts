@@ -1,6 +1,6 @@
 // export const baseURL: string = 'https://localhost:7279/api';
 // export const baseURL: string = 'https://myproperties.ddns.net/api';
-export const baseURL: string = 'https://myadvantageproperties.com/api'; 
+export const baseURL: string = 'https://myadvantageproperties.com/api';
 
 export const webSite: boolean = true;
 

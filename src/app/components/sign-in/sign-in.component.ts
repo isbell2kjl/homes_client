@@ -75,8 +75,7 @@ export class SignInComponent implements OnInit, OnDestroy {
               // Look up the current user after login
               this.currentName = this.myUserName;
 
-              // Method to display the current user name in the menu
-              this.userService.active$ = this.userService.getUserActiveState("active", this.currentName!);
+              
               this.getCurrentUser();
             },
             error: (error) => {
@@ -103,10 +102,12 @@ export class SignInComponent implements OnInit, OnDestroy {
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
-        console.log('Fetched user:', user); // Debug output
+        // console.log('Fetched user:', user);
         this.currentUserId = user.userId;
         this.currentProjectId = user.projId_fk;
         this.currentUserRole = user.role;
+        // Method to display the current user name in the menu
+        this.userService.active$ = this.userService.getUserActiveState("active", this.currentName!);
 
         if (this.currentProjectId === 1) {
           console.log("project Id ", this.currentProjectId);
@@ -119,8 +120,9 @@ export class SignInComponent implements OnInit, OnDestroy {
                   'Close',
                   { duration: 5000, verticalPosition: 'top' }
                 );
-                // this.logout();
-                this.router.navigate(['join-request']);
+                this.logout();
+                window.grecaptcha.reset();
+                return;
               } else {
                 // If no pending requests, proceed to the join-request screen.
                 this.snackBar.open('Join or create a user group', 'Close', { duration: 5000, verticalPosition: 'top' });
