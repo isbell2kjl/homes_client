@@ -15,7 +15,8 @@
                     <re-captcha (resolved)="onRecaptchaResolved($event)" [siteKey]="siteKey">></re-captcha>
                  </div>
                 <div [hidden]="!captcha">
-                    <button mat-flat-button class="input-wrapper" mat-flat-button color="primary" type="submit">Sign In</button>
+                    <button mat-flat-button class="input-wrapper" mat-flat-button color="primary" 
+                    [class.spinner]="loading" [disabled]="loading" type="submit">Sign In</button>
                 </div>
             </div>
             <div class="input-wrapper" id="link">

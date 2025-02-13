@@ -1,8 +1,8 @@
 // export const baseURL: string = 'https://localhost:7279/api';
 // export const baseURL: string = 'https://myproperties.ddns.net/api';
-export const baseURL: string = 'https://myadvantageproperties.com/api';
+export const baseURL: string = 'https://group.myadvantageproperties.com/api';
 
-export const webSite: boolean = true;
+export const webSite: boolean = false;
 
 export const StrongPasswordRegx: RegExp =  
 /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/;

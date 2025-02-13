@@ -32,23 +32,33 @@ export class UserComponent implements OnInit {
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
 
+      //currentUser (logged in)
 
+      const user = this.userService.currentUserValue;
+      if (user) {
+        this.currentUserId = user.userId!;
+        console.log("currentUserId" + this.currentUserId);
+        this.userService.active$ = this.userService.getUserActiveState('active', user.userName ?? '');
+      }
+
+      //user selected/found in the user route
       this.id = this.activatedRoute.snapshot.params['id'];
       this.foundUserId = Number(this.id);
       console.log("foundUserId " + this.foundUserId)
 
       this.userService.getUserByID(this.id).subscribe(foundUser => {
         this.selectedUser = foundUser;
-        this.foundUserRole = foundUser.role!;        
+        this.foundUserRole = foundUser.role!;
 
       })
 
+      //current user role
       this.userService.getCurrentUser().subscribe({
         next: (user) => {
-          this.currentUserId = user.UserId;
-          this.currentUserRole = user.role
-          console.log("role ", this.currentUserRole)
-          this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
+          // console.log("User object received:", user);
+          this.currentUserRole = user.role;
+          console.log("role ", this.currentUserRole);
+
         },
         error: (err) => {
           console.error('Error fetching user:', err);

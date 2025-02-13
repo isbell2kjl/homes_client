@@ -34,6 +34,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   hasUserRequests: number = 0;
   currentName?: string = "";
   currentUser: any;
+  loading = false;
 
   constructor(private userService: UserService, private projectService: ProjectService, private router: Router,
     private snackBar: MatSnackBar
@@ -60,6 +61,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   signIn(): void {
     // Prevent the sign-in process from bypassing the captcha
     if (this.signinForm.valid && this.captcha) {
+      this.loading = true;
 
       this.userService.verifyRecaptcha(this.captcha).subscribe({
         next: (response) => {
@@ -71,6 +73,7 @@ export class SignInComponent implements OnInit, OnDestroy {
           this.userService.signIn(this.myUserName, this.myPassword).subscribe({
             next: () => {
               console.log("Successful sign-in");
+              this.loading = false;
 
               // Look up the current user after login
               this.currentName = this.myUserName;
@@ -81,6 +84,7 @@ export class SignInComponent implements OnInit, OnDestroy {
             error: (error) => {
               window.alert("Username or password are incorrect.");
               console.log('Error: ', error);
+              this.loading = false;
 
               if (error.status === 429 || error.status === 503) {
                 window.alert("Too many failed attempts. Wait a few minutes and try again.");
@@ -94,6 +98,7 @@ export class SignInComponent implements OnInit, OnDestroy {
         error: (err) => {
           window.alert("Invalid reCAPTCHA.");
           console.error('Invalid reCAPTCHA', err);
+          this.loading = false;
         }
       });
     }
