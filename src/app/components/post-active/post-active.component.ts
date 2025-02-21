@@ -6,6 +6,7 @@ import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+
 @Component({
   selector: 'app-post-active',
   templateUrl: './post-active.component.html',
@@ -26,7 +27,6 @@ export class PostActiveComponent implements OnInit {
   currentUser?: string = "";
   currentUserId: number = 0;
   postLength: number = 0;
-
   archived: boolean = false;
 
 
@@ -71,6 +71,11 @@ export class PostActiveComponent implements OnInit {
     });
   }
 
+  getLocalDate(utcDate: string): Date {
+    return new Date(utcDate);
+  }
+
+
   applyFilters() {
     if (this.archived) {
       if (this.filterKeyword) {
@@ -91,82 +96,68 @@ export class PostActiveComponent implements OnInit {
     this.filterKeyword = "";
     this.archived = false;
     this.postService.getProjectPosts(String(this.projectId)).subscribe(foundposts => {
-      // this.postList = foundposts;
-      this.postList = foundposts.filter(function (active, index) {
-        return active.archive == 0
-      });
+      // Convert 'posted' to a Date object
+      const processedPosts = foundposts.map(post => ({
+        ...post,
+        posted: new Date(post.posted + 'Z')
+      }));
+
+      // Filter out archived posts
+      this.postList = processedPosts.filter(post => post.archive == 0);
+
+      // Update service filters
       this.postService.setArchiveFilter(false);
       this.postService.setFilterKeyword("");
+
+      // Update post count
       this.postLength = this.postList.length;
     });
 
   }
 
-  // Alternative method to apply filters.
-  // Define action map based on conditions
-  //   const conditions = {
-  //     noKeywordActive: !this.filterKeyword && !this.archived,
-  //     noKeywordArchived: !this.filterKeyword && this.archived,
-  //     keywordActive: this.filterKeyword && !this.archived,
-  //     keywordArchived: this.filterKeyword && this.archived,
-  //   };
-
-  //   // Execute appropriate action
-  //   switch (true) {
-  //     case conditions.noKeywordActive:
-  //       this.loadAll();
-  //       break;
-
-  //     case conditions.noKeywordArchived:
-  //       this.onArchive();
-  //       break;
-
-  //     case conditions.keywordActive:
-  //       this.applyFilterToList();
-  //       break;
-
-  //     case conditions.keywordArchived:
-  //       this.applyFilterToListA();
-  //       break;
-
-  //     default:
-  //       console.warn("Unhandled condition");
-  //   }
-
-  // }
 
 
   //Apply the active search filter if the the keyword exists.
   applyFilterToList() {
     if (this.filterKeyword) {
       this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword), this.projectId).subscribe(foundSearch => {
-        console.log(foundSearch);
-        this.postList = foundSearch.filter(function (active, index) {
-          return active.archive == 0
-        });
+        this.postList = foundSearch
+          .map(post => ({
+            ...post,
+            posted: new Date(post.postId + 'Z')
+          }))
+          .filter(function (active) {
+            return active.archive == 0;
+          });
         this.postLength = this.postList.length;
       },
-        (error) => {
-          console.log('Search string not found: ', error);
-        })
+      (error) => {
+        console.log('Search string not found: ', error);
+      });
     }
   }
+  
 
   //Apply the archived search filter if the the keyword exists.
   applyFilterToListA() {
     if (this.filterKeyword) {
       this.postService.getPostsBySearch(this.capitalizeFirstLetter(this.filterKeyword), this.projectId).subscribe(foundSearch => {
-        console.log(foundSearch);
-        this.postList = foundSearch.filter(function (active, index) {
-          return active.archive == 1
-        });
+        this.postList = foundSearch
+          .map(post => ({
+            ...post,
+            posted: new Date(post.posted + 'Z') //UTC format
+          }))
+          .filter(function (active) {
+            return active.archive == 1;
+          });
         this.postLength = this.postList.length;
       },
-        (error) => {
-          console.log('Search string not found: ', error);
-        })
+      (error) => {
+        console.log('Search string not found: ', error);
+      });
     }
   }
+  
 
 
   //On click function to return to the TOP of the form.

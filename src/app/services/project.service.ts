@@ -116,7 +116,12 @@ export class ProjectService {
   }
 
   sendWeeklyReports(projectId: number): Observable<string> {
-    return this.http.get<string>(`${baseURL}/project/send-weekly-reports/${projectId}`);
+    let tokenKey: any = this.userService.currentUserValue!.token;
+    let reqHeaders = {
+      Authorization: `Bearer ${tokenKey}`
+    }
+
+    return this.http.get<string>(`${baseURL}/project/send-weekly-reports/${projectId}`, { headers: reqHeaders });
   }
 
   deleteProjectById(projectId: string): Observable<any> {

@@ -1,4 +1,4 @@
-export interface Request {
+export interface PendingRequestItem {
     requestId: number;
     userId: number;
     projectId: number;

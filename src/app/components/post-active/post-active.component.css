@@ -1,13 +1,93 @@
 .searchWrapper {
-    display: inline-block;
-    margin: 2em;
-    padding: 0.5em;
-    margin-bottom: -1.5em;
-    justify-content: space-between;
-    width:80%
+    display: flex;
+    justify-content: flex-start; /* Align Column 1 to the left */
+    align-items: center;
+    width: 100%;
+    margin-top: 20px; /* Adds space above the search box */
 }
 
-input{
+/* Flex container for two columns */
+.searchContainer {
+    display: flex;
+    justify-content: space-between; /* Space out Column 1 & 2 */
+    align-items: center;
+    width: 70%; /* Keep it narrower */
+    max-width: 750px; /* Keep width in check */
+    margin-left: 2em; /* Align with .list-wrapper */
+    flex-wrap: wrap;
+}
+
+/* Column 1 - Search and Buttons */
+.column1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Left-align on large screens */
+    width: 55%;
+}
+
+/* Keep search box the same width as Archive toggle */
+.search-box {
+    width: 220px;
+}
+
+.active-wrapper,
+.button-wrapper {
+    display: flex;
+    align-items: center; /* Ensure proper vertical alignment */
+    justify-content: flex-start; /* Align left */
+    width: 100%; /* Match width to keep elements aligned */
+}
+
+/* Ensure "Add New" button doesn't shift right */
+.button-wrapper .active {
+    margin-left: 0; /* Remove any unintended margin */
+}
+
+
+.active {
+    margin-right: 10px;
+}
+
+/* Column 2 - Donate Section */
+.column2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align column 2 */
+    text-align: center;
+    width: 40%;
+}
+
+/* Align Donate text with Active Properties text */
+.donate-text {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+    margin-top: 5px; /* Aligns with Active Properties */
+    font-weight: normal; /* Remove bold */
+}
+
+/* Make sure DONATE button aligns with ADD NEW button */
+.paypal-button {
+    width: 90px;  /* Match mat-button width */
+    height: 36px; /* Match mat-button height */
+    object-fit: contain; /* Keep proper scaling */
+}
+
+/* Ensure buttons are on the same line */
+.button-wrapper, .donate-wrapper {
+    display: flex;
+    align-items: center; /* Ensures top and bottom alignment */
+}
+
+/* Hide Column 2 on Small Screens */
+@media (max-width: 768px) {
+    .column2 {
+        display: none;
+    }
+}
+
+
+input {
     font-size: 16px;
 }
 
@@ -58,14 +138,6 @@ button {
     margin-bottom: .1em;
 }
 
-.active-wrapper {
-    display: flex;
-    padding: 10px;
-}
-
-.active {
-    margin: 10px;
-}
 
 /* a {
     text-decoration: none;

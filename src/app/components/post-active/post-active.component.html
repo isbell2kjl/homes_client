@@ -1,31 +1,51 @@
 <div class="searchWrapper" id="AnchorId">
-    <mat-form-field appearance="outline">
-        <mat-label>Filter content</mat-label>
-        <input *ngIf="archived === false" matInput #searchkeyword [(ngModel)]="filterKeyword" 
-            (ngModelChange)="searchByKeyword(searchkeyword.value)" name="searchKey" id="searchKey" placeholder="Filter content">
-        <input *ngIf="archived === true" matInput #searchkeyword [(ngModel)]="filterKeyword" 
-            (ngModelChange)="searchByKeywordA(searchkeyword.value)" name="searchKey" id="searchKey" placeholder="Filter content">
-        <!-- <mat-hint>Enter any content to filter posts</mat-hint> -->
-    </mat-form-field>
-    <div class="active-wrapper">
-        <span>Active Properties: <strong>{{postLength}}</strong></span>
-    </div>
-    <div class="d-flex justify-content-start">
-        <button class="active" mat-button color="primary" routerLink="/add">Add New</button>
-        <mat-slide-toggle class="active" [(ngModel)]="archived" (ngModelChange)="onArchive()">
-            Archived
-        </mat-slide-toggle>
+    <div class="searchContainer">
+        <!-- Column 1 -->
+        <div class="column1">
+            <mat-form-field appearance="outline" class="search-box">
+                <mat-label>Filter content</mat-label>
+                <input *ngIf="archived === false" matInput #searchkeyword [(ngModel)]="filterKeyword"
+                    (ngModelChange)="searchByKeyword(searchkeyword.value)" name="searchKey" id="searchKey"
+                    placeholder="Filter content">
+                <input *ngIf="archived === true" matInput #searchkeyword [(ngModel)]="filterKeyword"
+                    (ngModelChange)="searchByKeywordA(searchkeyword.value)" name="searchKey" id="searchKey"
+                    placeholder="Filter content">
+            </mat-form-field>
+
+            <div class="active-wrapper">
+                <span>Active Properties: <strong>{{postLength}}</strong></span>
+            </div>
+
+            <div class="button-wrapper">
+                <button class="active" mat-button color="primary" routerLink="/add">Add New</button>
+                <mat-slide-toggle class="active" [(ngModel)]="archived" (ngModelChange)="onArchive()">
+                    Archived
+                </mat-slide-toggle>
+            </div>
+        </div>
+
+        <!-- Column 2: Donate Section -->
+        <div class="column2">
+            <div class="donate-text">Donate securely using<br>
+                PayPal to support this project</div>
+            <a href="https://www.paypal.com/donate/?hosted_button_id=QCBB3HCU2ZJJA" target="_blank"
+                rel="noopener noreferrer">
+                <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal"
+                    class="paypal-button" />
+            </a>
+        </div>
     </div>
 </div>
+
+
 
 <div class="list-wrapper" *ngFor="let p of postList.slice(0,100).reverse(); let i=index;">
     <div class="content-wrapper"><strong>{{p.title}}</strong></div>
     <div class="content-wrapper">{{p.content}}</div>
     <img class="img" width="300" src="{{p.photoURL}}" alt="">
-    <div class="posted-wrapper"> {{p.posted | date:"MM/dd/yy, HH:mm"}},
+    <div class="posted-wrapper"> {{ p.posted | date:"MM/dd/yy, HH:mm"}},
         <a [routerLink]="['/profile', p.userId_fk]"><strong>{{p.userName}} </strong></a>
         <div [hidden]="true">{{i}}</div>
-
     </div>
 
     <div class="button-row">

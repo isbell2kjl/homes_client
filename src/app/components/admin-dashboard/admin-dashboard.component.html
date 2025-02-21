@@ -22,7 +22,7 @@
             <tr *ngFor="let request of pendingRequests">
               <td>{{ request.userName }}</td>
               <td>{{ request.email }}</td>
-              <td>{{ request.requestedAt | date: 'short' }}</td>
+              <td>{{ request.requestedAt | date:"MM/dd/yy, HH:mm"}}</td>
               <td>
                 <div class="button-container">
                   <button (click)="approveRequest(request.requestId)" class="btn-approve">Approve</button>

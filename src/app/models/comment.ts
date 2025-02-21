@@ -2,13 +2,13 @@ export class Comment {
     comId?: string;
     task?: string;
     text?: string;
-    comDate?: string;
+    comDate?: Date;
     postId_fk?: number;
     usrId_fk?: number;
     userName?: string;
 
-    constructor(comId?: string, task?: string, text?: string, comDate?: string
-        , post_fk?: number, usr_fk?: number, username?: string) {
+    constructor(comDate: Date = new Date(), comId?: string, task?: string, text?: string,
+        post_fk?: number, usr_fk?: number, username?: string) {
         this.comId = comId;
         this.task = task;
         this.text = text;

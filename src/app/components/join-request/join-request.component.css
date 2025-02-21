@@ -55,6 +55,16 @@
   flex-direction: column; /* Stack buttons vertically */
   gap: 10px; /* Space between buttons */
   margin-bottom: 20px; /* Space below the buttons */
+  align-items: center; /* Center buttons horizontally */
+  justify-content: center; /* Ensure proper centering */
+}
+
+.button-group button {
+  width: auto; /* Auto width to fit content */
+  max-width: 300px; /* Max width for buttons */
+  font-size: 16px; /* Adjust font size */
+  padding: 12px 24px; /* Adjust padding for better appearance */
+  text-align: center; /* Ensure text is centered */
 }
 
 form {

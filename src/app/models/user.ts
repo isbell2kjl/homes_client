@@ -9,7 +9,7 @@ export class User {
     city?: string;
     state?: string;
     country?: string;
-    created?: string;
+    created?: Date;
     posts?: [];
     content?: string;
     token?: string;
@@ -19,12 +19,10 @@ export class User {
     privacy?: number;
     projId_fk?: number;
     role?: number;
-    
 
-    constructor(userId?: number, userName?: string, password?: string, firstName?: string
-        , lastName?: string, email?: string, state?: string, country?: string, created?: string
-        , posts?: any, content?: string, token?: string, refreshToken?: string, refreshExpires?: Date,
-        terms?: number, privacy?: number, projId_fk?: number, role?: number) {
+
+    constructor(created: Date = new Date(), userId?: number, userName?: string, password?: string, firstName?: string, lastName?: string, email?: string, state?: string, country?: string, 
+        posts?: any, content?: string, token?: string, terms?: number, privacy?: number, projId_fk?: number, role?: number) {
 
         this.userId = userId;
         this.userName = userName;
@@ -41,7 +39,7 @@ export class User {
         // this.refreshTokenExpires = refreshExpires;
         // this.refreshToken = refreshToken;
         this.terms = terms;
-        this.privacy = privacy; 
+        this.privacy = privacy;
         this.projId_fk = projId_fk;
         this.role = role;
     }

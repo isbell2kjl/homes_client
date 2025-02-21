@@ -32,33 +32,29 @@ export class UserComponent implements OnInit {
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
 
-      //currentUser (logged in)
-
-      const user = this.userService.currentUserValue;
-      if (user) {
-        this.currentUserId = user.userId!;
-        console.log("currentUserId" + this.currentUserId);
-        this.userService.active$ = this.userService.getUserActiveState('active', user.userName ?? '');
-      }
-
       //user selected/found in the user route
       this.id = this.activatedRoute.snapshot.params['id'];
       this.foundUserId = Number(this.id);
-      console.log("foundUserId " + this.foundUserId)
+      console.log("foundUser Id " + this.foundUserId)
 
       this.userService.getUserByID(this.id).subscribe(foundUser => {
-        this.selectedUser = foundUser;
+        this.selectedUser = {
+          ...foundUser,
+          created: new Date(foundUser.created + 'Z')  // Convert createdDate to Date object
+        };
         this.foundUserRole = foundUser.role!;
+        console.log("foundUser role " + this.foundUserRole)
 
       })
 
-      //current user role
+      //current user
       this.userService.getCurrentUser().subscribe({
         next: (user) => {
-          // console.log("User object received:", user);
+          this.currentUserId = user.userId;
           this.currentUserRole = user.role;
-          console.log("role ", this.currentUserRole);
-
+          console.log("currentUser Id ", this.currentUserId);
+          console.log("currentUser role ", this.currentUserRole);
+          this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
         },
         error: (err) => {
           console.error('Error fetching user:', err);

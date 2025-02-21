@@ -37,7 +37,7 @@ export class CommentNewComponent implements OnInit, CanComponentDeactivate {
   });
 
   currentContent?: string = "";
-  currentPostDate?: string = "";
+  currentPostDate?: Date = new Date();
   currentPhoto?: string = "";
   currentAddress?: string = "";
   postUser?: string = "";
@@ -71,15 +71,20 @@ export class CommentNewComponent implements OnInit, CanComponentDeactivate {
 
       this.numId = Number(this.currentPost.postId)
       this.currentContent = this.currentPost.content
-      this.currentPostDate = this.currentPost.posted
+      this.currentPostDate = new Date(this.currentPost.posted + 'Z')
       this.currentPhoto = this.currentPost.photoURL
       this.currentAddress = this.currentPost.title
       this.postUser = this.currentPost.userName
       this.postUsrId = this.currentPost.userId_fk
 
       this.commentService.getPostComments(this.numId).subscribe(response => {
-        this.commentList = response;
+        // Transform comDate to Date object
+        this.commentList = response.map(comment => ({
+          ...comment,
+          comDate: new Date(comment.comDate + 'Z')  // Convert comDate to Date object
+        }));
       });
+      
 
     });
 

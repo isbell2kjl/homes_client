@@ -33,7 +33,7 @@ export class PostEditComponent implements OnInit, CanComponentDeactivate {
     archive: new FormControl(0),
     userId_fk: new FormControl(0),
     userName: new FormControl(''),
-    posted: new FormControl(''),
+    posted: new FormControl(new Date()),
     comment: new FormControl([]),
   });
 
@@ -52,7 +52,11 @@ export class PostEditComponent implements OnInit, CanComponentDeactivate {
 
       this.postService.getPostByID(this.id).subscribe(foundPost => {
         //this assigns the current values from the database to the template.
-        this.editPostForm.patchValue(foundPost);
+        // this.editPostForm.patchValue(foundPost);
+        this.editPostForm.patchValue({
+          ...foundPost, // Spread other properties
+          posted: new Date(foundPost.posted + 'Z') //UTC format
+        });
         //this variable to be used later.
         this.fkeyId = foundPost.userId_fk!;
         // Map `visible` control values between true/false and 1/0

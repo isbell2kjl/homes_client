@@ -1,6 +1,6 @@
 body {
   margin: 0; /* Remove default body margin */
-  height: 50vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: flex-start; /* Align items at the top */

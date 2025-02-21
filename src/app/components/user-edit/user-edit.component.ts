@@ -59,7 +59,7 @@ export class UserEditComponent implements OnInit, CanComponentDeactivate {
           this.currentUserId = user.userId;
           this.currentUserRole = user.role;
 
-          console.log(this.activatedRoute.snapshot.params['id']);
+          // console.log(this.activatedRoute.snapshot.params['id']);
           this.id = this.activatedRoute.snapshot.params['id'];
 
 
@@ -95,7 +95,7 @@ export class UserEditComponent implements OnInit, CanComponentDeactivate {
   }
 
   onSubmit() {
-    console.log("debug current user ID vs found userId", this.currentUserId, this.id);
+    // console.log("debug current user ID vs found userId", this.currentUserId, this.id);
 
     if (this.currentUserId == Number(this.id)) {
       if (!this.editUserForm.valid) {

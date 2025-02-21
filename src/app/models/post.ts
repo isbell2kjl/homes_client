@@ -2,7 +2,7 @@ export class Post {
     postId?: string;
     title?: string;
     content?: string;
-    posted?: string;
+    posted?: Date;
     photoURL?: string;
     visible?: number;
     archive?: number;
@@ -10,10 +10,10 @@ export class Post {
     userName?: string;
     comment? : []
 
-    constructor(id?: string, title?: string, content?: string, posted?: string, 
+    constructor(posted: Date = new Date(), id?: string, title?: string, content?: string,
         photourl?: string, visible?: number, archive?: number, fk?: number, username?: string, comment?: []) {
         this.postId = id;
-        this.title = title;
+        this.title = title; 
         this.content = content;
         this.posted = posted;
         this.photoURL = photourl;

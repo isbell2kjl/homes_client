@@ -14,7 +14,7 @@ import { catchError, of } from 'rxjs';
 })
 export class AdminDashboardComponent {
 
-  pendingRequests: any[] = [];
+  pendingRequests: any [] = [];
 
   pendingUser: User = new User;
 
@@ -42,7 +42,7 @@ export class AdminDashboardComponent {
           this.currentUserId = user.UserId;
           this.currentProjectId = user.projId_fk;
           this.currentRole = user.role;
-          this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
+           this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
 
           if (this.currentRole == 1) {
             this.loadPendingRequests();
@@ -66,13 +66,17 @@ export class AdminDashboardComponent {
 
   loadPendingRequests(): void {
     this.projectService.getPendingRequests(this.currentProjectId).subscribe(response => {
-      if (response.hasPendingRequests) {
-        this.pendingRequests = response.requests || []; // Safeguard against null
-      } else {
-        this.pendingRequests = [];
-      }
+        if (response.hasPendingRequests && response.requests) {
+            this.pendingRequests = response.requests.map(request => ({
+                ...request,
+                requestedAt: new Date(request.requestedAt + 'Z') // Convert string to Date
+            }));
+        } else {
+            this.pendingRequests = [];
+        }
     });
-  }
+}
+
 
   approveRequest(requestId: number) {
     // Find the request object in the pendingRequests array

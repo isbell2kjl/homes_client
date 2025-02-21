@@ -5,6 +5,8 @@ import { ProjectService } from 'src/app/services/project.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MyRecaptchaKey } from 'src/app/helpers/constants';
+declare var grecaptcha: any; // This tells TypeScript that "grecaptcha" exists globally.
+
 
 @Component({
   selector: 'app-sign-in',
@@ -58,6 +60,24 @@ export class SignInComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleRecaptchaExpired() {
+    this.resetRecaptcha("reCAPTCHA expired");
+  }
+
+  resetRecaptcha(reason: string = "Unknown reason") {
+    this.captcha = null; // Reset the stored token
+
+    if (typeof grecaptcha !== "undefined" && grecaptcha.reset) {
+      grecaptcha.reset();
+      console.log(`reCAPTCHA reset due to: ${reason}`);
+    } else {
+      console.error("grecaptcha is not available, cannot reset reCAPTCHA.");
+    }
+  }
+
+
+
+
   signIn(): void {
     // Prevent the sign-in process from bypassing the captcha
     if (this.signinForm.valid && this.captcha) {
@@ -78,7 +98,7 @@ export class SignInComponent implements OnInit, OnDestroy {
               // Look up the current user after login
               this.currentName = this.myUserName;
 
-              
+
               this.getCurrentUser();
             },
             error: (error) => {
@@ -90,14 +110,15 @@ export class SignInComponent implements OnInit, OnDestroy {
                 window.alert("Too many failed attempts. Wait a few minutes and try again.");
               }
               // Reset the reCAPTCHA after a failed attempt
-              this.captcha = null;
-              grecaptcha.reset();
+              this.resetRecaptcha("reCAPTCHA reset, failed signin");
             }
           });
         },
         error: (err) => {
-          window.alert("Invalid reCAPTCHA.");
+          window.alert("Invalid reCAPTCHA. Try again");
           console.error('Invalid reCAPTCHA', err);
+          // Reset the reCAPTCHA after a failed attempt
+          this.resetRecaptcha("reCAPTCHA reset");
           this.loading = false;
         }
       });
@@ -126,7 +147,8 @@ export class SignInComponent implements OnInit, OnDestroy {
                   { duration: 5000, verticalPosition: 'top' }
                 );
                 this.logout();
-                window.grecaptcha.reset();
+                // Reset the reCAPTCHA after a failed attempt
+                this.resetRecaptcha("pending request, resetting reCAPTCHA");
                 return;
               } else {
                 // If no pending requests, proceed to the join-request screen.
@@ -153,6 +175,7 @@ export class SignInComponent implements OnInit, OnDestroy {
             error: (err) => {
               console.error('Error fetching pending requests', err);
               this.snackBar.open('Failed to check pending requests.', 'Close', { duration: 5000, verticalPosition: 'top' });
+              this.resetRecaptcha("error fetching pending, resetting reCAPTCHA");
             }
           });
         } else {
@@ -163,6 +186,7 @@ export class SignInComponent implements OnInit, OnDestroy {
         console.log('Error: ', error);
         if (error.status === 401 || error.status === 403) {
           window.alert("Access timeout, you must log in again.");
+          this.resetRecaptcha("Access timeout, resetting reCAPTCHA");
           // This signs the user out and removes the username from the Menu
           this.userService.signOut();
           this.router.navigate(['auth/signin']);
@@ -174,15 +198,12 @@ export class SignInComponent implements OnInit, OnDestroy {
   logout() {
     this.userService.signOut();
     this.router.navigate(['auth/signin'])
+    this.resetRecaptcha("manual sign out, resetting reCAPTCHA");
     // });
   }
 
   ngOnDestroy(): void {
     // Reset reCAPTCHA if needed
-    if (window.grecaptcha) {
-      window.grecaptcha.reset();
-    }
+    this.resetRecaptcha("Component destroyed, resetting reCAPTCHA");
   }
-
-
 }
