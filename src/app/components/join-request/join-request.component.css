@@ -80,8 +80,15 @@ form {
   align-items: center; /* Center horizontally */
 }
 
+.group-instruction {
+  max-width: 70%; /* Limits text width to half the screen */
+  text-align: center; /* Centers the text */
+  margin: 0 auto; /* Centers the block itself */
+  word-wrap: break-word; /* Allows breaking words if needed */
+}
+
 .input-wrapper input {
-  width: 100%; /* Full width */
+  width: 60%; /* Full width */
   padding: 10px;
   font-size: 16px;
   margin: 10px 0; /* Consistent spacing between inputs */

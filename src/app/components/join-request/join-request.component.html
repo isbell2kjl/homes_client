@@ -33,14 +33,18 @@
         <ng-template #requestForm>
             <form [formGroup]="requestJoinForm" (ngSubmit)="requestJoin()">
                 <div class="input-wrapper">
-                    <p>To join a group, enter the group or owner email address.</p>
-                    <input placeholder="Enter Owner/Group Email address" type="text" formControlName="projectEmail">
+                    <p class="group-instruction">
+                        To join a group, enter the group or owner email address.
+                      </p>
+                    <input placeholder="Enter Group Email address" type="text" formControlName="projectEmail">
                     <div>
                         <div>
                             <span style="color: red" *ngIf="!requestJoinForm.get('projectEmail')?.valid">
                                 The email format is incorrect</span>
-                        </div><br><br>
-                        <button mat-flat-button class="input-wrapper" mat-flat-button color="primary">Join Group</button>
+                        </div><br>
+                        <div class="button-group">
+                            <button  mat-flat-button color="primary">Join Group</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -80,8 +84,7 @@
                         <span style="color: red" *ngIf="!newProjectForm.get('contactEmail')?.valid">
                             The email format is incorrect.
                         </span>
-                    </div>
-
+                    </div><br>
                     <div class="button-group">
                         <button mat-flat-button color="primary">Create Group</button>
                     </div>
