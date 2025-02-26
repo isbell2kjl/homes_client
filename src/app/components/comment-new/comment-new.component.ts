@@ -25,6 +25,7 @@ export class CommentNewComponent implements OnInit, CanComponentDeactivate {
 
   currentUser?: string = "";
   currentUserId: number = 0;
+  currentUserRole: number = 0;
 
   currentPost: Post = new Post();
 
@@ -52,7 +53,20 @@ export class CommentNewComponent implements OnInit, CanComponentDeactivate {
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
 
-      this.loadTasks();
+      this.userService.getCurrentUser().subscribe({
+        next: (user) => {
+          this.currentUserId = user.userId;
+          this.currentUser = user.userName;
+          this.currentUserRole = user.role;
+          this.userFkeyId = this.currentUserId;
+
+          this.loadTasks();
+
+        },
+        error: (err) => {
+          console.error('Error fetching user:', err);
+        }
+      });
 
     } else {
       window.alert("You must log in to access this path.");
@@ -84,13 +98,10 @@ export class CommentNewComponent implements OnInit, CanComponentDeactivate {
           comDate: new Date(comment.comDate + 'Z')  // Convert comDate to Date object
         }));
       });
-      
+
 
     });
 
-    this.currentUser = this.userService.getUserName();
-    this.currentUserId = this.userService.getUserId();
-    this.userFkeyId = this.currentUserId;
 
 
   }

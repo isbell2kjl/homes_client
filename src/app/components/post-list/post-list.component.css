@@ -1,55 +1,73 @@
 body {
-    margin: 0; /* Remove default body margin */
-    padding: 20px; /* Add some padding around the body */
+    margin: 0;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
-}
-
-.img {
-    display: block; /* Remove inline padding/margins from images */
-    margin: 20px auto; /* Center image horizontally */
-    max-width: 100%; /* Ensure the image fits inside the container */
-    height: auto; /* Maintain aspect ratio */
-
+    align-items: center; /* Centers everything horizontally */
 }
 
 .header-wrapper {
-    margin-top: 20px;
-    text-align: center; /* Center the header text */
-    margin-bottom: 20px; /* Space below the header */
+    text-align: center;
+    margin: 20px 0;
 }
 
+/* Center the entire form container */
 .form-container {
-    display: grid; /* Use grid for layout */
-    grid-template-columns: repeat(3, 1fr); /* 3 columns by default */
-    gap: 20px; /* Space between boxes */
-    max-width: 1200px; /* Optional: max width for the grid */
-    width: 100%; /* Full width */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, max-content)); /* Dynamic column count */
+    gap: 20px;
+    max-width: 960px; /* Prevents excessive stretching on large screens */
+    width: 100%;
+    justify-content: center; /* Ensures the grid stays centered */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) { /* Medium screens */
     .form-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns */
+        grid-template-columns: repeat(2, minmax(300px, max-content)); /* 2 columns */
     }
 }
 
-@media (max-width: 480px) { /* Small screens */
+@media (max-width: 730px) { /* Small screens */
     .form-container {
         grid-template-columns: 1fr; /* 1 column */
     }
 }
 
+/* Ensures form-wrapper fits around its contents */
 .form-wrapper {
-    border: 1px solid #ccc; /* Example border */
-    padding: 20px; /* Padding inside the box */
-    box-sizing: border-box; /* Include padding in width calculation */
-    display: flex; /* Use flexbox to center children */
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Center children horizontally */
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: max-content; /* Makes the box slightly larger than its contents */
+    max-width: 320px; /* Prevents excessive stretching */
+    min-width: 300px; /* Ensures consistent sizing */
 }
 
+/* Ensures text and image are properly spaced and centered */
 .content-wrapper {
-    text-align: center; /* Center content text */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content, image, and title */
+    text-align: center; /* Ensures text above and below image is centered */
+}
+
+/* Adds vertical spacing between content, image, and title */
+.content-wrapper > div,
+.content-wrapper > img {
+    margin-bottom: 20px; /* Space between elements */
+}
+
+.content-wrapper > img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* If only one item, ensure it's centered */
+.form-container:has(.form-wrapper:nth-child(1):last-child) {
+    display: flex;
+    justify-content: center;
 }

@@ -9,7 +9,7 @@
     <h3>{{postUser}}</h3>
     <img width="300" src="{{currentPhoto}}" alt="">
     <div class="d-flex justify-content-start">
-        <div *ngIf="(this.currentUserId > 0 && this.currentUserId == this.postUsrId) || this.currentUserId == 1">
+        <div *ngIf="(this.currentUserId > 0 && this.currentUserId == this.postUsrId) || this.currentUserRole == 1">
             <button mat-button color="accent" [routerLink]="['/edit', this.currentPost.postId]">Edit</button>
             <button mat-button color="warn" (click)="onDeletePost(this.currentPost.postId!)">Delete</button>
         </div>
@@ -33,7 +33,7 @@
 
         <div class="button-row">
             <div class="left-buttons" *ngIf="(this.currentUserId > 0 && this.currentUserId == c.usrId_fk) || (this.currentUserId == this.postUsrId)
-            || (this.currentUserId == 1)">
+            || (this.currentUserRole == 1)">
                 <button class="btn" mat-button color="primary" [routerLink]="['/action', c.comId]">Edit</button>
                 <button class="btn" mat-button color="warn" (click)="onDelete(c.comId!)">Delete</button>
                 <button class="btn" mat-button color="primary" (click)="onClick('AnchorId')">To Top</button>

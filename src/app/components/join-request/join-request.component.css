@@ -1,123 +1,119 @@
+/* General Layout */
 .content-container {
-  margin-top: 100px;
   display: flex;
-  flex-direction: column; /* Ensure items stack vertically */
-  align-items: center; /* Center items horizontally */
-  justify-content: center; /* Center items vertically */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  margin-top: 80px;
 }
 
 .form-title {
-  margin: 0 auto; /* Centers the title horizontally */
-  text-align: center; /* Ensures the text inside is centered */
-  width: 100%; /* Ensure it spans the entire container */
-  font-size: 1.8rem; /* Adjust font size as needed */
-  margin-bottom: 20px; /* Space between the title and the form-wrapper */
-  display: flex;
-  justify-content: center; /* Centers the text content when flex is applied */
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-/* Styling for the form-wrapper */
+/* Form Wrapper */
 .form-wrapper {
   border: 1px solid #ccc;
   padding: 20px;
-  width: 100%;
+  width: 90%;
   max-width: 400px;
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: left; /* Ensure content inside is left-aligned */
+  text-align: left;
 }
 
-/* Styling for label-value pairs */
+/* Group Name Container */
 .group-name-container {
-  display: flex; /* Use flexbox for label and value alignment */
-  justify-content: space-between; /* Ensures the label and value stay on the same line */
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
 .group-name-container label {
   font-weight: bold;
-  white-space: nowrap; /* Prevents label text from wrapping */
-  margin-right: 10px; /* Adds space between label and value */
+  white-space: nowrap;
+  margin-right: 10px;
 }
 
 .group-name-container div {
-  flex-grow: 1; /* Ensures the value aligns with the label and doesn't wrap unnecessarily */
-  text-overflow: ellipsis; /* Handles overflow gracefully with ellipsis if needed */
+  flex-grow: 1;
+  text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap; /* Prevents value from wrapping */
+  white-space: nowrap;
 }
 
+/* Button Group */
 .button-group {
-  width: 100%; /* Full width */
+  width: 100%;
   display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  gap: 10px; /* Space between buttons */
-  margin-bottom: 20px; /* Space below the buttons */
-  align-items: center; /* Center buttons horizontally */
-  justify-content: center; /* Ensure proper centering */
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .button-group button {
-  width: auto; /* Auto width to fit content */
-  max-width: 300px; /* Max width for buttons */
-  font-size: 16px; /* Adjust font size */
-  padding: 12px 24px; /* Adjust padding for better appearance */
-  text-align: center; /* Ensure text is centered */
+  width: 100%;
+  max-width: 250px;
+  font-size: 16px;
+  padding: 12px;
+  text-align: center;
 }
 
+/* Input and Form Styling */
 form {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: medium;
-  width: 100%; /* Ensure form takes full width of wrapper */
+  width: 100%;
 }
 
 .input-wrapper {
-  width: 100%; /* Ensure inputs take full width */
+  width: 100%;
   display: flex;
-  flex-direction: column; /* Stack inputs vertically */
-  align-items: center; /* Center horizontally */
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.group-instruction {
-  max-width: 70%; /* Limits text width to half the screen */
-  text-align: center; /* Centers the text */
-  margin: 0 auto; /* Centers the block itself */
-  word-wrap: break-word; /* Allows breaking words if needed */
+.input-wrapper p {
+  max-width: 70%;
+  margin: 0 auto 10px;
+  word-wrap: break-word;
 }
 
 .input-wrapper input {
-  width: 60%; /* Full width */
+  width: 100%;
+  max-width: 300px;
   padding: 10px;
   font-size: 16px;
-  margin: 10px 0; /* Consistent spacing between inputs */
+  margin: 10px 0;
   box-sizing: border-box;
 }
 
-.group-name-container {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Adds spacing between the label and the div */
-  margin: 5px 0; /* Adds separation above and below the container */
+/* Error Messages */
+.error-message {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 5px;
 }
 
-.group-name-container label {
-  font-weight: bold; /* Makes the label text bold */
-}
+/* Responsive Design */
+@media (max-width: 600px) {
+  .form-wrapper {
+    width: 90%;
+  }
 
+  .button-group button {
+    max-width: 100%;
+  }
 
-button {
-  width: 100%; /* Full width */
-  padding: 10px;
-  margin-top: 10px;
+  .input-wrapper input {
+    width: 100%;
+  }
 }
-
-.recaptcha-container {
-  width: 100%; /* Ensure reCAPTCHA container is full width */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center horizontally */
-  margin: 20px 0;
-}
- 

@@ -2,94 +2,77 @@
     <h3 class="form-title">My Group</h3>
     <div class="form-wrapper">
         <div *ngIf="webSite">
-            <!-- Logic for when webSite is true -->
-            <ng-container *ngIf="admins.length > 0">
-                <div *ngIf="showRequestForm">
-                    <ng-container *ngTemplateOutlet="requestForm"></ng-container>
-                </div>
+            <ng-container *ngIf="admins.length > 0 && showRequestForm">
+                <ng-container *ngTemplateOutlet="requestForm"></ng-container>
             </ng-container>
-            <ng-container *ngIf="admins.length === 0">
-                <div *ngIf="showProjectForm">
-                    <ng-container *ngTemplateOutlet="projectForm"></ng-container>
-                </div>
+            <ng-container *ngIf="admins.length === 0 && showProjectForm">
+                <ng-container *ngTemplateOutlet="projectForm"></ng-container>
             </ng-container>
         </div>
 
         <div *ngIf="!webSite">
-            <!-- Logic for when webSite is false -->
             <div class="button-group" *ngIf="showButtons">
                 <button (click)="showProject()">Create Group</button>
                 <button (click)="showRequest()">Join Group</button>
             </div>
-            <div *ngIf="showRequestForm">
+            <ng-container *ngIf="showRequestForm">
                 <ng-container *ngTemplateOutlet="requestForm"></ng-container>
-            </div>
-            <div *ngIf="showProjectForm">
+            </ng-container>
+            <ng-container *ngIf="showProjectForm">
                 <ng-container *ngTemplateOutlet="projectForm"></ng-container>
-            </div>
+            </ng-container>
         </div>
-
-        <!-- Reusable Form Templates -->
-        <ng-template #requestForm>
-            <form [formGroup]="requestJoinForm" (ngSubmit)="requestJoin()">
-                <div class="input-wrapper">
-                    <p class="group-instruction">
-                        To join a group, enter the group or owner email address.
-                      </p>
-                    <input placeholder="Enter Group Email address" type="text" formControlName="projectEmail">
-                    <div>
-                        <div>
-                            <span style="color: red" *ngIf="!requestJoinForm.get('projectEmail')?.valid">
-                                The email format is incorrect</span>
-                        </div><br>
-                        <div class="button-group">
-                            <button  mat-flat-button color="primary">Join Group</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </ng-template>
-
-        <ng-template #projectForm>
-            <form [formGroup]="newProjectForm" (ngSubmit)="createProject()">
-                <div class="input-wrapper">
-                    <p>Verify new group name and email.</p>
-
-                    <!-- Display the group name as plain text -->
-                    <div class="group-name-container">
-                        <label>Group Name:</label>
-                        <div>{{ newProjectForm.get('projectName')?.value }}</div>
-                    </div>
-
-                    <!-- Display validation message for group name -->
-                    <div>
-                        <span style="color: red" *ngIf="newProjectForm.get('projectName')?.hasError('required') 
-                        && newProjectForm.get('projectName')?.touched">
-                            Group name is required.
-                        </span>
-                    </div>
-
-                    <!-- Display the email address as plain text -->
-                    <div class="group-name-container">
-                        <label>Email Address:</label>
-                        <div>{{ newProjectForm.get('contactEmail')?.value }}</div>
-                    </div>
-
-                    <!-- Display validation messages for email address -->
-                    <div>
-                        <span style="color: red" *ngIf="newProjectForm.get('contactEmail')?.hasError('required') 
-                            && newProjectForm.get('contactEmail')?.touched">
-                            Email address is required.
-                        </span>
-                        <span style="color: red" *ngIf="!newProjectForm.get('contactEmail')?.valid">
-                            The email format is incorrect.
-                        </span>
-                    </div><br>
-                    <div class="button-group">
-                        <button mat-flat-button color="primary">Create Group</button>
-                    </div>
-                </div>
-            </form>
-        </ng-template>
     </div>
 </div>
+
+<!-- Request Form -->
+<ng-template #requestForm>
+    <form [formGroup]="requestJoinForm" (ngSubmit)="requestJoin()">
+        <div class="input-wrapper">
+            <p>To join a group, enter the group or owner email address.</p>
+            <input placeholder="Enter Group Email address" type="text" formControlName="projectEmail">
+            <div>
+                <span style="color: red" *ngIf="!requestJoinForm.get('projectEmail')?.valid">
+                    The email format is incorrect
+                </span>
+            </div><br>
+            <div class="button-group">
+                <button mat-flat-button color="primary">Join Group</button>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<!-- Project Form -->
+<ng-template #projectForm>
+    <form [formGroup]="newProjectForm" (ngSubmit)="createProject()">
+        <div class="input-wrapper">
+            <p>Verify new group name and email.</p>
+
+            <div class="group-name-container">
+                <label>Group Name:</label>
+                <div>{{ newProjectForm.get('projectName')?.value }}</div>
+            </div>
+            <span class="error-message" *ngIf="newProjectForm.get('projectName')?.hasError('required') 
+                && newProjectForm.get('projectName')?.touched">
+                Group name is required.
+            </span>
+
+            <div class="group-name-container">
+                <label>Email Address:</label>
+                <div>{{ newProjectForm.get('contactEmail')?.value }}</div>
+            </div>
+            <span class="error-message" *ngIf="newProjectForm.get('contactEmail')?.hasError('required') 
+                && newProjectForm.get('contactEmail')?.touched">
+                Email address is required.
+            </span>
+            <span class="error-message" *ngIf="!newProjectForm.get('contactEmail')?.valid">
+                The email format is incorrect.
+            </span>
+
+            <div class="button-group">
+                <button mat-flat-button color="primary">Create Group</button>
+            </div>
+        </div>
+    </form>
+</ng-template>
