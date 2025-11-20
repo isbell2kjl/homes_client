@@ -64,7 +64,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
             grecaptcha.reset();
             this.router.navigateByUrl('/reset-password');
           }, error => {
-            window.alert("Enter a valid Email address.");
+            const errorMessage = error?.error?.message || "An unexpected error occurred.";
+            window.alert(errorMessage);
             this.loading = false;
             console.log('Error: ', error)
             // Reset the reCAPTCHA after a failed attempt
