@@ -14,52 +14,33 @@ export class CommentService {
  
   constructor(private http: HttpClient, private userService: UserService) { }
 
-  getAllComments(): Observable<Comment[]> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.get<Comment[]>(`${baseURL}/comment`, {headers: reqHeaders});
-  }
+  //Example of method with headers that is NOT needed. Handeled by auth-interceptor.service.ts
+  // getAllComments(): Observable<Comment[]> {
+  //   let tokenKey: any = this.userService.currentUserValue!.token;
+  //   let reqHeaders = {
+  //     Authorization: `Bearer ${tokenKey}`
+  //   }
+  //   return this.http.get<Comment[]>(`${baseURL}/comment`, {headers: reqHeaders});
+  // }
 
   getPostComments(postId: number): Observable<Comment[]> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.get<Comment[]>(`${baseURL}/comment/postComment/${postId}`, { headers: reqHeaders});
+    return this.http.get<Comment[]>(`${baseURL}/comment/postComment/${postId}`);
   }
 
   createComment(newComment: Comment) {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.post(`${baseURL}/comment`, newComment, {headers: reqHeaders });
+    return this.http.post(`${baseURL}/comment`, newComment);
   }
 
   getCommentByID(comId: string): Observable<Comment> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.get<Comment>(`${baseURL}/comment/${comId}`, { headers: reqHeaders});
+    return this.http.get<Comment>(`${baseURL}/comment/${comId}`);
   }
 
   editCommentByID(comId: string, data: CommentUpdate): Observable<CommentUpdate> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.put<CommentUpdate>(`${baseURL}/comment/${comId}`, data, { headers: reqHeaders });
+    return this.http.put<CommentUpdate>(`${baseURL}/comment/${comId}`, data);
   }
 
   deleteCommentByID(comId: string): Observable<any>  {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.delete<any>(`${baseURL}/comment/${comId}`,  { headers: reqHeaders })
+    return this.http.delete<any>(`${baseURL}/comment/${comId}`)
   }
 
    

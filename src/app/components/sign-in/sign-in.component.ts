@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { ProjectService } from 'src/app/services/project.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MyRecaptchaKey } from 'src/app/helpers/constants';
@@ -39,7 +40,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   loading = false;
 
   constructor(private userService: UserService, private projectService: ProjectService, private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar, private authService: AuthService
   ) { }
 
 
@@ -169,7 +170,9 @@ export class SignInComponent implements OnInit, OnDestroy {
                 this.snackBar.open('Please review your pending join requests', 'Close', { duration: 5000, verticalPosition: 'top' });
                 this.router.navigate(['admin-dashboard']);
               } else {
-                this.router.navigate(['active']);
+                // this.router.navigate(['active']);
+                this.router.navigate(['job']);
+                this.authService.clearSessionExpired();
               }
             },
             error: (err) => {

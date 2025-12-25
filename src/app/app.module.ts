@@ -29,6 +29,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UserSearchComponent } from './components/user-search/user-search.component';
 import { CommentNewComponent } from './components/comment-new/comment-new.component';
@@ -46,6 +47,7 @@ import { JoinRequestComponent } from './components/join-request/join-request.com
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { PrivacyComponent } from './components/privacy/privacy.component';
 import { TermsComponent } from './components/terms/terms.component';
+import { JobListComponent } from './components/job-list/job-list.component';
 
 
 
@@ -75,6 +77,7 @@ import { TermsComponent } from './components/terms/terms.component';
         AdminDashboardComponent,
         PrivacyComponent,
         TermsComponent,
+        JobListComponent,
     ],
     bootstrap: [AppComponent], imports: [AppRoutingModule,
         FormsModule,
@@ -93,6 +96,7 @@ import { TermsComponent } from './components/terms/terms.component';
         MatSlideToggleModule,
         MatButtonToggleModule,
         MatProgressSpinnerModule,
+        MatCardModule,
         ReactiveFormsModule,
         RecaptchaModule],
     providers: [
@@ -105,11 +109,11 @@ import { TermsComponent } from './components/terms/terms.component';
         provideHttpClient(
             withInterceptorsFromDi()
         ),
-        // {
-        //     provide: HTTP_INTERCEPTORS,
-        //     useClass: AuthInterceptor, // Your new interceptor
-        //     multi: true,
-        // },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor, // Your new interceptor
+            multi: true,
+        },
     ],
 })
 export class AppModule { }

@@ -19,6 +19,7 @@ export class PostService {
 
   //four filter functions to set and retrieve the filters in the post-active component.
  //the purpose of this is to perserve the filter when the user clicks the detail and returns to the list.
+ 
   setFilterKeyword(keyword: string) {
     this.filterKeyword = keyword;
   }
@@ -36,58 +37,30 @@ export class PostService {
   
   getAllPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${baseURL}/post`);
-
   }
 
   getProjectPosts(projectId: string): Observable<Post[]> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-
-    return this.http.get<Post[]>(`${baseURL}/post/project/${projectId}`, {headers: reqHeaders});
-
+    return this.http.get<Post[]>(`${baseURL}/post/project/${projectId}`);
   }
 
   getPostsBySearch(searchKeyword: string, projectId: number): Observable<Post[]> {
     return this.http.get<Post[]>(`${baseURL}/post/search?name=${searchKeyword}&projectId=${projectId}`);
   }
 
-  // getUserPosts(userId: number): Observable<Post[]> {
-  //   return this.http.get<Post[]>(`${baseURL}/post/userpost/${userId}`);
-
-  // }
- 
   createPost(newPost: Post) {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.post(`${baseURL}/post`, newPost, { headers: reqHeaders});
+    return this.http.post(`${baseURL}/post`, newPost);
   }
 
   getPostByID(postId: string): Observable<Post> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this. http.get<Post>(`${baseURL}/post/${postId}`, {headers: reqHeaders});
+    return this. http.get<Post>(`${baseURL}/post/${postId}` );
   } 
 
   editPostByID(postId: string, edittedPost: Post): Observable<Post> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.put<Post>(`${baseURL}/post/${postId}`, edittedPost, { headers: reqHeaders });
-  } 
+    return this.http.put<Post>(`${baseURL}/post/${postId}`, edittedPost);
+  }  
 
   deletePostByID(postId: string): Observable<any>  {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.delete<any>(`${baseURL}/post/${postId}`,  { headers: reqHeaders})
+    return this.http.delete<any>(`${baseURL}/post/${postId}`)
   }
 
 }

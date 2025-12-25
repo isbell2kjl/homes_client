@@ -80,7 +80,6 @@ export class UserService {
 
 
   private startRefreshTokenTimer() {
-
     // Clear existing timer
     if (this.refreshTokenTimeout) {
       clearTimeout(this.refreshTokenTimeout);
@@ -110,12 +109,7 @@ export class UserService {
 
 
   getCurrentUser(): Observable<any> {
-    let tokenKey: any = this.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-
-    return this.http.get<any>(`${baseURL}/user/current`, { headers: reqHeaders, withCredentials: true }).pipe(
+    return this.http.get<any>(`${baseURL}/user/current`).pipe(
       tap((user: User) => {
         if (user) {
           // this.currentUserSubject.next(user);
@@ -202,17 +196,12 @@ export class UserService {
   }
 
   signOut(): void {
-    const tokenKey = this.currentUserValue?.token;
-    const reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    };
-
     // console.log("Sending sign-out request with token:", tokenKey); // Log token to verify
 
     this.http.post<any>(
       `${baseURL}/auth/revoke-token`,
       {},
-      { headers: reqHeaders, withCredentials: true }
+      {  withCredentials: true }
     ).subscribe({
       next: (response) => {
         console.log('Logout successful:', response);
@@ -230,37 +219,16 @@ export class UserService {
   }
 
   getAllUsers(projectId: string): Observable<User[]> {
-    const tokenKey = this.currentUserValue?.token;
-    const reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    };
-
-    return this.http.get<User[]>(`${baseURL}/user/project/${projectId}`,
-      {headers: reqHeaders}
-    );
+    return this.http.get<User[]>(`${baseURL}/user/project/${projectId}`);
 
   }
 
   getAdminUsers(): Observable<User[]> {
-    const tokenKey = this.currentUserValue?.token;
-    const reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    };
-
-    return this.http.get<User[]>(`${baseURL}/user/admin-users`,
-      {headers: reqHeaders}
-    );
-
+        return this.http.get<User[]>(`${baseURL}/user/admin-users` );
   }
 
   getUsersBySearch(searchKeyword: string, projectId: number): Observable<User[]> {
-    const tokenKey = this.currentUserValue?.token;
-    const reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    };
-    return this.http.get<User[]>(`${baseURL}/user/search?name=${searchKeyword}&projectId=${projectId}`,
-      {headers: reqHeaders}
-    );
+    return this.http.get<User[]>(`${baseURL}/user/search?name=${searchKeyword}&projectId=${projectId}`);
   }
 
   setFilterKeyword(keyword: string) {
@@ -272,11 +240,7 @@ export class UserService {
   }
 
   getUserByID(userId: string): Observable<User> {
-    let tokenKey: any = this.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.get<User>(`${baseURL}/user/${userId}`, {headers: reqHeaders});
+    return this.http.get<User>(`${baseURL}/user/${userId}`);
   }
   
   checkUserName(username: string): Observable<any> {
@@ -288,20 +252,12 @@ export class UserService {
   }
 
   editUserByID(userId: string, editedUser: User): Observable<User> {
-    let tokenKey: any = this.currentUserValue!.token
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.put<User>(`${baseURL}/user/${userId}`, editedUser, { headers: reqHeaders });
+    return this.http.put<User>(`${baseURL}/user/${userId}`, editedUser);
   }
 
   deleteUserByID(userId: string): Observable<any> {
-    let tokenKey: any = this.currentUserValue!.token
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
     this.stopRefreshTokenTimer();
-    return this.http.delete<any>(`${baseURL}/user/${userId}`, { headers: reqHeaders })
+    return this.http.delete<any>(`${baseURL}/user/${userId}`)
   }
 
   forgotPassword(email: string) {
@@ -315,7 +271,5 @@ export class UserService {
   resetPassword(token: string, password: string, confirmPassword: string) {
     return this.http.post(`${baseURL}/auth/reset-password`, { token, password, confirmPassword });
   }
-
-
 
 } 

@@ -131,12 +131,12 @@ export class PostActiveComponent implements OnInit {
           });
         this.postLength = this.postList.length;
       },
-      (error) => {
-        console.log('Search string not found: ', error);
-      });
+        (error) => {
+          console.log('Search string not found: ', error);
+        });
     }
   }
-  
+
 
   //Apply the archived search filter if the the keyword exists.
   applyFilterToListA() {
@@ -152,12 +152,12 @@ export class PostActiveComponent implements OnInit {
           });
         this.postLength = this.postList.length;
       },
-      (error) => {
-        console.log('Search string not found: ', error);
-      });
+        (error) => {
+          console.log('Search string not found: ', error);
+        });
     }
   }
-  
+
 
 
   //On click function to return to the TOP of the form.
@@ -230,4 +230,20 @@ export class PostActiveComponent implements OnInit {
     }
     else (this.loadAll())
   }
+
+  getZillowUrl(address?: string): string {
+    if (!address) return '';
+    return `https://www.zillow.com/homes/${encodeURIComponent(address)}`;
+  }
+
+  // Generate Apple Maps link
+  getAppleMapsUrl(address?: string): string {
+    if (!address) return '';
+    return `https://maps.apple.com/?q=${encodeURIComponent(address)}`;
+  }
+
+  getGoogleMapsUrl(address: string): string {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  }
+
 }

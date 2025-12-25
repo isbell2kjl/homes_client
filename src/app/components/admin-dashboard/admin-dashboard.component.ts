@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { User } from 'src/app/models/user';
 import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { webSite } from 'src/app/helpers/constants';
 import { catchError, of } from 'rxjs';
 
@@ -14,7 +15,7 @@ import { catchError, of } from 'rxjs';
 })
 export class AdminDashboardComponent {
 
-  pendingRequests: any [] = [];
+  pendingRequests: any[] = [];
 
   pendingUser: User = new User;
 
@@ -29,10 +30,9 @@ export class AdminDashboardComponent {
 
 
   constructor(private projectService: ProjectService, private userService: UserService, private location: Location,
-    private router: Router) { }
+    private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-
 
     //Check if there is a user logged in.
     if (this.userService.currentUserValue) {
@@ -42,7 +42,7 @@ export class AdminDashboardComponent {
           this.currentUserId = user.UserId;
           this.currentProjectId = user.projId_fk;
           this.currentRole = user.role;
-           this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
+          this.userService.active$ = this.userService.getUserActiveState('active', user.userName);
 
           if (this.currentRole == 1) {
             this.loadPendingRequests();
@@ -50,7 +50,7 @@ export class AdminDashboardComponent {
             window.alert("Only admin users can access this page")
             this.back();
           }
-          
+
         },
         error: (err) => {
           console.error('Error fetching user:', err);
@@ -66,16 +66,16 @@ export class AdminDashboardComponent {
 
   loadPendingRequests(): void {
     this.projectService.getPendingRequests(this.currentProjectId).subscribe(response => {
-        if (response.hasPendingRequests && response.requests) {
-            this.pendingRequests = response.requests.map(request => ({
-                ...request,
-                requestedAt: new Date(request.requestedAt + 'Z') // Convert string to Date
-            }));
-        } else {
-            this.pendingRequests = [];
-        }
+      if (response.hasPendingRequests && response.requests) {
+        this.pendingRequests = response.requests.map(request => ({
+          ...request,
+          requestedAt: new Date(request.requestedAt + 'Z') // Convert string to Date
+        }));
+      } else {
+        this.pendingRequests = [];
+      }
     });
-}
+  }
 
 
   approveRequest(requestId: number) {
@@ -152,7 +152,7 @@ export class AdminDashboardComponent {
     const confirmation = window.confirm(
       'This action will generate and send a backup report of properties and actions to the group details email address. \n\n Do you want to proceed?'
     );
-  
+
     if (confirmation) {
       this.loading = true
       this.projectService.sendWeeklyReports(this.currentProjectId)
@@ -174,7 +174,6 @@ export class AdminDashboardComponent {
       alert('Action canceled.');
     }
   }
-  
 
   back(): void {
     this.location.back()

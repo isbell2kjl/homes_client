@@ -1,4 +1,3 @@
-//This service is currently not active.  Each endpoint is configured seperately at this time.
 import { Injectable } from '@angular/core';
 import {
   HttpEvent,
@@ -6,52 +5,70 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Observable} from 'rxjs'; 
+import { Observable } from 'rxjs';
 import { UserService } from './user.service';
-import { baseURL } from '../helpers/constants';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { AuthService } from './auth.service';
+
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
+  private readonly publicEndpoints = [
+    '/auth/signin',
+    '/auth/signup',
+    '/auth/refresh-token',
+    '/auth/forgot-password',
+    '/auth/validate-reset-token',
+    '/auth/reset-password',
+    '/auth/verify-recaptcha',
 
-  constructor(private userService: UserService) { }
+    // public utility endpoints
+    '/user/check-username',
+    '/user/check-email',
+    '/post/search',
+    '/project/check-email',
+    '/project/check-email-true',
+  ];
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  constructor(
+    private userService: UserService,
+    private auth: AuthService
+  ) { }
 
-    const excludedUrls = [
-      `${baseURL}/auth/refresh-token`,
-      `${baseURL}/auth/signin`,
-      `${baseURL}/auth/signup`,
-      `${baseURL}/auth/forgot-password`,
-      `${baseURL}/auth/validate-reset-token`,
-      `${baseURL}/auth/reset-password`,
-      `${baseURL}/user/pending-requests`,
-    ];
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    console.log('Intercepted URL:', request.url);
-    console.log('Is Excluded:', excludedUrls);
-
-    if (excludedUrls.some(url => request.url.includes(url))) {
-      return next.handle(request); // Don't add Authorization for public endpoints
-      
+    // ✅ Skip Authorization header for public endpoints
+    if (this.isPublicEndpoint(req.url)) {
+      return next.handle(req);
     }
 
-    // Clone the request and add the Authorization header if a token is available
-    let authrequest = request;
     const user = this.userService.currentUserValue;
-    console.log('token in interceptor: ', user?.token);
 
-    const isLoggedIn = user && user.token;
-    // const token = this.userService.currentUserValue?.token;
-
-    if (isLoggedIn) {
-      authrequest = request.clone({
+    if (user?.token) {
+      req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      // console.log('Authorization Header Added:', authrequest.headers.get('Authorization'));
     }
-    return next.handle(request);
+
+    return next.handle(req).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (
+          err.status === 401 &&
+          !req.url.includes('/auth/')
+        ) {
+          this.auth.markSessionExpired();
+        }
+        return throwError(() => err);
+      })
+    );
+  }
+
+  private isPublicEndpoint(url: string): boolean {
+    return this.publicEndpoints.some(endpoint => url.includes(endpoint));
   }
 }

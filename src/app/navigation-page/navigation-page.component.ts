@@ -7,8 +7,7 @@ import { Project } from '../models/project';
 import { ProjectService } from '../services/project.service';
 import { webSite } from '../helpers/constants';
 import { Router } from '@angular/router';
-
-
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -17,6 +16,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./navigation-page.component.css'],
 })
 export class NavigationPageComponent {
+
+  sessionExpired$ = this.authService.sessionExpired$;
+  showOverlay = false;
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -33,12 +35,20 @@ export class NavigationPageComponent {
 
 
   constructor(private breakpointObserver: BreakpointObserver, private userService: UserService, private router: Router,
-    private projectService: ProjectService
+    private projectService: ProjectService, private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+
+    // Expose authService temporarily for console testing
+    (window as any).authService = this.authService;
+
     this.CheckCurrentUser();
     this.refreshContent();
+  }
+
+  loginAgain() {
+    window.location.href = 'auth/signin';
   }
 
   refreshContent() {
@@ -78,6 +88,7 @@ export class NavigationPageComponent {
   }
 
   logout() {
+    this.authService.clearSessionExpired();
       this.userService.signOut();
       this.router.navigate(['auth/signin'])
     // });

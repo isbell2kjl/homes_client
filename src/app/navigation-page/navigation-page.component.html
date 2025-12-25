@@ -21,6 +21,9 @@
         <a mat-list-item routerLink="/admin-dashboard" *ngIf="(isHandset$ | async) === true"
           (click)="drawer.toggle()">Admin</a>
         <a mat-list-item routerLink="/admin-dashboard" *ngIf="(isHandset$ | async) === false">Admin</a>
+        <a mat-list-item routerLink="/job" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Check
+          List</a>
+        <a mat-list-item routerLink="/job" *ngIf="(isHandset$ | async) === false">Check List</a>
         <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === true"
           (click)="drawer.toggle()">Webmaster</a>
         <a mat-list-item routerLink="/webmaster" *ngIf="(isHandset$ | async) === false">Webmaster</a>
@@ -37,8 +40,8 @@
           In</a>
         <a mat-list-item routerLink="auth/signin" *ngIf="(isHandset$ | async) === false">Sign In</a>
 
-       <!--Only show this div section if single user website mode-->
-       <div *ngIf="webSite">
+        <!--Only show this div section if single user website mode-->
+        <div *ngIf="webSite">
           <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === true" (click)="drawer.toggle()">Home</a>
           <a mat-list-item routerLink="/home" *ngIf="(isHandset$ | async) === false">Home</a>
           <a mat-list-item routerLink="/post" *ngIf="(isHandset$ | async) === true"
@@ -62,11 +65,26 @@
       <span class="site-title">{{pageContent.siteName}}</span>
     </mat-toolbar>
 
-    <div class="content">
-      <router-outlet></router-outlet>
+    <!-- ✅ SESSION OVERLAY — MAIN CONTENT ONLY -->
+    <div class="content-wrapper">
+
+      <div class="session-overlay" *ngIf="sessionExpired$ | async">
+        <div class="session-card">
+          <h2>Session expired</h2>
+          <p>Your login has expired. Please sign in again.</p>
+          <button mat-raised-button color="primary" (click)="loginAgain()">
+            Sign in
+          </button>
+        </div>
+      </div>
+
+
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
     </div>
 
-    <mat-toolbar color="primary" class="footer">
+    <mat-toolbar class="footer" color="primary">
       <span id="copyright">© 2025 {{pageContent.siteName}}</span>
       <!-- <span id="creator">Created by Keith Isbell</span> -->
       <a id="creator" routerLink="/privacy">Privacy Policy</a>

@@ -18,15 +18,10 @@ export class ProjectService {
   constructor(private http: HttpClient, private userService: UserService, private router: Router) { }
 
   createProject(newProject: Project) {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-
     // Check the newProject object to ensure it has all the required fields
     console.log('Creating project with data:', newProject);
 
-    return this.http.post<Project>(`${baseURL}/project`, newProject, { headers: reqHeaders })
+    return this.http.post<Project>(`${baseURL}/project`, newProject)
     .pipe(
       catchError((error) => {
         console.error('Error in createProject service:', error);
@@ -43,11 +38,7 @@ export class ProjectService {
 
   //This is used in combination with editProjectById for modifying this content.
   getProjectById(projectId: string): Observable<Project> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.get<Project>(`${baseURL}/project/${projectId}`, { headers: reqHeaders });
+    return this.http.get<Project>(`${baseURL}/project/${projectId}`);
   }
 
   //Check if email exists for join requests and only allow
@@ -63,73 +54,37 @@ export class ProjectService {
   }
 
   editProjectById(projectId: string, editedProject: Project): Observable<Project> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.put<Project>(`${baseURL}/project/${projectId}`, editedProject, { headers: reqHeaders });
+    return this.http.put<Project>(`${baseURL}/project/${projectId}`, editedProject);
   }
 
   // Method to request to join a project
   requestToJoinProject(projectEmail: string): Observable<any> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.post(`${baseURL}/user/request-to-join`, { projectEmail }, { headers: reqHeaders });
+    return this.http.post(`${baseURL}/user/request-to-join`, { projectEmail });
   }
 
   getPendingRequests(projectId: number): Observable<PendingResponse> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-
-    return this.http.get<PendingResponse>(`${baseURL}/user/pending-requests/${projectId}`, { headers: reqHeaders },
-    );
+    return this.http.get<PendingResponse>(`${baseURL}/user/pending-requests/${projectId}`);
   }
 
   getUserRequests(userId: number): Observable<UserResponse> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.get<UserResponse>(`${baseURL}/user/user-requests/${userId}`, { headers: reqHeaders });
+    return this.http.get<UserResponse>(`${baseURL}/user/user-requests/${userId}`);
   }
 
   // Method to approve a join request
   approveJoinRequest(requestId: number): Observable<Request> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.post<Request>(`${baseURL}/user/approve-request/${requestId}`, {}, { headers: reqHeaders });
+    return this.http.post<Request>(`${baseURL}/user/approve-request/${requestId}`, {});
   }
 
   // project.service.ts
   rejectJoinRequest(requestId: number): Observable<Request> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.post<Request>(`${baseURL}/user/reject-request/${requestId}`, {}, { headers: reqHeaders });
+    return this.http.post<Request>(`${baseURL}/user/reject-request/${requestId}`, {});
   }
 
   sendWeeklyReports(projectId: number): Observable<string> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-
-    return this.http.get<string>(`${baseURL}/project/send-weekly-reports/${projectId}`, { headers: reqHeaders });
+    return this.http.get<string>(`${baseURL}/project/send-weekly-reports/${projectId}`);
   }
 
   deleteProjectById(projectId: string): Observable<any> {
-    let tokenKey: any = this.userService.currentUserValue!.token;
-    let reqHeaders = {
-      Authorization: `Bearer ${tokenKey}`
-    }
-    return this.http.delete<any>(`${baseURL}/project/${projectId}`, { headers: reqHeaders })
+    return this.http.delete<any>(`${baseURL}/project/${projectId}`)
   }
-
 }

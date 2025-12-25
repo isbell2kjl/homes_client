@@ -1,0 +1,84 @@
+.page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.title {
+  text-align: center;
+  margin: 24px 0;
+}
+
+.section-title {
+  text-align: center;
+  margin: 24px 0 12px;
+}
+
+/* Table layout */
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 50px 1fr 50px;
+  border: 1px solid #ccc;
+  min-height: 44px;
+  align-items: center;
+}
+
+.row.completed {
+  opacity: 0.6;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border-right: 1px solid #ccc;
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+.cell.text {
+  justify-content: flex-start;
+  padding: 0 8px;
+  font-size: 16px;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+button {
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.table-header input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+/* Touch-friendly */
+button, input[type="checkbox"] {
+  touch-action: manipulation;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .page {
+    padding: 8px;
+  }
+}

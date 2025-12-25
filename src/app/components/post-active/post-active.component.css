@@ -1,19 +1,25 @@
 .searchWrapper {
     display: flex;
-    justify-content: flex-start; /* Align Column 1 to the left */
+    justify-content: flex-start;
+    /* Align Column 1 to the left */
     align-items: center;
     width: 100%;
-    margin-top: 20px; /* Adds space above the search box */
+    margin-top: 20px;
+    /* Adds space above the search box */
 }
 
 /* Flex container for two columns */
 .searchContainer {
     display: flex;
-    justify-content: space-between; /* Space out Column 1 & 2 */
+    justify-content: space-between;
+    /* Space out Column 1 & 2 */
     align-items: center;
-    width: 70%; /* Keep it narrower */
-    max-width: 750px; /* Keep width in check */
-    margin-left: 2em; /* Align with .list-wrapper */
+    width: 70%;
+    /* Keep it narrower */
+    max-width: 750px;
+    /* Keep width in check */
+    margin-left: 2em;
+    /* Align with .list-wrapper */
     flex-wrap: wrap;
 }
 
@@ -21,7 +27,8 @@
 .column1 {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Left-align on large screens */
+    align-items: flex-start;
+    /* Left-align on large screens */
     width: 55%;
 }
 
@@ -33,14 +40,18 @@
 .active-wrapper,
 .button-wrapper {
     display: flex;
-    align-items: center; /* Ensure proper vertical alignment */
-    justify-content: flex-start; /* Align left */
-    width: 100%; /* Match width to keep elements aligned */
+    align-items: center;
+    /* Ensure proper vertical alignment */
+    justify-content: flex-start;
+    /* Align left */
+    width: 100%;
+    /* Match width to keep elements aligned */
 }
 
 /* Ensure "Add New" button doesn't shift right */
 .button-wrapper .active {
-    margin-left: 0; /* Remove any unintended margin */
+    margin-left: 0;
+    /* Remove any unintended margin */
 }
 
 
@@ -52,7 +63,8 @@
 .column2 {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align column 2 */
+    align-items: center;
+    /* Center align column 2 */
     text-align: center;
     width: 40%;
 }
@@ -62,21 +74,28 @@
     font-size: 1rem;
     color: #333;
     margin-bottom: 5px;
-    margin-top: 5px; /* Aligns with Active Properties */
-    font-weight: normal; /* Remove bold */
+    margin-top: 5px;
+    /* Aligns with Active Properties */
+    font-weight: normal;
+    /* Remove bold */
 }
 
 /* Make sure DONATE button aligns with ADD NEW button */
 .paypal-button {
-    width: 90px;  /* Match mat-button width */
-    height: 36px; /* Match mat-button height */
-    object-fit: contain; /* Keep proper scaling */
+    width: 90px;
+    /* Match mat-button width */
+    height: 36px;
+    /* Match mat-button height */
+    object-fit: contain;
+    /* Keep proper scaling */
 }
 
 /* Ensure buttons are on the same line */
-.button-wrapper, .donate-wrapper {
+.button-wrapper,
+.donate-wrapper {
     display: flex;
-    align-items: center; /* Ensures top and bottom alignment */
+    align-items: center;
+    /* Ensures top and bottom alignment */
 }
 
 /* Hide Column 2 on Small Screens */
@@ -118,10 +137,7 @@ button {
     overflow-wrap: break-word;
 }
 
-.posted-wrapper {
-    text-align: right;
-    padding-right: 5%
-}
+
 
 .img {
     text-align: left;
@@ -138,37 +154,64 @@ button {
     margin-bottom: .1em;
 }
 
-
-/* a {
-    text-decoration: none;
-} */
-
-.button-row {
+.media-row {
     display: flex;
-    justify-content: space-between;
-    flex-shrink: 0;
+    gap: 16px;
     padding: 10px;
+    position: relative;
 }
 
-.left-buttons {
+.button-container {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.post-footer {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
     gap: 10px;
 }
 
-/* .right-button {
-    left empty as the default alignment is right
-    due to justify-content space-between;
-} */
-
-.btn {
-    padding: 10px 20px;
-    /* font-size: 16px; */
+.posted-wrapper {
+    text-align: right;
 }
 
-/* @media only screen and (max-width: 100%) {
-
-    .button-row #right{
-      margin-right: 10px;
+/* Small screens: stack buttons and posted info */
+@media (max-width: 768px) {
+    .media-row {
+        flex-direction: column;
+        position: static;
     }
-  
-  } */
+
+    .button-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+    }
+
+    .button-container .btn {
+        width: 100%;
+    }
+
+    .post-footer {
+        position: static;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .posted-wrapper {
+        text-align: right;
+    }
+}
+
+/* Add a little top margin to photo */
+.media-row img {
+    margin-top: 10px;
+}

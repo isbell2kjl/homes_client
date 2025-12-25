@@ -1,0 +1,56 @@
+<div class="page">
+
+  <div class="d-flex justify-content-left">
+    <button mat-button color="primary" (click)="back()">Back</button>
+  </div>
+
+  <h1 class="title">Checklist</h1>
+
+  <!-- New item row -->
+  <div class="row table-header">
+    <div class="cell checkbox"></div>
+    <div class="cell text">
+      <input [formControl]="newJobControl" (keydown.enter)="addJob()" placeholder="Type new item and press Enter" />
+    </div>
+    <div class="cell action"></div>
+  </div>
+
+  <!-- INCOMPLETE -->
+  <!-- <h2 class="section-title">Incomplete</h2> -->
+
+  <div class="table">
+    <div class="row" *ngFor="let job of incompleteJobs">
+      <div class="cell checkbox">
+        <input type="checkbox" (change)="toggleComplete(job)" />
+      </div>
+
+      <div class="cell text">
+        {{ job.title }}
+      </div>
+
+      <div class="cell action">
+        <button (click)="deleteJob(job)">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <h2 class="section-title" *ngIf="hasCompletedJobs">Complete</h2>
+
+  <div class="table">
+    <div class="row completed" *ngFor="let job of completeJobs">
+      <div class="cell checkbox">
+        <input type="checkbox" checked (change)="toggleComplete(job)" />
+      </div>
+
+      <div class="cell text">
+        {{ job.title }}
+      </div>
+
+      <div class="cell action">
+        <button (click)="deleteJob(job)">✕</button>
+      </div>
+    </div>
+  </div>
+
+</div>

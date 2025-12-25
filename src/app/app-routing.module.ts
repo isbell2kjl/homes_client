@@ -22,6 +22,7 @@ import { PrivacyComponent } from './components/privacy/privacy.component';
 import { ProjectEditComponent } from './components/project-edit/project-edit.component';
 import { JoinRequestComponent } from './components/join-request/join-request.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { JobListComponent } from './components/job-list/job-list.component';
 import { webSite } from './helpers/constants';
 
 
@@ -46,6 +47,7 @@ const commonRoutes: Routes = [
   { path: "privacy", component: PrivacyComponent },
   { path: "join-request", component: JoinRequestComponent },
   { path: "admin-dashboard", component: AdminDashboardComponent },
+  { path: "job", component: JobListComponent },
 ];
 
 // Dynamic route generation
