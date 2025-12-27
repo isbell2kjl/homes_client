@@ -1,9 +1,9 @@
 img {
   border-radius: 2em;
   margin: 1em;
-  width: 80%; /* Reduce width to make it smaller */
+  width: 80%;
   height: auto;
-  max-width: 150px; /* Smaller max-width for all screen sizes */
+  max-width: 150px;
 }
 
 .container {
@@ -31,6 +31,14 @@ img {
   text-align: left;
 }
 
+.column-2 p:last-of-type {
+  margin-bottom: 0.25rem;
+}
+
+.form-group-container {
+  margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -44,11 +52,11 @@ img {
   max-width: 40rem;
   margin-left: auto;
   margin-right: auto;
-  padding: 3rem 1rem;
+  padding: 0.5rem 1rem 3rem;
 }
 
 .contact-intro>*+* {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .contact-title {
