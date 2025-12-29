@@ -6,13 +6,13 @@ The application communicates with a .NET 8.0 backend API and is designed to refl
 
 # Features
 
--Built with Angular 18 and Angular Material
--JWT-based authentication with secure session handling
--Reactive forms for data entry and validation
--Responsive layout optimized for desktop and mobile
--Role-based navigation and UI behavior
--Integration with Google reCAPTCHA
--Designed to work with a .NET backend behind Nginx
+- Built with Angular 18 and Angular Material
+- JWT-based authentication with secure session handling
+- Reactive forms for data entry and validation
+- Responsive layout optimized for desktop and mobile
+- Role-based navigation and UI behavior
+- Integration with Google reCAPTCHA
+- Designed to work with a .NET backend behind Nginx
 
 # Development Notes
 
